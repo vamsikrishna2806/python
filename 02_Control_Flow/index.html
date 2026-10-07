@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Flow - If/Else & Loops</title>
+    <style>
+        @media print {
+            html { display: none !important; }
+            body { display: none !important; }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb {
+            color: rgba(255,255,255,0.8);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #f5576c;
+            font-size: 1.8em;
+        }
+
+        .section h3 {
+            color: #333;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .concept-box {
+            background: #fff0f3;
+            border-left: 4px solid #f5576c;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', 'Consolas', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+            border-left: 4px solid #f5576c;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .interactive-section {
+            background: #fff0f3;
+            border: 2px solid #f5576c;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #f5576c;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+
+        button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .output-box {
+            background: #1e1e1e;
+            color: #4ec9b0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            min-height: 50px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .flowchart {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .flowchart svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .comparison-viz {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .comparison-item {
+            background: #fff0f3;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #f5576c;
+        }
+
+        .comparison-item h4 {
+            color: #f5576c;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        table th {
+            background: #f5576c;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table td {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 12px;
+        }
+
+        table tr:hover {
+            background: #fff0f3;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .nav-buttons a {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-buttons a:hover {
+            transform: scale(1.05);
+        }
+
+        .loop-viz {
+            background: #fff0f3;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .indent {
+            margin-left: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="../index.html">← Back to Learning Path</a>
+        </div>
+
+        <header>
+            <h1>🔀 Control Flow</h1>
+            <p>Making Decisions & Creating Loops</p>
+        </header>
+
+        <!-- SECTION 1: IF/ELSE STATEMENTS -->
+        <div class="section">
+            <h2>❓ If/Else Statements</h2>
+
+            <p>If/Else statements let your program <strong>make decisions</strong> based on conditions. It's like asking "Should I do this?"</p>
+
+            <div class="concept-box">
+                <strong>Basic Structure:</strong><br>
+                <code>if condition:</code> → Execute if True<br>
+                <code>else:</code> → Execute if False<br>
+                <code>elif:</code> → Check another condition
+            </div>
+
+            <h3>Comparison Operators</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operator</th>
+                        <th>Meaning</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>==</td>
+                        <td>Equal to</td>
+                        <td>5 == 5 → True</td>
+                    </tr>
+                    <tr>
+                        <td>!=</td>
+                        <td>Not equal to</td>
+                        <td>5 != 3 → True</td>
+                    </tr>
+                    <tr>
+                        <td>></td>
+                        <td>Greater than</td>
+                        <td>10 > 5 → True</td>
+                    </tr>
+                    <tr>
+                        <td><</td>
+                        <td>Less than</td>
+                        <td>3 < 7 → True</td>
+                    </tr>
+                    <tr>
+                        <td>>=</td>
+                        <td>Greater or equal</td>
+                        <td>5 >= 5 → True</td>
+                    </tr>
+                    <tr>
+                        <td><=</td>
+                        <td>Less or equal</td>
+                        <td>5 <= 10 → True</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Simple If/Else Example</h3>
+            <div class="code-block">
+age = 18
+
+if age >= 18:
+    print("You are an adult")
+else:
+    print("You are a minor")
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try If/Else</h4>
+                <textarea id="code1">age = 25
+
+if age >= 18:
+    print(f"You are {age} years old - You are an adult!")
+else:
+    print(f"You are {age} years old - You are a minor!")
+
+# Another example
+grade = 85
+
+if grade >= 90:
+    print("Grade: A - Excellent!")
+elif grade >= 80:
+    print("Grade: B - Good!")
+elif grade >= 70:
+    print("Grade: C - Average")
+else:
+    print("Grade: F - Need improvement")</textarea>
+                <button type="button" onclick="runCode('code1', 'output1'); return false;">▶ Run Code</button>
+                <div id="output1" class="output-box"></div>
+            </div>
+
+            <h3>Logical Operators (and, or, not)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operator</th>
+                        <th>Meaning</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>and</td>
+                        <td>Both conditions must be True</td>
+                        <td>(5 > 3) and (10 > 8) → True</td>
+                    </tr>
+                    <tr>
+                        <td>or</td>
+                        <td>At least one condition is True</td>
+                        <td>(5 > 10) or (3 > 1) → True</td>
+                    </tr>
+                    <tr>
+                        <td>not</td>
+                        <td>Reverses the condition</td>
+                        <td>not (5 > 10) → True</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="code-block">
+age = 20
+has_license = True
+
+# Using 'and'
+if age >= 18 and has_license:
+    print("You can drive!")
+else:
+    print("You cannot drive")
+
+# Using 'or'
+is_weekend = True
+is_holiday = False
+
+if is_weekend or is_holiday:
+    print("It's a day off!")
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Logical Operators</h4>
+                <textarea id="code2">age = 22
+has_money = True
+has_ticket = True
+
+# Check if you can go to concert
+if age >= 18 and has_money and has_ticket:
+    print("🎵 You can go to the concert!")
+else:
+    print("❌ You cannot go to the concert")
+
+# Check if stores are open
+is_weekday = True
+is_morning = False
+
+if is_weekday or is_morning:
+    print("✓ Stores are open")
+else:
+    print("✗ Stores are closed")</textarea>
+                <button type="button" onclick="runCode('code2', 'output2'); return false;">▶ Run Code</button>
+                <div id="output2" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: FOR LOOPS -->
+        <div class="section">
+            <h2>🔁 For Loops</h2>
+
+            <p>For loops let you <strong>repeat code a specific number of times</strong>. Perfect for processing multiple items!</p>
+
+            <div class="concept-box">
+                <strong>For Loop:</strong> Repeat for each item in a sequence<br>
+                <code>for item in sequence:</code><br>
+                <code>&nbsp;&nbsp;&nbsp;&nbsp;# code to repeat</code>
+            </div>
+
+            <h3>Counting with range()</h3>
+            <div class="code-block">
+# Count from 1 to 5
+for i in range(1, 6):
+    print(i)
+
+# Output:
+# 1
+# 2
+# 3
+# 4
+# 5
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try For Loops</h4>
+                <textarea id="code3"># Simple counting loop
+print("Counting from 1 to 5:")
+for i in range(1, 6):
+    print(i)
+
+print("\nPrinting a pattern:")
+for i in range(5):
+    print("⭐" * (i + 1))
+
+print("\nMultiplication table of 5:")
+for i in range(1, 11):
+    print(f"5 × {i} = {5 * i}")</textarea>
+                <button type="button" onclick="runCode('code3', 'output3'); return false;">▶ Run Code</button>
+                <div id="output3" class="output-box"></div>
+            </div>
+
+            <h3>Looping Through Lists</h3>
+            <div class="code-block">
+fruits = ["apple", "banana", "cherry"]
+
+for fruit in fruits:
+    print(f"I like {fruit}")
+
+# Output:
+# I like apple
+# I like banana
+# I like cherry
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Looping Through Lists</h4>
+                <textarea id="code4">colors = ["red", "blue", "green", "yellow", "purple"]
+
+print("Colors:")
+for color in colors:
+    print(f"  - {color}")
+
+print("\nNumbers and their squares:")
+numbers = [1, 2, 3, 4, 5]
+for num in numbers:
+    print(f"{num}² = {num * num}")
+
+print("\nNames with index:")
+names = ["Alice", "Bob", "Charlie", "Diana"]
+for i in range(len(names)):
+    print(f"{i+1}. {names[i]}")</textarea>
+                <button type="button" onclick="runCode('code4', 'output4'); return false;">▶ Run Code</button>
+                <div id="output4" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: WHILE LOOPS -->
+        <div class="section">
+            <h2>♾️ While Loops</h2>
+
+            <p>While loops repeat <strong>as long as a condition is True</strong>. They're useful when you don't know how many times to repeat.</p>
+
+            <div class="concept-box">
+                <strong>While Loop:</strong> Keep repeating while condition is True<br>
+                <code>while condition:</code><br>
+                <code>&nbsp;&nbsp;&nbsp;&nbsp;# code to repeat</code>
+            </div>
+
+            <h3>Simple While Loop Example</h3>
+            <div class="code-block">
+count = 1
+
+while count <= 5:
+    print(count)
+    count = count + 1
+
+# Output:
+# 1
+# 2
+# 3
+# 4
+# 5
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try While Loops</h4>
+                <textarea id="code5">print("Countdown from 5:")
+countdown = 5
+while countdown > 0:
+    print(countdown)
+    countdown = countdown - 1
+print("Blastoff! 🚀")
+
+print("\nGuessing game (guess is 7):")
+guess = 0
+attempts = 0
+while guess != 7:
+    guess = int(input("Guess a number (1-10): "))
+    attempts += 1
+    if guess < 7:
+        print("Too low, try again")
+    elif guess > 7:
+        print("Too high, try again")
+    else:
+        print(f"Correct! You took {attempts} attempts")</textarea>
+                <button type="button" onclick="runCode('code5', 'output5'); return false;">▶ Run Code</button>
+                <div id="output5" class="output-box"></div>
+            </div>
+
+            <h3>For vs While Loops</h3>
+            <div class="comparison-viz">
+                <div class="comparison-item">
+                    <h4>For Loop</h4>
+                    <p>✓ Known number of repeats</p>
+                    <p>✓ Iterate through sequence</p>
+                    <p>✓ Cleaner syntax</p>
+                </div>
+                <div class="comparison-item">
+                    <h4>While Loop</h4>
+                    <p>✓ Unknown number of repeats</p>
+                    <p>✓ Repeat until condition</p>
+                    <p>✓ More flexible</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: BREAK & CONTINUE -->
+        <div class="section">
+            <h2>⏹️ Break & Continue</h2>
+
+            <h3>Break: Exit a Loop</h3>
+            <p>The <code>break</code> statement <strong>stops the loop immediately</strong>.</p>
+
+            <div class="code-block">
+for i in range(1, 11):
+    if i == 5:
+        print("Stopping at 5!")
+        break
+    print(i)
+
+# Output:
+# 1
+# 2
+# 3
+# 4
+# Stopping at 5!
+            </div>
+
+            <h3>Continue: Skip an Iteration</h3>
+            <p>The <code>continue</code> statement <strong>skips to the next iteration</strong>.</p>
+
+            <div class="code-block">
+for i in range(1, 6):
+    if i == 3:
+        print("Skipping 3!")
+        continue
+    print(i)
+
+# Output:
+# 1
+# 2
+# Skipping 3!
+# 4
+# 5
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Break & Continue</h4>
+                <textarea id="code6">print("Using break:")
+for i in range(1, 10):
+    if i == 5:
+        print(f"Breaking at {i}!")
+        break
+    print(i)
+
+print("\nUsing continue:")
+for i in range(1, 10):
+    if i % 2 == 0:  # Skip even numbers
+        continue
+    print(f"Odd number: {i}")
+
+print("\nFinding a number:")
+target = 7
+for i in range(1, 20):
+    if i == target:
+        print(f"Found {target}!")
+        break
+    print(f"Checking {i}...")</textarea>
+                <button type="button" onclick="runCode('code6', 'output6'); return false;">▶ Run Code</button>
+                <div id="output6" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: CHALLENGE PROJECT -->
+        <div class="section">
+            <h2>🎯 Challenge Projects</h2>
+
+            <h3>Project 1: Number Guessing Game</h3>
+            <div class="code-block">
+import random
+
+secret_number = random.randint(1, 100)
+guess = 0
+attempts = 0
+
+print("I'm thinking of a number between 1 and 100!")
+
+while guess != secret_number:
+    guess = int(input("Take a guess: "))
+    attempts += 1
+
+    if guess < secret_number:
+        print("Too low!")
+    elif guess > secret_number:
+        print("Too high!")
+    else:
+        print(f"You got it! It took {attempts} attempts")
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try the Game (Simplified)</h4>
+                <textarea id="code7">print("🎮 Number Guessing Game")
+print("Guess a number between 1 and 10")
+print()
+
+secret = 7
+guess = 0
+attempts = 0
+
+while guess != secret:
+    guess = int(input("Your guess: "))
+    attempts += 1
+
+    if guess < secret:
+        print("❌ Too low! Try again")
+    elif guess > secret:
+        print("❌ Too high! Try again")
+    else:
+        print(f"🎉 Correct! You took {attempts} attempts")
+        print(f"Well done!")</textarea>
+                <button type="button" onclick="runCode('code7', 'output7'); return false;">▶ Run Code</button>
+                <div id="output7" class="output-box"></div>
+            </div>
+
+            <h3>Project 2: Times Table Generator</h3>
+            <div class="interactive-section">
+                <h4>Try the Times Table</h4>
+                <textarea id="code8">number = int(input("Which times table? "))
+limit = int(input("How many? "))
+
+print(f"\nTimes table of {number}:")
+print("=" * 30)
+
+for i in range(1, limit + 1):
+    result = number * i
+    print(f"{number} × {i:2d} = {result:3d}")
+
+print("=" * 30)</textarea>
+                <button type="button" onclick="runCode('code8', 'output8'); return false;">▶ Run Code</button>
+                <div id="output8" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- KEY TAKEAWAYS -->
+        <div class="section">
+            <h2>✨ Key Takeaways</h2>
+
+            <div class="concept-box">
+                <strong>1. If/Else:</strong> Make decisions with conditions (>, <, ==, !=)<br><br>
+                <strong>2. Logical Operators:</strong> Combine conditions with and, or, not<br><br>
+                <strong>3. For Loops:</strong> Repeat a fixed number of times<br><br>
+                <strong>4. While Loops:</strong> Repeat while a condition is True<br><br>
+                <strong>5. Break/Continue:</strong> Control loop flow (stop or skip)<br>
+            </div>
+
+            <h3>What's Next?</h3>
+            <p>Now that you can make decisions and repeat code, let's learn about <strong>Data Structures</strong> - lists, dictionaries, and more sophisticated ways to organize data!</p>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="../01_Python_Basics/index.html">← Previous: Basics</a>
+            <a href="../03_Data_Structures/index.html">Next: Data Structures →</a>
+        </div>
+    </div>
+
+    <script>
+        function runCode(textareaId, outputId) {
+            const code = document.getElementById(textareaId).value;
+            const outputBox = document.getElementById(outputId);
+            outputBox.innerHTML = '';
+
+            try {
+                let output = '';
+                const originalLog = console.log;
+                console.log = function(...args) {
+                    output += args.join(' ') + '\n';
+                };
+
+                eval(code);
+                console.log = originalLog;
+
+                outputBox.innerHTML = output || '✓ Code executed!';
+            } catch (error) {
+                outputBox.innerHTML = `<span style="color: #ff6b6b;">❌ Error: ${error.message}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>

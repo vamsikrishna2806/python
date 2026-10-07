@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning Fundamentals</title>
+    <style>
+        @media print { html, body { display: none !important; } }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI'; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header { text-align: center; color: white; margin-bottom: 30px; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .section h2 { color: #667eea; margin-bottom: 20px; border-bottom: 3px solid #667eea; padding-bottom: 10px; }
+        .section h3 { color: #333; margin-top: 20px; font-size: 1.15em; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; margin: 15px 0; font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6; border-left: 4px solid #667eea; overflow-x: auto; }
+        .keyword { color: #569cd6; font-weight: bold; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; font-style: italic; }
+        .breadcrumb { color: rgba(255,255,255,0.8); text-align: center; margin-bottom: 20px; }
+        .breadcrumb a { color: white; text-decoration: none; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 40px; }
+        .nav-buttons a { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons a:hover { transform: scale(1.05); }
+        .concept-box { background: #f0f4ff; border-left: 4px solid #667eea; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .progression-level { background: #f0f4ff; border: 2px solid #667eea; border-radius: 8px; padding: 15px; margin: 15px 0; }
+        .progression-level.beginner { border-color: #28a745; background: #d4edda; }
+        .level-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; margin-right: 10px; }
+        .level-badge.beginner { background: #28a745; color: white; }
+        .ml-types { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 15px 0; }
+        .ml-type { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        table th { background: #667eea; color: white; padding: 12px; text-align: left; }
+        table td { border-bottom: 1px solid #ddd; padding: 10px 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb"><a href="../index.html">← Back to Learning Path</a></div>
+        <header><h1>🤖 Machine Learning Fundamentals</h1><p>Teach Machines to Learn from Data</p></header>
+
+        <!-- INTRO -->
+        <div class="section">
+            <h2>🎯 What is Machine Learning?</h2>
+            <p>Machine Learning = Teaching computers to <strong>learn from data</strong> instead of hardcoding rules.</p>
+            <div class="concept-box">
+                <strong>Traditional Programming:</strong> You write rules → Computer executes<br><br>
+                <strong>Machine Learning:</strong> Computer learns rules from data → Can handle unseen data<br><br>
+                <strong>Real Examples:</strong><br>
+                🎬 Netflix recommending movies<br>
+                📧 Gmail detecting spam<br>
+                🚗 Self-driving cars<br>
+                🏥 Detecting diseases in X-rays
+            </div>
+        </div>
+
+        <!-- SECTION 1: THE ML PIPELINE -->
+        <div class="section">
+            <h2>📊 The 6-Step Machine Learning Pipeline</h2>
+
+            <div class="progression-level beginner">
+                <span class="level-badge beginner">BEGINNER</span>
+                <strong>How ML Projects Work</strong>
+            </div>
+
+            <table>
+                <tr><th>Step</th><th>What</th><th>Example</th></tr>
+                <tr><td><strong>1. Data Collection</strong></td><td>Gather training data</td><td>Photos with labels (cat/dog)</td></tr>
+                <tr><td><strong>2. Data Preparation</strong></td><td>Clean & format</td><td>Remove duplicates, normalize values</td></tr>
+                <tr><td><strong>3. Feature Engineering</strong></td><td>Extract important info</td><td>Edge detection in images</td></tr>
+                <tr><td><strong>4. Model Selection</strong></td><td>Choose algorithm</td><td>Random Forest, Neural Network</td></tr>
+                <tr><td><strong>5. Training</strong></td><td>Learn patterns</td><td>Model adjusts parameters</td></tr>
+                <tr><td><strong>6. Evaluation</strong></td><td>Test accuracy</td><td>Accuracy = 95%</td></tr>
+            </table>
+
+            <h3>Complete ML Pipeline Example</h3>
+            <div class="code-block">
+<span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris<br>
+<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split<br>
+<span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier<br>
+<span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score<br>
+<br>
+<span class="comment"># Step 1: Load Data</span><br>
+iris = load_iris()<br>
+X, y = iris.data, iris.target<br>
+<br>
+<span class="comment"># Step 2: Split Data (80% train, 20% test)</span><br>
+X_train, X_test, y_train, y_test = train_test_split(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span><br>
+)<br>
+<br>
+<span class="comment"># Step 3: Create & Train Model</span><br>
+model = RandomForestClassifier(n_estimators=<span class="number">100</span>)<br>
+model.fit(X_train, y_train)<br>
+<br>
+<span class="comment"># Step 4: Make Predictions</span><br>
+predictions = model.predict(X_test)<br>
+<br>
+<span class="comment"># Step 5: Evaluate</span><br>
+accuracy = accuracy_score(y_test, predictions)<br>
+<span class="keyword">print</span>(f<span class="string">"Model Accuracy: {accuracy:.2%}"</span>)
+            </div>
+        </div>
+
+        <!-- SECTION 2: ML TYPES -->
+        <div class="section">
+            <h2>🎯 Three Types of Machine Learning</h2>
+
+            <div class="ml-types">
+                <div class="ml-type">
+                    <h3>📌 Supervised Learning</h3>
+                    <strong>Learn from labeled data</strong><br>
+                    You show examples with answers<br><br>
+                    ✓ Classification (cat/dog)<br>
+                    ✓ Regression (predict price)
+                </div>
+                <div class="ml-type">
+                    <h3>🔍 Unsupervised Learning</h3>
+                    <strong>Find patterns on own</strong><br>
+                    No labels needed<br><br>
+                    ✓ Clustering (group customers)<br>
+                    ✓ Dimensionality reduction
+                </div>
+                <div class="ml-type">
+                    <h3>🎮 Reinforcement Learning</h3>
+                    <strong>Learn through rewards</strong><br>
+                    Trial and error<br><br>
+                    ✓ Game AI<br>
+                    ✓ Robot control
+                </div>
+            </div>
+
+            <h3>Common Algorithms</h3>
+            <table>
+                <tr><th>Algorithm</th><th>Type</th><th>Best For</th><th>Pros/Cons</th></tr>
+                <tr><td><strong>Decision Tree</strong></td><td>Supervised</td><td>Classification</td><td>Easy to understand</td></tr>
+                <tr><td><strong>Random Forest</strong></td><td>Supervised</td><td>Most tasks</td><td>Very accurate</td></tr>
+                <tr><td><strong>Linear Regression</strong></td><td>Supervised</td><td>Predict numbers</td><td>Fast & simple</td></tr>
+                <tr><td><strong>SVM</strong></td><td>Supervised</td><td>Classification</td><td>Good with small data</td></tr>
+                <tr><td><strong>K-Means</strong></td><td>Unsupervised</td><td>Clustering</td><td>Fast grouping</td></tr>
+            </table>
+        </div>
+
+        <!-- SECTION 3: TERMINOLOGY -->
+        <div class="section">
+            <h2>📚 ML Terminology Explained</h2>
+
+            <div class="concept-box">
+                <strong>Features (X):</strong> Input variables (age, income, size)<br>
+                <strong>Target (y):</strong> What you predict (house price, spam/not spam)<br>
+                <strong>Training Data:</strong> Examples to learn from<br>
+                <strong>Test Data:</strong> Examples to evaluate on (never seen before)<br>
+                <strong>Accuracy:</strong> % of correct predictions<br>
+                <strong>Overfitting:</strong> Memorizes training data, fails on new data<br>
+                <strong>Underfitting:</strong> Too simple, misses patterns
+            </div>
+
+            <h3>Train/Test Split</h3>
+            <div class="concept-box">
+                <strong>Bad approach:</strong> Train on all data, test on same data → Overfitting!<br>
+                <strong>Good approach:</strong> Train on 80%, test on 20% → Finds true accuracy<br>
+                <strong>Why:</strong> Model must perform on data it never saw
+            </div>
+        </div>
+
+        <!-- KEY TAKEAWAYS -->
+        <div class="section">
+            <h2>✨ Key Takeaways</h2>
+
+            <div class="concept-box">
+                <strong>✅ ML Process:</strong> Data → Prepare → Choose Model → Train → Evaluate → Predict<br><br>
+                <strong>✅ Three Types:</strong> Supervised (labels), Unsupervised (patterns), Reinforcement (rewards)<br><br>
+                <strong>✅ Always Split Data:</strong> 80% train, 20% test<br><br>
+                <strong>✅ Common Libraries:</strong> scikit-learn (ML), TensorFlow/PyTorch (Deep Learning)<br><br>
+                <strong>🎯 Golden Rule:</strong> <strong>"Garbage in, garbage out"</strong> - Good data = Good models!
+            </div>
+
+            <h3>📚 What's Next?</h3>
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li>🧠 <strong>Deep Learning:</strong> Neural networks for complex patterns</li>
+                <li>💡 <strong>AI Projects:</strong> Build real-world applications</li>
+            </ul>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="../09_Statistics/index.html">← Previous: Statistics</a>
+            <a href="../11_Deep_Learning/index.html">Next: Deep Learning →</a>
+        </div>
+    </div>
+</body>
+</html>

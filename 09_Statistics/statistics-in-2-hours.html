@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statistics in 2 Hours</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+:root{
+  --bg:#fbf8f1; --card:#ffffff; --ink:#1b1f3a; --muted:#50567a; --line:#e4e0d4;
+  --c0:#1b1f3a; --c0s:#eef0f7;
+  --c1:#1d4ed8; --c1s:#e7eeff;   /* Foundations */
+  --c2:#047857; --c2s:#e0f5ec;   /* Describing data */
+  --c3:#7c3aed; --c3s:#f0e8ff;   /* Probability */
+  --c4:#c2410c; --c4s:#ffeadc;   /* Inference */
+  --c5:#be185d; --c5s:#fde5ef;   /* Relationships & beyond */
+  --good:#15803d; --bad:#b91c1c; --gold:#b45309;
+  --fc:var(--c0); --fs:var(--c0s);
+}
+.fam0{--fc:var(--c0);--fs:var(--c0s)}
+.fam1{--fc:var(--c1);--fs:var(--c1s)}
+.fam2{--fc:var(--c2);--fs:var(--c2s)}
+.fam3{--fc:var(--c3);--fs:var(--c3s)}
+.fam4{--fc:var(--c4);--fs:var(--c4s)}
+.fam5{--fc:var(--c5);--fs:var(--c5s)}
+*{box-sizing:border-box}
+html{font-size:19px;scroll-behavior:smooth;scroll-padding-top:110px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Helvetica,Arial,sans-serif;line-height:1.6;-webkit-text-size-adjust:100%;overflow-x:hidden}
+p{margin:.6em 0}
+a{color:var(--fc)}
+button{font-family:inherit}
+:focus-visible{outline:3px solid #f59e0b;outline-offset:2px}
+
+/* ---------- Top bar ---------- */
+.topbar{position:sticky;top:0;z-index:50;background:#fff;border-bottom:2px solid var(--line);box-shadow:0 3px 14px rgba(27,31,58,.06)}
+.topbar-inner{display:flex;align-items:center;gap:8px 14px;padding:8px 16px;flex-wrap:wrap;max-width:1400px;margin:0 auto}
+.brand{font-weight:800;font-size:1rem;white-space:nowrap}
+.brand span{color:var(--c3)}
+.toc{display:flex;gap:6px;overflow-x:auto;flex:1 1 380px;min-width:0;padding:4px 2px;scrollbar-width:thin}
+.toc a{flex:0 0 auto;min-width:40px;height:40px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-weight:800;font-size:.85rem;border:2px solid var(--fc);color:var(--fc);background:#fff;padding:0 9px;transition:background .15s,color .15s}
+.toc a:hover{background:var(--fs)}
+.toc a.active{background:var(--fc);color:#fff}
+.toc a.done::after{content:"✓";margin-left:3px;font-size:.8rem}
+.clock{display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums;flex-wrap:wrap}
+.clock .time{font-weight:800;font-size:1.05rem;min-width:7.4em}
+.clock .pace{font-size:.8rem;color:var(--muted);min-width:9em}
+.clock .pace.behind{color:var(--bad);font-weight:700}
+.clock .pace.ahead{color:var(--good);font-weight:700}
+.btn{font-size:.9rem;font-weight:700;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:10px;padding:6px 13px;cursor:pointer;min-height:40px;line-height:1.2}
+.btn:hover{background:#f2efe6}
+.btn.primary{background:var(--fc);border-color:var(--fc);color:#fff}
+.btn.primary:hover{filter:brightness(1.12);background:var(--fc)}
+.btn.on{background:#fde68a;border-color:#b45309}
+.btn.small{min-height:36px;padding:4px 10px;font-size:.85rem}
+.progress{height:7px;background:#eceae2}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3),var(--c4),var(--c5));transition:width .4s}
+
+/* ---------- Layout ---------- */
+main{max-width:1100px;margin:0 auto;padding:12px 16px 60px}
+.hero{padding:40px 0 10px;text-align:center}
+.hero h1{font-size:clamp(2.1rem,6vw,3.4rem);line-height:1.1;margin:0 0 10px}
+.hero h1 .g{background:linear-gradient(90deg,var(--c1),var(--c3),var(--c5));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{font-size:1.2rem;color:var(--muted);max-width:760px;margin:0 auto}
+.legend{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:20px 0}
+.legend span{border-radius:999px;padding:4px 14px;font-weight:700;font-size:.9rem;background:var(--fs);color:var(--fc);border:2px solid var(--fc)}
+.howto{background:#fff;border:2px solid var(--line);border-radius:18px;padding:16px 22px;max-width:820px;margin:16px auto;text-align:left}
+.howto h2{font-size:1.1rem;margin:0 0 6px}
+.howto ul{margin:6px 0;padding-left:1.2em}
+kbd{font-family:inherit;font-weight:800;background:#f1efe8;border:1px solid #cfcab9;border-bottom-width:3px;border-radius:6px;padding:0 7px;font-size:.85em}
+
+.lesson{background:var(--card);border-radius:24px;border:2px solid var(--line);border-top:12px solid var(--fc);padding:26px clamp(16px,4vw,42px) 22px;margin:38px 0;box-shadow:0 6px 24px rgba(27,31,58,.05)}
+.sec-head{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.num{width:58px;height:58px;flex:0 0 58px;border-radius:16px;background:var(--fc);color:#fff;font-weight:800;font-size:1.55rem;display:grid;place-items:center}
+.kicker{margin:0;font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fc)}
+h2{font-size:clamp(1.6rem,3.6vw,2.25rem);margin:0;line-height:1.2}
+h3{font-size:1.22rem;margin:28px 0 8px;color:var(--fc)}
+.budget{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:3px;font-variant-numeric:tabular-nums}
+.budget .plan{font-weight:800;background:var(--fs);color:var(--fc);border-radius:999px;padding:4px 14px;font-size:.95rem;white-space:nowrap}
+.budget .left{font-size:.85rem;color:var(--muted);font-weight:600}
+.budget .left.over{color:var(--bad);font-weight:800}
+.bigidea{font-size:1.25rem;background:var(--fs);border-left:8px solid var(--fc);padding:14px 20px;border-radius:12px;margin:22px 0 16px;line-height:1.5}
+.bigidea b{color:var(--fc)}
+.example{display:flex;gap:14px;align-items:flex-start;background:#fffaf0;border:2px solid #f3e2b8;border-radius:14px;padding:12px 16px;margin:14px 0}
+.example .emo{font-size:2rem;line-height:1.2}
+.example p{margin:.2em 0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:12px 0}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:12px 0}
+.card{border:2px solid var(--line);border-radius:16px;padding:14px 16px;background:#fff}
+.card h4{margin:0 0 4px;font-size:1.05rem;color:var(--fc);display:flex;align-items:center;gap:8px}
+.card h4 svg{flex:0 0 auto}
+.card p{margin:.3em 0;font-size:.95rem}
+.term{font-weight:800;color:var(--fc)}
+.visual{margin:14px 0;text-align:center}
+.visual svg{max-width:100%;height:auto}
+.visual figcaption{font-size:.9rem;color:var(--muted);margin-top:4px}
+.minis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:12px 0}
+.minis figure{margin:0;border:2px solid var(--line);border-radius:14px;padding:8px;background:#fff;text-align:center}
+.minis figure svg{width:100%;height:auto}
+.minis figcaption{font-size:.85rem;line-height:1.35;color:var(--ink);margin-top:4px}
+.minis figcaption b{color:var(--fc)}
+
+/* ---------- Interactive lab ---------- */
+.lab{border:3px dashed var(--fc);border-radius:20px;padding:16px 18px 18px;background:#fdfdff;margin:24px 0}
+.lab-title{font-weight:800;color:var(--fc);margin:0 0 4px;font-size:1.1rem}
+.lab-title::before{content:"🧪 Try it: "}
+.lab .hint{color:var(--muted);font-size:.95rem;margin:0 0 10px}
+.sw{display:inline-block;width:.9em;height:.9em;border-radius:3px;vertical-align:-.1em;margin-right:4px}
+.swr{border-radius:50%}
+canvas{width:100%;display:block;border-radius:12px;background:#fff;border:1px solid #ecebe4}
+canvas.drag{touch-action:none;cursor:grab}
+canvas.clicky{touch-action:none;cursor:crosshair}
+.controls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:12px 0 4px}
+.controls label{display:flex;align-items:center;gap:8px;font-weight:600;font-size:.95rem;flex-wrap:wrap}
+.controls output{font-weight:800;color:var(--fc);min-width:3.2em;font-variant-numeric:tabular-nums}
+input[type=range]{width:170px;accent-color:var(--fc);height:30px}
+input[type=checkbox]{width:22px;height:22px;accent-color:var(--fc)}
+.out{font-size:1rem;background:#f5f3ec;border-radius:12px;padding:10px 14px;margin-top:10px;font-variant-numeric:tabular-nums;line-height:1.55}
+.out b{color:var(--fc)}
+.tabs{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.tabs button{font-weight:800;font-size:.95rem;border:2px solid var(--fc);background:#fff;color:var(--fc);border-radius:10px;padding:6px 14px;cursor:pointer;min-height:40px}
+.tabs button.sel{background:var(--fc);color:#fff}
+.hide{display:none!important}
+
+/* ---------- Callouts ---------- */
+.mistake{background:#fff4f2;border:2px solid #f5c0b8;border-left:8px solid var(--bad);border-radius:12px;padding:12px 18px;margin:22px 0}
+.mistake .mh{font-weight:800;color:var(--bad);margin:0 0 4px}
+.check{background:#f2fbf5;border:2px solid #b7e2c4;border-left:8px solid var(--good);border-radius:12px;padding:12px 18px;margin:22px 0}
+.check .mh{font-weight:800;color:var(--good);margin:0 0 6px}
+.qc{margin:8px 0 16px}
+.qc .q{font-weight:700;margin:0 0 8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts button{font-size:.95rem;border:2px solid #b9bfd6;background:#fff;color:var(--ink);border-radius:10px;padding:8px 14px;cursor:pointer;text-align:left;min-height:44px;line-height:1.35}
+.opts button:hover{border-color:var(--ink)}
+.opts button.right{background:#dcfce7;border-color:var(--good);font-weight:800}
+.opts button.right::before{content:"✓ "}
+.opts button.wrong{background:#fee2e2;border-color:var(--bad)}
+.opts button.wrong::before{content:"✗ "}
+.opts button:disabled{cursor:default;color:var(--ink);opacity:1}
+.fb{margin:8px 0 0;font-weight:600}
+.fb:empty{display:none}
+.fb.ok{color:var(--good)}
+.fb.no{color:var(--bad)}
+details.deeper{border:2px solid var(--fc);border-radius:14px;margin:22px 0;background:#fff}
+details.deeper>summary{cursor:pointer;padding:12px 18px;font-weight:800;color:var(--fc);list-style:none}
+details.deeper>summary::-webkit-details-marker{display:none}
+details.deeper>summary::before{content:"▸ "}
+details.deeper[open]>summary::before{content:"▾ "}
+details.deeper[open]>summary{border-bottom:2px dashed var(--fs)}
+details.deeper .inner{padding:4px 18px 14px;overflow-x:auto}
+.worked{background:var(--fs);border-radius:12px;padding:10px 16px;margin:10px 0}
+.worked::before{content:"✏️ Worked example";display:block;font-weight:800;color:var(--fc);font-size:.9rem;margin-bottom:2px}
+.teacher{display:none;background:#fffbe8;border:2px dashed #d4a300;border-radius:14px;padding:10px 18px;margin:18px 0}
+.teacher .th{font-weight:800;color:#8a6500;margin:0 0 4px}
+.teacher ul{margin:4px 0;padding-left:1.2em}
+body.teacher-on .teacher{display:block}
+.sec-foot{display:flex;justify-content:flex-end;margin-top:18px}
+.done-btn.is-done{background:var(--good);border-color:var(--good);color:#fff}
+.tablewrap{overflow-x:auto}
+table.simple{border-collapse:collapse;width:100%;font-size:.95rem;margin:10px 0}
+table.simple th,table.simple td{border:2px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+table.simple th{background:var(--fs);color:var(--fc)}
+.errgrid td,.errgrid th{text-align:center!important}
+.errgrid td.ok{background:#e8f8ee}
+.errgrid td.bad{background:#fdecea;font-weight:700}
+
+/* ---------- Sorter game ---------- */
+.sorter .var{font-size:1.35rem;font-weight:800;text-align:center;background:#fff;border:2px solid var(--line);border-radius:14px;padding:16px;margin:6px 0 12px}
+.sorter .opts{justify-content:center}
+.sorter .score{text-align:center;color:var(--muted);font-weight:700;margin:6px 0 0}
+
+/* ---------- Map ---------- */
+#mapWrap svg{width:100%;height:auto}
+#mapWrap .node{cursor:pointer}
+#mapWrap .node:hover rect,#mapWrap .node.sel rect,#mapWrap .node:focus rect{stroke-width:5}
+#mapWrap .node:focus{outline:none}
+#mapInfo{min-height:4.5em}
+.mapbtns{display:none;grid-template-columns:1fr 1fr;gap:8px}
+.mapbtns button{font-weight:800;font-size:.9rem;border:3px solid;background:#fff;border-radius:12px;padding:8px;min-height:48px;cursor:pointer}
+.mapbtns button.sel{background:#fff7e6}
+@media (max-width:600px){#mapWrap svg{display:none}.mapbtns{display:grid}}
+.nextlist li{margin:6px 0}
+
+/* ---------- Cheat sheet ---------- */
+.flowgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:16px}
+.flow{border:3px solid var(--fc);border-radius:18px;padding:14px 16px;background:#fff;break-inside:avoid}
+.flow h3{margin:0 0 8px}
+.flow .ask{background:var(--fc);color:#fff;font-weight:800;border-radius:10px;padding:6px 12px;display:inline-block;margin-bottom:8px}
+.branch{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border-top:2px dashed var(--line);padding:7px 0;font-size:.93rem}
+.branch .then{font-weight:800;color:var(--fc);text-align:right}
+.branch .then::before{content:"→ "}
+.rules{columns:2 300px;gap:24px}
+.rules li{break-inside:avoid;margin-bottom:6px}
+
+/* ---------- Quiz ---------- */
+.quiz .qc{border:2px solid var(--line);border-radius:14px;padding:12px 16px;background:#fff}
+.quiz .qn{display:inline-block;background:var(--fc);color:#fff;border-radius:8px;padding:0 9px;margin-right:6px;font-weight:800}
+.scorebox{position:sticky;bottom:12px;background:#fff;border:3px solid var(--fc);border-radius:16px;padding:10px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;box-shadow:0 6px 20px rgba(0,0,0,.12);margin-top:16px;z-index:5}
+.scorebox .big{font-size:1.4rem;font-weight:800;color:var(--fc)}
+footer.site{text-align:center;color:var(--muted);font-size:.9rem;padding:20px}
+
+@media (max-width:720px){
+  html{font-size:18px;scroll-padding-top:160px}
+  .brand{display:none}
+  .budget{margin-left:0;align-items:flex-start}
+  .clock .pace{display:none}
+  .clock .time{min-width:0;font-size:.95rem}
+  input[type=range]{width:140px}
+  .lesson{border-radius:18px}
+  .example{flex-direction:row}
+}
+@media print{
+  html{font-size:12.5px}
+  body{background:#fff}
+  .topbar,.sec-foot,.lab .controls,.lab .tabs,.scorebox,.no-print{display:none!important}
+  .lesson{box-shadow:none;margin:12px 0;border-width:1px;border-top-width:6px}
+  .teacher{display:none!important}
+  details.deeper .inner{display:block}
+  body.print-cheat main>*:not(#cheatsheet){display:none!important}
+  body.print-cheat #cheatsheet{border:none;padding:0;margin:0}
+  body.print-cheat .flowgrid{grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}
+  body.print-cheat .flow{padding:6px 9px;border-width:2px;border-radius:10px}
+  body.print-cheat .branch{padding:2px 0;font-size:.8rem;border-top-width:1px}
+  body.print-cheat .flow .ask{padding:2px 8px;margin-bottom:3px;font-size:.8rem}
+  body.print-cheat .flow h3{font-size:1rem;margin:0 0 3px}
+  body.print-cheat #cheatsheet h2{font-size:1.4rem}
+  body.print-cheat #cheatsheet>h3{margin:10px 0 4px}
+  body.print-cheat .rules{columns:2;font-size:.85rem;margin:0}
+  body.print-cheat .rules li{margin-bottom:2px}
+  body.print-cheat .num{width:36px;height:36px;flex-basis:36px;font-size:1.1rem}
+  .flow,.card,.minis figure{break-inside:avoid}
+  .flowgrid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">📊 Statistics in <span>2 Hours</span></div>
+    <nav class="toc" id="toc" aria-label="Sections"></nav>
+    <div class="clock">
+      <span class="time" id="clockTime" title="Class clock">00:00 / 120:00</span>
+      <button class="btn small primary fam3" id="clockBtn" title="Start / pause the class clock (P)">▶ Start</button>
+      <button class="btn small" id="clockReset" title="Reset the class clock">↺</button>
+      <span class="pace" id="pace">Clock not started</span>
+      <button class="btn small" id="teacherBtn" title="Show / hide teacher notes (T)" aria-pressed="false">🧑‍🏫 Notes</button>
+    </div>
+  </div>
+  <div class="progress" title="Sections marked done"><div id="progBar"></div></div>
+</div>
+
+<main>
+<header class="hero">
+  <h1><span class="g">Statistics in 2 Hours</span></h1>
+  <p class="sub">A guided tour of the whole subject: what each big idea <b>is</b>, <b>why</b> it exists and <b>when</b> to use it. No memorising. Just curiosity, pictures and play.</p>
+  <div class="legend">
+    <span class="fam1">Foundations</span>
+    <span class="fam2">Describing data</span>
+    <span class="fam3">Probability</span>
+    <span class="fam4">Inference</span>
+    <span class="fam5">Relationships &amp; beyond</span>
+  </div>
+  <div class="howto">
+    <h2>How each section works</h2>
+    <ul>
+      <li>💡 <b>Big idea</b> in one sentence → 🌏 an everyday example → 🖼️ a picture → 🧪 something to <b>play with</b>.</li>
+      <li>⚠️ A <b>common mistake</b> to dodge, ✅ a <b>quick check</b>, and 🔍 <b>Go deeper</b> (formulas + a worked example) for anyone who wants more.</li>
+      <li>Teacher: press <kbd>P</kbd> to start/pause the class clock and <kbd>T</kbd> for teacher notes. Each section shows its minute budget and a live countdown for the section on screen.</li>
+    </ul>
+  </div>
+</header>
+
+<!-- =============================== 1. WHY STATISTICS =============================== -->
+<section class="lesson fam1" id="s1" data-min="5" data-title="Why statistics?">
+  <div class="sec-head"><div class="num">1</div><div><p class="kicker">Foundations</p><h2>Why statistics?</h2></div>
+    <div class="budget"><span class="plan">⏱ 5 min</span><span class="left" data-left></span></div></div>
+
+  <p class="bigidea">💡 <b>Big idea:</b> Statistics is how we learn from data when the world is noisy and uncertain. It turns a pile of messy numbers into an honest story we can act on.</p>
+
+  <p>A <span class="term">statistic</span> is a single number that sums up some data, like a batting average. <span class="term">Statistics</span>, the subject, is the toolkit for collecting data, summarising it, and deciding how far to trust what it seems to say.</p>
+
+  <div class="grid2">
+    <div class="card"><h4>🏏 Cricket</h4><p>Who should open the batting: the player with the higher average, or the more <i>consistent</i> one?</p></div>
+    <div class="card"><h4>📝 Exam results</h4><p>The class average rose from 62 to 68 after a new teaching method. Real improvement, or just luck?</p></div>
+    <div class="card"><h4>🌧️ Weather forecasts</h4><p>"70% chance of rain." What does that number actually promise you?</p></div>
+    <div class="card"><h4>💊 Medicine trials</h4><p>10,000 volunteers, and half get the new vaccine. How can we tell it works and wasn't just chance?</p></div>
+  </div>
+
+  <div class="example"><div class="emo">🚆</div><div><p>After a month of catching the same train you "just know" the 8:10 is usually about 5 minutes late. That's statistics done in your head. This course gives that instinct proper tools.</p></div></div>
+
+  <figure class="visual">
+    <svg viewBox="0 0 660 300" role="img" aria-label="The statistics cycle: ask a question, collect data, describe it, model the chance, conclude and decide, then ask the next question">
+      <defs><marker id="arC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#50567a"/></marker></defs>
+      <g fill="none" stroke="#50567a" stroke-width="2.5" marker-end="url(#arC)">
+        <path d="M420,52 Q540,55 560,100"/>
+        <path d="M560,150 Q560,215 510,235"/>
+        <path d="M385,262 L285,262"/>
+        <path d="M150,235 Q95,215 100,150"/>
+        <path d="M100,100 Q120,55 240,52"/>
+      </g>
+      <g font-family="system-ui,sans-serif" font-weight="700" font-size="17" text-anchor="middle">
+        <rect x="245" y="22" width="170" height="54" rx="14" fill="#fde5ef" stroke="#be185d" stroke-width="2.5"/><text x="330" y="55" fill="#be185d">❓ Ask a question</text>
+        <rect x="475" y="100" width="170" height="54" rx="14" fill="#e7eeff" stroke="#1d4ed8" stroke-width="2.5"/><text x="560" y="133" fill="#1d4ed8">📋 Collect data</text>
+        <rect x="390" y="235" width="170" height="54" rx="14" fill="#e0f5ec" stroke="#047857" stroke-width="2.5"/><text x="475" y="268" fill="#047857">📊 Describe it</text>
+        <rect x="100" y="235" width="185" height="54" rx="14" fill="#f0e8ff" stroke="#7c3aed" stroke-width="2.5"/><text x="192" y="268" fill="#7c3aed">🎲 Model the chance</text>
+        <rect x="10" y="100" width="180" height="54" rx="14" fill="#ffeadc" stroke="#c2410c" stroke-width="2.5"/><text x="100" y="133" fill="#c2410c">✅ Conclude &amp; decide</text>
+        <text x="330" y="150" fill="#1b1f3a" font-size="22">The statistics cycle</text>
+        <text x="330" y="176" fill="#50567a" font-size="14" font-weight="500">(the colours match the parts of this course)</text>
+      </g>
+    </svg>
+    <figcaption>Every statistical project goes round this loop, and the answer usually leads to a new question.</figcaption>
+  </figure>
+
+  <div class="lab">
+    <p class="lab-title">Who would you pick for the team?</p>
+    <p class="hint">These two batters have almost the same average. Press <b>Play another innings</b> a few times and watch the dashed average lines. <span class="sw" style="background:#1d4ed8"></span><b>Ravi</b> (steady) &nbsp; <span class="sw" style="background:#be185d"></span><b>Arjun</b> (boom or bust)</p>
+    <canvas id="cvBat" aria-label="Bar chart of runs per innings for Ravi and Arjun"></canvas>
+    <div class="controls"><button class="btn primary" id="batPlay">🏏 Play another innings</button><button class="btn" id="batReset">↺ Reset</button></div>
+    <div class="out" id="batOut"></div>
+  </div>
+
+  <div class="mistake"><p class="mh">⚠️ Common mistake: "Statistics proves things for certain."</p>
+    <p>Statistics never says "definitely." It says "how likely" and "how sure." A good statistician always reports the <b>uncertainty</b> alongside the answer.</p></div>
+
+  <div class="check"><p class="mh">✅ Quick check</p>
+    <div class="qc" data-a="1"><p class="q">1. The forecast said "70% chance of rain" and it stayed dry. Was the forecast wrong?</p>
+      <div class="opts"><button>Yes, definitely wrong</button><button>Not necessarily: on about 3 in 10 days like this it stays dry</button><button>Forecasts are just random guesses</button></div>
+      <p class="fb" data-ok="Right. A probability describes what happens over many similar days, not a promise about one day." data-no="Think about 10 days that all got a '70%' forecast. On how many would you expect it to stay dry?"></p></div>
+    <div class="qc" data-a="1"><p class="q">2. Ravi and Arjun both average about 34. What extra information would help you choose?</p>
+      <div class="opts"><button>Nothing, they are equal</button><button>How much their scores jump around (consistency)</button><button>Their jersey numbers</button></div>
+      <p class="fb" data-ok="Yes! That's called spread, and you'll measure it properly in Section 6." data-no="The averages match, so look at how much each player's scores jump around. That's called spread."></p></div>
+  </div>
+
+  <details class="deeper"><summary>🔍 Go deeper: the two halves of statistics, and the real batting average</summary><div class="inner">
+    <p><b>Descriptive statistics</b> summarises the data you already have: graphs, averages and spread (Sections 4–7). <b>Inferential statistics</b> uses a <i>sample</i> to make claims about a bigger group, together with a measure of uncertainty (Sections 10–12). <b>Probability</b> (Sections 8–9) is the bridge between the two.</p>
+    <p>The ordinary average (the <i>mean</i>) of \(n\) numbers:</p>
+    \[\bar{x}=\frac{x_1+x_2+\dots+x_n}{n}=\frac{1}{n}\sum_{i=1}^{n}x_i\]
+    <div class="worked">A cricket batting average divides by <b>dismissals</b>, not innings. A batter who scores 450 runs in 12 innings and is not out 3 times has an average of \(450 \div (12-3) = 50\), not \(450 \div 12 = 37.5\). <b>Lesson:</b> always ask what a statistic is divided by.</div>
+  </div></details>
+
+  <div class="teacher"><p class="th">🧑‍🏫 Teacher notes</p><ul>
+    <li>Warm-up: "Where did you see a number today that was trying to convince you of something?" (ads, marks, news, cricket).</li>
+    <li>Poll the class: Ravi or Arjun for a must-win final? And for a T20 where you need quick big scores? Different goals can lead to different answers.</li>
+    <li>Promise: by the end of today you'll be able to question claims like "9 out of 10 dentists recommend…".</li></ul></div>
+  <div class="sec-foot"><button class="btn done-btn">Mark section done ✓</button></div>
+</section>
+
+<!-- =============================== 2. DATA BASICS =============================== -->
+<section class="lesson fam1" id="s2" data-min="10" data-title="Data basics">
+  <div class="sec-head"><div class="num">2</div><div><p class="kicker">Foundations</p><h2>Data basics</h2></div>
+    <div class="budget"><span class="plan">⏱ 10 min</span><span class="left" data-left></span></div></div>
+
+  <p class="bigidea">💡 <b>Big idea:</b> Before any calculation, ask two questions. <b>Who</b> did we measure: everyone, or just some? <b>What kind</b> of thing did we measure? The answers decide which tools you're allowed to use.</p>
+
+  <p><span class="term">Data</span> are recorded facts. A <span class="term">variable</span> is a feature that changes from person to person, like height or favourite team. The <span class="term">population</span> is the <i>whole</i> group we care about, and a <span class="term">sample</span> is the smaller group we actually measure. A number that describes the whole population is a <span class="term">parameter</span>. The same number worked out from a sample is a <span class="term">statistic</span>.</p>
+
+  <div class="example"><div class="emo">🍛</div><div><p><b>The sambar test.</b> You don't drink the whole pot to check the salt. One spoonful (the <i>sample</i>) tells you about the pot (the <i>population</i>), but only if the pot was stirred well first. Stirring is Section 3!</p></div></div>
+
+  <figure class="visual" id="visPop"></figure>
+
+  <h3>Kinds of variables</h3>
+  <figure class="visual">
+    <svg viewBox="0 0 720 270" role="img" aria-label="Tree: a variable is either categorical (nominal or ordinal) or numerical (discrete or continuous)">
+      <g stroke="#50567a" stroke-width="2.5" fill="none"><path d="M360,56 L185,98"/><path d="M360,56 L535,98"/><path d="M185,150 L95,190"/><path d="M185,150 L270,190"/><path d="M535,150 L450,190"/><path d="M535,150 L625,190"/></g>
+      <g font-family="system-ui,sans-serif" text-anchor="middle">
+        <rect x="280" y="10" width="160" height="46" rx="12" fill="#1b1f3a"/><text x="360" y="40" fill="#fff" font-size="19" font-weight="800">Variable</text>
+        <rect x="80" y="98" width="210" height="52" rx="12" fill="#fde5ef" stroke="#be185d" stroke-width="2.5"/><text x="185" y="121" fill="#be185d" font-size="17" font-weight="800">Categorical</text><text x="185" y="141" fill="#1b1f3a" font-size="13">labels / groups</text>
+        <rect x="430" y="98" width="210" height="52" rx="12" fill="#e7eeff" stroke="#1d4ed8" stroke-width="2.5"/><text x="535" y="121" fill="#1d4ed8" font-size="17" font-weight="800">Numerical</text><text x="535" y="141" fill="#1b1f3a" font-size="13">real quantities you can do maths with</text>
+        <g font-size="13" fill="#1b1f3a">
+        <rect x="12" y="190" width="166" height="72" rx="12" fill="#fff" stroke="#be185d" stroke-width="2"/><text x="95" y="212" font-size="16" font-weight="800" fill="#be185d">Nominal</text><text x="95" y="232">no order</text><text x="95" y="250">blood group, IPL team</text>
+        <rect x="187" y="190" width="166" height="72" rx="12" fill="#fff" stroke="#be185d" stroke-width="2"/><text x="270" y="212" font-size="16" font-weight="800" fill="#be185d">Ordinal</text><text x="270" y="232">has an order</text><text x="270" y="250">grades, ★ ratings</text>
+        <rect x="367" y="190" width="166" height="72" rx="12" fill="#fff" stroke="#1d4ed8" stroke-width="2"/><text x="450" y="212" font-size="16" font-weight="800" fill="#1d4ed8">Discrete</text><text x="450" y="232">you count it</text><text x="450" y="250">wickets, siblings</text>
+        <rect x="542" y="190" width="166" height="72" rx="12" fill="#fff" stroke="#1d4ed8" stroke-width="2"/><text x="625" y="212" font-size="16" font-weight="800" fill="#1d4ed8">Continuous</text><text x="625" y="232">you measure it</text><text x="625" y="250">height, rainfall (mm)</text></g>
+      </g>
+    </svg>
+  </figure>
+
+  <div class="tablewrap"><table class="simple">
+    <tr><th>Level of measurement</th><th>What it means</th><th>Examples</th><th>You can use…</th></tr>
+    <tr><td><b>Nominal</b></td><td>Names only, no order</td><td>Blood group, city, favourite team</td><td>counts, mode</td></tr>
+    <tr><td><b>Ordinal</b></td><td>Ordered, but the gaps between steps aren't equal</td><td>Grades A1/A2/B1, 1–5 ★ ratings, rank in class</td><td>+ median, percentiles</td></tr>
+    <tr><td><b>Interval</b></td><td>Equal gaps, but zero doesn't mean "none"</td><td>Temperature in °C, calendar year</td><td>+ mean, differences</td></tr>
+    <tr><td><b>Ratio</b></td><td>Equal gaps <i>and</i> a true zero</td><td>Height, marks, rainfall, money</td><td>+ "twice as much"</td></tr>
+  </table></div>
+
+  <div class="lab sorter">
+    <p class="lab-title">Variable sorting game</p>
+    <p class="hint">What type is each variable? Watch out for tricky ones!</p>
+    <div class="var" id="sortVar" aria-live="polite"></div>
+    <div class="opts" id="sortOpts"></div>
+    <p class="fb" id="sortFb"></p>
+    <div class="controls" style="justify-content:center"><button class="btn primary" id="sortNext">Next ➜</button></div>
+    <p class="score" id="sortScore"></p>
+  </div>
+
+  <div class="mistake"><p class="mh">⚠️ Common mistake: "If it's written as a number, it's numerical."</p>
+    <p>PIN codes, roll numbers, jersey numbers and mobile numbers are just <b>labels</b>. "The average PIN code of our class" is nonsense. Ask yourself: does adding or averaging these numbers mean anything?</p></div>
+
+  <div class="check"><p class="mh">✅ Quick check</p>
+    <div class="qc" data-a="1"><p class="q">1. Customer satisfaction recorded as Poor / OK / Good / Excellent is…</p>
+      <div class="opts"><button>Nominal</button><button>Ordinal</button><button>Continuous</button></div>
+      <p class="fb" data-ok="Yes. There's a clear order, but the 'distance' from Poor to OK isn't a fixed amount." data-no="Can you put the answers in order from worst to best? Then it isn't nominal. Are they measured numbers? No, so it isn't continuous either."></p></div>
+    <div class="qc" data-a="0"><p class="q">2. You survey 200 students from a college of 5,000 about their monthly snack spending. The 5,000 students are the…</p>
+      <div class="opts"><button>Population</button><button>Sample</button><button>Variable</button></div>
+      <p class="fb" data-ok="Correct. The 5,000 are everyone we care about, the 200 are the sample, and 'snack spending' is the variable." data-no="The 200 you actually asked are the sample. The whole group you want to know about is the population."></p></div>
+  </div>
+
+  <details class="deeper"><summary>🔍 Go deeper: notation and the "twice as hot" trap</summary><div class="inner">
+    <div class="tablewrap"><table class="simple"><tr><th></th><th>Population (parameter)</th><th>Sample (statistic)</th></tr>
+      <tr><td>Size</td><td>\(N\)</td><td>\(n\)</td></tr><tr><td>Mean</td><td>\(\mu\) ("mu")</td><td>\(\bar{x}\) ("x-bar")</td></tr>
+      <tr><td>Standard deviation</td><td>\(\sigma\) ("sigma")</td><td>\(s\)</td></tr><tr><td>Proportion</td><td>\(p\)</td><td>\(\hat{p}\) ("p-hat")</td></tr></table></div>
+    <p>Greek letters are for the unknown truth about the population. Roman letters are for what we calculate from the sample.</p>
+    <div class="worked">Is 40 °C "twice as hot" as 20 °C? No. 0 °C doesn't mean "no heat," so °C is an <i>interval</i> scale. On the Kelvin scale, which does have a true zero, the temperatures are \(313.15\) K and \(293.15\) K. That's only about \(313.15/293.15 \approx 1.07\), or 7% more heat energy.</div>
+    <p><b>Grey area:</b> age is really continuous (time never stops), but we usually record it in whole years, so it often gets treated as discrete.</p>
+  </div></details>
+
+  <div class="teacher"><p class="th">🧑‍🏫 Teacher notes</p><ul>
+    <li>Ask each student to name one variable of each type about themselves (bus number? shoe size? height?).</li>
+    <li>Class debate: is <i>age</i> discrete or continuous? What about <i>money</i> (paise)?</li>
+    <li>Ask: "Why can't we average jersey numbers, but we can average marks?"</li></ul></div>
+  <div class="sec-foot"><button class="btn done-btn">Mark section done ✓</button></div>
+</section>
+
+<!-- =============================== 3. COLLECTING DATA =============================== -->
+<section class="lesson fam1" id="s3" data-min="5" data-title="Collecting data">
+  <div class="sec-head"><div class="num">3</div><div><p class="kicker">Foundations</p><h2>Collecting data</h2></div>
+    <div class="budget"><span class="plan">⏱ 5 min</span><span class="left" data-left></span></div></div>
+
+  <p class="bigidea">💡 <b>Big idea:</b> How you collect data matters more than any clever maths you do afterwards. A <b>biased</b> sample gives an answer that is <i>confidently wrong</i>.</p>
+
+  <p><span class="term">Bias</span> is a steady push in one direction, which is different from random wobble. A <span class="term">random sample</span> gives everyone an equal chance of being picked. It's the statistician's way of stirring the sambar.</p>
+
+  <div class="example"><div class="emo">🚇</div><div><p>Stand at a Hyderabad Metro station at 9 am and ask people, "How do you get to work?" You'd conclude that everyone takes the metro! <b>Where</b> you ask decides <b>who</b> answers.</p></div></div>
+
+  <h3>Five ways to choose a sample</h3>
+  <div class="minis" id="visSampMethods"></div>
+
+  <div class="grid2">
+    <div class="card"><h4>👀 Survey / observational study</h4><p>You watch or ask, but you <b>don't interfere</b>. This can show that two things <i>go together</i>, e.g. "students who sleep more tend to score higher." It can't prove that one causes the other.</p></div>
+    <div class="card"><h4>🧪 Experiment</h4><p>You <b>randomly assign</b> the treatment, e.g. give a revision app to a randomly chosen half of the class. Random assignment balances out hidden differences, so an experiment <i>can</i> show cause and effect.</p></div>
+  </div>
+
+  <div class="lab">
+    <p class="lab-title">Sampling detective</p>
+    <p class="hint">400 students from 4 schools. <span class="sw swr" style="background:#1d4ed8"></span>= owns a smartphone. We can only ask <b>40</b> of them. Click each method several times and see where its estimates land compared with the <b>truth</b> line. <span class="sw swr" style="background:#1d4ed8"></span>Random <span class="sw swr" style="background:#b91c1c"></span>Convenience <span class="sw swr" style="background:#15803d"></span>Stratified</p>
+    <canvas id="cvSamp" aria-label="Grid of 400 students with the sampled ones circled, and a strip of estimates"></canvas>
+    <div class="controls"><button class="btn primary" data-m="random">🎲 Random sample</button><button class="btn" data-m="conv" style="border-color:#b91c1c;color:#b91c1c">🚪 Convenience (near the gate)</button><button class="btn" data-m="strat" style="border-color:#15803d;color:#15803d">🧩 Stratified (10 per school)</button><button class="btn" id="sampReset">↺ Clear</button></div>
+    <div class="out" id="sampOut">Pick a method to draw a sample of 40 students.</div>
+  </div>
+
+  <div class="mistake"><p class="mh">⚠️ Common mistake: "A bigger sample fixes bias."</p>
+    <p>In 1936 a US magazine, <i>Literary Digest</i>, polled about 2.4 million people and still predicted the wrong election winner. Its lists came from car and telephone owners, who were richer than average. A properly random 1,000 people would have done better. <b>A bigger sample reduces random wobble, not bias.</b></p></div>
+
+  <div class="check"><p class="mh">✅ Quick check</p>
+    <div class="qc" data-a="1"><p class="q">1. A school asks students <i>standing in the canteen queue</i> whether they like the new menu. What's the problem?</p>
+      <div class="opts"><button>Nothing, it's quick and easy</button><button>Only students who chose to eat there get asked, so people who dislike the food are missed</button><button>The sample is too big</button></div>
+      <p class="fb" data-ok="Exactly. That's selection bias: the method decides who gets heard." data-no="Think about who isn't in the queue. Why might they not be there?"></p></div>
+    <div class="qc" data-a="1"><p class="q">2. You want to prove that a new fertiliser <i>causes</i> higher rice yield. The best plan is to…</p>
+      <div class="opts"><button>Survey farmers who already chose to use it</button><button>Randomly assign fields to get the fertiliser or not, then compare</button></div>
+      <p class="fb" data-ok="Yes. Random assignment makes the two groups alike in everything except the fertiliser." data-no="Farmers who chose it may also have better soil or more water. Only random assignment removes those hidden differences."></p></div>
+  </div>
+
+  <details class="deeper"><summary>🔍 Go deeper: how big should a sample be? And the types of bias</summary><div class="inner">
+    <p>For a percentage (proportion), a rough 95% margin of error from a random sample of size \(n\) is</p>
+    \[\text{margin of error} \approx \frac{1}{\sqrt{n}}\]
+    <div class="worked">\(n = 400 \Rightarrow 1/\sqrt{400} = 1/20 = 5\%\). \(n = 1600 \Rightarrow 1/40 = 2.5\%\). To <b>halve</b> the error you need <b>four times</b> the data. Notice that the size of the population doesn't appear in the formula at all!</div>
+    <ul>
+      <li><b>Selection bias</b>: the way you choose people leaves some groups out.</li>
+      <li><b>Non-response bias</b>: the people who don't reply are different from the people who do.</li>
+      <li><b>Response bias</b>: leading questions, or people giving "nice" answers.</li>
+      <li><b>Survivorship bias</b>: you only see the ones that survived, e.g. "old buildings were built better" (the weak ones already fell down).</li>
+      <li>A <b>confounding variable</b> is a hidden third factor that affects both things you're comparing.</li></ul>
+  </div></details>
+
+  <div class="teacher"><p class="th">🧑‍🏫 Teacher notes</p><ul>
+    <li>Challenge: "Design a survey to find how long Class 11 students spend on their phones. How would you avoid bias?"</li>
+    <li>Rewrite this leading question so it's neutral: "Don't you agree that phones are harmful to students?"</li>
+    <li>Point out on the canvas that the red convenience dots are <i>always</i> too high. That's what bias looks like.</li></ul></div>
+  <div class="sec-foot"><button class="btn done-btn">Mark section done ✓</button></div>
+</section>
+
+<!-- =============================== 4. VISUALISING =============================== -->
+<section class="lesson fam2" id="s4" data-min="10" data-title="Visualising data">
+  <div class="sec-head"><div class="num">4</div><div><p class="kicker">Describing data</p><h2>Visualising data</h2></div>
+    <div class="budget"><span class="plan">⏱ 10 min</span><span class="left" data-left></span></div></div>
+
+  <p class="bigidea">💡 <b>Big idea:</b> The right picture lets data speak in one glance. The wrong picture, or a sneaky one, can make the <i>same</i> data tell a lie.</p>
+
+  <div class="grid3">
+    <div class="card"><h4><svg width="34" height="28" viewBox="0 0 34 28"><rect x="2" y="12" width="7" height="14" fill="#047857"/><rect x="13" y="4" width="7" height="22" fill="#047857"/><rect x="24" y="16" width="7" height="10" fill="#047857"/></svg>Bar chart</h4><p><b>Compare categories:</b> sales per item, votes per party. The bars have gaps between them.</p></div>
+    <div class="card"><h4><svg width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="13" fill="#e0f5ec" stroke="#047857" stroke-width="2"/><path d="M15,15 L15,2 A13,13 0 0 1 27,20 z" fill="#047857"/></svg>Pie chart</h4><p><b>Parts of a whole</b>, with only a few slices (5 at most). Hard to compare slices that are nearly the same size.</p></div>
+    <div class="card"><h4><svg width="34" height="28" viewBox="0 0 34 28"><rect x="2" y="18" width="6" height="8" fill="#047857"/><rect x="8" y="8" width="6" height="18" fill="#047857"/><rect x="14" y="3" width="6" height="23" fill="#047857"/><rect x="20" y="10" width="6" height="16" fill="#047857"/><rect x="26" y="20" width="6" height="6" fill="#047857"/></svg>Histogram</h4><p><b>Shape of one numerical variable</b>, like marks or heights. The bars touch because the ranges join up.</p></div>
+    <div class="card"><h4><svg width="36" height="24" viewBox="0 0 36 24"><line x1="2" y1="12" x2="10" y2="12" stroke="#047857" stroke-width="2"/><rect x="10" y="4" width="14" height="16" fill="#e0f5ec" stroke="#047857" stroke-width="2"/><line x1="16" y1="4" x2="16" y2="20" stroke="#047857" stroke-width="3"/><line x1="24" y1="12" x2="32" y2="12" stroke="#047857" stroke-width="2"/><circle cx="34" cy="12" r="1.8" fill="#047857"/></svg>Box plot</h4><p><b>Compare spreads</b> across groups and <b>spot outliers</b> quickly.</p></div>
+    <div class="card"><h4><svg width="30" height="28" viewBox="0 0 30 28"><g fill="#047857"><circle cx="5" cy="22" r="2.4"/><circle cx="10" cy="17" r="2.4"/><circle cx="14" cy="18" r="2.4"/><circle cx="18" cy="11" r="2.4"/><circle cx="23" cy="9" r="2.4"/><circle cx="27" cy="4" r="2.4"/></g></svg>Scatter plot</h4><p><b>Relationship between two numerical variables</b>, like study hours and marks.</p></div>
+    <div class="card"><h4><svg width="34" height="28" viewBox="0 0 34 28"><polyline points="2,22 9,16 15,19 22,8 31,5" fill="none" stroke="#047857" stroke-width="3"/></svg>Line chart</h4><p><b>Change over time:</b> monthly rainfall, daily temperature, sales by week.</p></div>
+  </div>
+
+  <div class="example"><div class="emo">📰</div><div><p>A news channel shows "Party X surges ahead!" with a bar chart whose axis starts at 38%. The bars look wildly different, but the real gap is 41% vs 39%.</p></div></div>
+
+  <div class="lab">
+    <p class="lab-title">Chart switcher</p>
+    <p class="hint">Each chart type answers a different question. Try each tab, then turn on the <b>misleading axis</b> on the bar chart.</p>
+    <div class="tabs" id="chartTabs" role="tablist">
+      <button class="sel" data-t="bar">Bar</button><button data-t="pie">Pie</button><button data-t="hist">Histogram</button><button data-t="box">Box plot</button><button data-t="scatter">Scatter</button></div>
+    <canvas id="cvChart" aria-label="Chart that changes with the selected tab"></canvas>
+    <div class="controls">
+      <label id="truncWrap"><input type="checkbox" id="trunc"> 😈 Misleading axis (start the y-axis at 70)</label>
+      <label id="binWrap" class="hide">Bin width <input type="range" id="bins" min="2" max="25" value="10"><output id="binsO">10</output></label></div>
+    <div class="out" id="chartUse"></div>
+  </div>
+
+  <div class="mistake"><p class="mh">⚠️ Common mistake: trusting the picture without checking the axis.</p>
+    <p>Always check where the y-axis starts. A <b>cut-off (truncated) axis</b> makes small differences look huge. Also be suspicious of 3D pie charts (the slices at the front look bigger) and pies with 10+ slices (use a bar chart). And don't mix up histograms (numerical ranges, bars touching) with bar charts (categories, gaps between bars).</p></div>
+
+  <div class="check"><p class="mh">✅ Quick check</p>
+    <div class="qc" data-a="1"><p class="q">1. You want to show how Chennai's monthly rainfall changes from January to December. Best chart?</p>
+      <div class="opts"><button>Pie chart</button><button>Line chart</button><button>Scatter plot</button></div>
+      <p class="fb" data-ok="Yes. Change over time calls for a line chart." data-no="Months are a time sequence. Which chart is built for change over time?"></p></div>
+    <div class="qc" data-a="2"><p class="q">2. You want to compare the <i>spread</i> of marks across three sections and spot unusual scores. Best chart?</p>
+      <div class="opts"><button>Pie chart</button><button>Bar chart of the averages</button><button>Box plot</button></div>
+      <p class="fb" data-ok="Correct. Box plots show the middle, the spread and the outliers side by side." data-no="A bar chart of averages hides the spread. Which chart shows the whole range and the outliers?"></p></div>
+  </div>
+
+  <details class="deeper"><summary>🔍 Go deeper: how a box plot is built, and how many histogram bins to use</summary><div class="inner">
+    <p>A box plot draws the <b>five-number summary</b>: minimum, \(Q_1\), median, \(Q_3\), maximum. The box covers the middle 50% of the data. Its length is the <b>interquartile range</b>:</p>
+    \[\text{IQR} = Q_3 - Q_1,\qquad \text{outlier if } x < Q_1 - 1.5\,\text{IQR}\ \text{ or }\ x > Q_3 + 1.5\,\text{IQR}\]
+    <div class="worked">If \(Q_1 = 58\) and \(Q_3 = 78\), then \(\text{IQR} = 20\) and the "fences" are \(58 - 30 = 28\) and \(78 + 30 = 108\). A mark of 22 falls outside a fence, so it gets drawn as a separate dot (an outlier).</div>
+    <p><b>Histogram bins:</b> Sturges' rule suggests about \(k \approx 1 + \log_2 n\) bins. For \(n = 40\) that's \(1 + 5.3 \approx 6\) bins. Too few bins hide the shape and too many make it spiky, which you can see with the slider above.</p>
+  </div></details>
+
+  <div class="teacher"><p class="th">🧑‍🏫 Teacher notes</p><ul>
+    <li>Turn on the misleading axis <i>before</i> the class looks, then ask: "How many times more tea than biscuits was sold?" Then turn it off: only about a third more.</li>
+    <li>Ask students to find a misleading graph in a newspaper or ad this week.</li>
+    <li>On the histogram, drag the bin width from 2 to 25. Which setting tells the most honest story?</li></ul></div>
+  <div class="sec-foot"><button class="btn done-btn">Mark section done ✓</button></div>
+</section>
+
+<!-- =============================== 5. CENTRE =============================== -->
+<section class="lesson fam2" id="s5" data-min="10" data-title="Measures of centre">
+  <div class="sec-head"><div class="num">5</div><div><p class="kicker">Describing data</p><h2>Measures of centre</h2></div>
+    <div class="budget"><span class="plan">⏱ 10 min</span><span class="left" data-left></span></div></div>
+
+  <p class="bigidea">💡 <b>Big idea:</b> There are three ways to measure a "typical" value: <b>mean</b>, <b>median</b> and <b>mode</b>. Each one can mislead you in its own way.</p>
+
+  <div class="grid3">
+    <div class="card"><h4>⚖️ Mean</h4><p><b>"Pool it and share equally."</b> Add everything up and divide by how many there are. It's the <i>balance point</i> of the data.</p></div>
+    <div class="card"><h4>🧍 Median</h4><p><b>"The middle person."</b> Line everyone up from smallest to largest and pick the one in the middle.</p></div>
+    <div class="card"><h4>👟 Mode</h4><p><b>"The most popular."</b> The value that appears most often. It works for categories too (the most popular IPL team).</p></div>
+  </div>
+
+  <div class="example"><div class="emo">💼</div><div><p>Monthly salaries at a small startup, in ₹ thousands: 30, 32, 35, 38, 40, and the founder's 500. The <b>mean is ₹112.5k</b>, but only the founder earns anything like that! The <b>median, ₹36.5k</b>, tells the real story.</p></div></div>
+
+  <figure class="visual">
+    <svg viewBox="0 0 640 190" role="img" aria-label="Seesaw: marks 45, 50, 55, 60, 90 balance at the mean of 60; the median is the middle dot, 55">
+      <line x1="30" y1="112" x2="610" y2="112" stroke="#1b1f3a" stroke-width="6" stroke-linecap="round"/>
+      <polygon points="280,116 258,160 302,160" fill="#c2410c"/>
+      <g fill="#047857" stroke="#fff" stroke-width="3"><circle cx="160" cy="95" r="14"/><circle cx="200" cy="95" r="14"/><circle cx="240" cy="95" r="14" fill="#15803d"/><circle cx="280" cy="95" r="14"/><circle cx="520" cy="95" r="14"/></g>
+      <g font-family="system-ui,sans-serif" font-size="15" text-anchor="middle" fill="#1b1f3a">
+        <text x="160" y="72">45</text><text x="200" y="72">50</text><text x="280" y="72">60</text><text x="520" y="72">90</text>
+        <text x="240" y="40" font-weight="800" fill="#047857">Median = 55</text><text x="240" y="58" font-size="13" fill="#047857">(middle dot)</text>
+        <text x="280" y="182" font-weight="800" fill="#c2410c">Mean = 60 (balance point)</text>
+        <text x="520" y="40" font-size="14" fill="#50567a">one high score pulls</text><text x="520" y="58" font-size="14" fill="#50567a">the balance point →</text></g>
+    </svg>
+    <figcaption>The mean is where the seesaw balances, so a far-away value has a lot of leverage. The median only cares about the order.</figcaption>
+  </figure>
+
+  <div class="lab">
+    <p class="lab-title">Drag the dots</p>
+    <p class="hint">Each dot is one student's mark. <b>Drag</b> any dot left or right. Try pulling one dot all the way to 0. Which moves more, the <span style="color:#c2410c;font-weight:800">mean ▲</span> or the <span style="color:#047857;font-weight:800">median ┆</span>?</p>
+    <canvas id="cvCentre" class="drag" aria-label="Number line of marks with draggable dots, mean and median markers"></canvas>
+    <div class="controls"><button class="btn" id="cAdd">➕ Add a student</button><button class="btn" id="cDel">➖ Remove one</button><button class="btn" id="cOut">🙈 Add a student who scored 5</button><button class="btn" id="cReset">↺ Reset</button></div>
+    <div class="out" id="centreOut"></div>
+  </div>
+
+  <div class="mistake"><p class="mh">⚠️ Common mistake: using the mean for skewed data.</p>
+    <p>Incomes, house prices and waiting times have a few huge values that drag the mean upward. For data like that, report the <b>median</b>. And never "average" categories: the mean favourite colour is meaningless, so use the mode.</p></div>
+
+  <div class="check"><p class="mh">✅ Quick check</p>
+    <div class="qc" data-a="1"><p class="q">1. You want the "typical" house price in Hyderabad, where a few villas cost ₹20 crore. Best measure?</p>
+      <div class="opts"><button>Mean</button><button>Median</button><button>Mode</button></div>
+      <p class="fb" data-ok="Right. The villas would drag the mean up, but the median ignores how extreme they are." data-no="Picture those ₹20 crore villas pulling on the seesaw. Which measure doesn't care how far away they are?"></p></div>
+    <div class="qc" data-a="2"><p class="q">2. A shoe shop wants to know which size to stock the most of. Best measure?</p>
+      <div class="opts"><button>Mean</button><button>Median</button><button>Mode</button></div>
+      <p class="fb" data-ok="Yes. The most common size is what sells, and a 'mean size' of 7.36 isn't a shoe you can buy!" data-no="Can you buy a size 7.36 shoe? You want the most common size."></p></div>
+  </div>
+
+  <details class="deeper"><summary>🔍 Go deeper: formulas, skew and weighted means</summary><div class="inner">
+    \[\bar{x}=\frac{1}{n}\sum_{i=1}^{n} x_i \qquad \text{Median position} = \frac{n+1}{2}\text{th value (after sorting)}\]
+    <div class="worked">Marks 45, 50, 55, 60, 90: mean \(=300/5 = 60\). The median is the \((5+1)/2 = 3\)rd value, \(55\). The single 90 pulls the mean above the median, which means the data are <b>right-skewed</b>.</div>
+    <p><b>Rule of thumb:</b> right skew (long tail to the right) → mean &gt; median. Left skew → mean &lt; median. Symmetric → the two are about equal.</p>
+    <p><b>Weighted mean:</b> some values count more than others. \(\bar{x}_w = \dfrac{\sum w_i x_i}{\sum w_i}\)</p>
+    <div class="worked">CGPA with grade points 9 (4 credits), 8 (3 credits) and 6 (2 credits): \(\dfrac{9\cdot4 + 8\cdot3 + 6\cdot2}{4+3+2} = \dfrac{72}{9} = 8.0\)</div>
+    <p><b>Trimmed mean:</b> drop the highest and lowest values before averaging. Some sports judges score this way so that one extreme judge can't swing the result.</p>
+  </div></details>
+
+  <div class="teacher"><p class="th">🧑‍🏫 Teacher notes</p><ul>
+    <li>Ask: "A topper joins your class and the class average jumps up. Did most students improve?"</li>
+    <li>Ask: "Which average would a company advertise to make its salaries look high? Which would a union use?"</li>
+    <li>Live demo: drag one dot to 0 and ask the class to predict the new mean before you let go.</li></ul></div>
+  <div class="sec-foot"><button class="btn done-btn">Mark section done ✓</button></div>
+</section>
+
+<!-- =============================== 6. SPREAD =============================== -->
+<section class="lesson fam2" id="s6" data-min="10" data-title="Measures of spread">
+  <div class="sec-head"><div class="num">6</div><div><p class="kicker">Describing data</p><h2>Measures of spread</h2></div>
+    <div class="budget"><span class="plan">⏱ 10 min</span><span class="left" data-left></span></div></div>
+
+  <p class="bigidea">💡 <b>Big idea:</b> Knowing the centre isn't enough. <b>Spread</b> tells you how far values wander from the centre, which is really a measure of how <i>predictable</i> things are.</p>
+
+  <div class="example"><div class="emo">🚆</div><div><p>Two trains are both "5 minutes late on average." Train A is always 3–7 minutes late. Train B is sometimes early and sometimes 15 minutes late. On the day of your board exam, which one do you trust?</p></div></div>
+
+  <figure class="visual" id="visTrains"></figure>
+
+  <div class="grid2">
+    <div class="card"><h4>📏 Range</h4><p><b>Largest − smallest.</b> Quick, but it only looks at the two most extreme values, so one weird day can wreck it.</p></div>
+    <div class="card"><h4>📦 IQR (interquartile range)</h4><p><b>Q3 − Q1</b>: the width of the middle half of the data. It isn't bothered by extreme values.</p></div>
+    <div class="card"><h4>🟦 Variance</h4><p>The <b>average of the squared distances</b> from the mean. Squaring stops the + and − distances cancelling out.</p></div>
+    <div class="card"><h4>🎯 Standard deviation (SD)</h4><p>The <b>square root of the variance</b>, which brings it back to the original units. Think of it as <i>roughly the typical distance from the mean.</i></p></div>
+  </div>
+
+  <div class="lab">
+    <p class="lab-title">Train delay tracker</p>
+    <p class="hint">Each row is one day's delay in minutes (negative = early). Slide <b>Unpredictability</b> and watch the distances to the mean grow. Then add one terrible day. Which measure jumps and which stays calm?</p>
+    <canvas id="cvSpread" aria-label="Dot plot of 15 daily train delays with mean line, SD band and IQR bracket"></canvas>
+    <div class="controls">
+      <label>Unpredictability <input type="range" id="spreadS" min="0" max="10" step="0.5" value="4"><output id="spreadSO">4</output></label>
+      <label><input type="checkbox" id="spreadDist" checked> Show distances to the mean</label>
+      <label><input type="checkbox" id="spreadOut"> 😱 Add one terrible day (60 min late)</label></div>
+    <div class="out" id="spreadOutTxt"></div>
+  </div>
+
+  <div class="mistake"><p class="mh">⚠️ Common mistake: reporting an average without its spread.</p>
+    <p>"Average delay 5 minutes" means very different things for Train A and Train B. Always give a spread with a centre: <b>mean ± SD</b>, or <b>median with IQR</b>. Also remember that the range and the SD are both pulled around by outliers, and the IQR isn't.</p></div>
+
+  <div class="check"><p class="mh">✅ Quick check</p>
+    <div class="qc" data-a="0"><p class="q">1. Two batters both average 40. Batter A's SD is 5 runs and Batter B's SD is 30 runs. Who is more consistent?</p>
+      <div class="opts"><button>Batter A</button><button>Batter B</button><button>They're equally consistent</button></div>
+      <p class="fb" data-ok="Yes. A small SD means A's scores stay close to 40." data-no="SD is roughly the typical distance from the average. Which batter strays less?"></p></div>
+    <div class="qc" data-a="2"><p class="q">2. Which measure is <i>least</i> affected by one extreme value?</p>
+      <div class="opts"><button>Range</button><button>Standard deviation</button><button>IQR</button></div>
+      <p class="fb" data-ok="Correct. The IQR only looks at the middle 50%, so extremes don't touch it." data-no="Try the 'terrible day' checkbox in the lab and watch which number barely moves."></p></div>
+  </div>
+
+  <details class="deeper"><summary>🔍 Go deeper: variance and SD formulas (and why n − 1?)</summary><div class="inner">
+    \[\sigma^2 = \frac{1}{N}\sum_{i=1}^{N}(x_i-\mu)^2 \qquad s^2 = \frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2 \qquad \text{SD} = \sqrt{\text{variance}}\]
+    <div class="worked">Delays: 2, 4, 4, 4, 5, 5, 7, 9. The mean is \(40/8 = 5\). Squared distances: 9, 1, 1, 1, 0, 0, 4, 16, which add up to 32.<br>
+      Population variance \(= 32/8 = 4\), so SD \(= 2\) minutes. Sample variance \(= 32/7 \approx 4.57\), so \(s \approx 2.14\) minutes.</div>
+    <p><b>Why divide by \(n-1\) for a sample?</b> A sample's own mean sits a little too close to its own data, which makes the spread look slightly too small. Dividing by \(n-1\) instead of \(n\) corrects for this (it's called Bessel's correction). The lab uses the sample SD, like most calculators do.</p>
+    <p><b>Units:</b> the variance is in <i>minutes²</i>, which is hard to picture. That's why we usually report the SD.</p>
+  </div></details>
+
+  <div class="teacher"><p class="th">🧑‍🏫 Teacher notes</p><ul>
+    <li>Ask: "Job A pays ₹40k every month. Job B pays ₹40k <i>on average</i>, but anywhere from ₹0 to ₹80k. Which would you pick, and why?"</li>
+    <li>Ask the class to guess the SD of heights in the room, then roughly check it (most people fall within ±1 SD).</li>
+    <li>In the lab, set Unpredictability to 0. What do all the measures become? Why?</li></ul></div>
+  <div class="sec-foot"><button class="btn done-btn">Mark section done ✓</button></div>
+</section>
+
+<!-- =============================== 7. POSITION =============================== -->
+<section class="lesson fam2" id="s7" data-min="5" data-title="Position">
+  <div class="sec-head"><div class="num">7</div><div><p class="kicker">Describing data</p><h2>Position: percentiles, quartiles, z-scores</h2></div>
+    <div class="budget"><span class="plan">⏱ 5 min</span><span class="left" data-left></span></div></div>
+
+  <p class="bigidea">💡 <b>Big idea:</b> Percentiles and z-scores tell you where one value stands <i>compared with everyone else</i>, so you can fairly compare things measured on different scales.</p>
+
+  <p>The <span class="term">p-th percentile</span> is the value that p% of the data falls below. The <span class="term">quartiles</span> split the data into four equal parts: Q1 is the 25th percentile, Q2 (the median) is the 50th, and Q3 is the 75th. A <span class="term">z-score</span> says how many standard deviations a value sits above (+) or below (−) the mean.</p>
+
+  <div class="example"><div class="emo">🎓</div><div><p><b>JEE Main percentile 98</b> means you did better than 98% of candidates in your session. It does <i>not</i> mean you scored 98% of the marks. And is your Maths 72 better than your Science 80? It depends on how everyone else did!</p></div></div>
+
+  <figure class="visual">
+    <svg viewBox="0 0 700 150" role="img" aria-label="Percentile ruler from 0 to 100 with Q1 at 25, median at 50, Q3 at 75, and a marker at the 90th percentile">
+      <defs><linearGradient id="gPct" x1="0" x2="1"><stop offset="0" stop-color="#e0f5ec"/><stop offset="1" stop-color="#047857"/></linearGradient></defs>
+      <rect x="50" y="60" width="600" height="30" rx="8" fill="url(#gPct)"/>
+      <rect x="200" y="54" width="300" height="42" rx="6" fill="none" stroke="#1b1f3a" stroke-width="3"/>
+      <g stroke="#1b1f3a" stroke-width="3"><line x1="350" y1="50" x2="350" y2="100"/></g>
+      <g font-family="system-ui,sans-serif" text-anchor="middle" font-size="15" fill="#1b1f3a">
+        <text x="50" y="118">0</text><text x="650" y="118">100</text>
+        <text x="200" y="118" font-weight="800">Q1 (25th)</text><text x="350" y="118" font-weight="800">Median (50th)</text><text x="500" y="118" font-weight="800">Q3 (75th)</text>
+        <text x="350" y="142" font-size="13" fill="#50567a">the box = the middle 50% of students (the IQR)</text>
+        <path d="M590,20 L590,54" stroke="#c2410c" stroke-width="3"/><circle cx="590" cy="20" r="7" fill="#c2410c"/>
+        <text x="575" y="25" text-anchor="end" font-weight="800" fill="#c2410c">You: 90th percentile, better than 90 of every 100</text></g>
+    </svg>
+  </figure>
+
+  <div class="lab">
+    <p class="lab-title">Which mark is really better?</p>
+    <p class="hint">Maths: class mean 60, SD 8. Science: class mean 75, SD 10. Move your marks. Both curves are lined up by z-score, so the marker further to the right is the <b>relatively</b> better result.</p>
+    <canvas id="cvZ" aria-label="Two bell curves for Maths and Science with your marks shaded"></canvas>
+    <div class="controls">
+      <label>Maths mark <input type="range" id="zM" min="30" max="100" value="72"><output id="zMO">72</output></label>
+      <label>Science mark <input type="range" id="zS" min="40" max="100" value="80"><output id="zSO">80</output></label></div>
+    <div class="out" id="zOut"></div>
+  </div>
+
+  <div class="mistake"><p class="mh">⚠️ Common mistake: mixing up percentile and percentage.</p>
+    <p>A <b>percentage</b> is your own score out of 100. A <b>percentile</b> is your <i>rank</i> compared with others. On a very hard paper, 55% marks could put you at the 95th percentile!</p></div>
+
+  <div class="check"><p class="mh">✅ Quick check</p>
+    <div class="qc" data-a="1"><p class="q">1. Riya's z-score in a test is −1. This means she…</p>
+      <div class="opts"><button>Scored 1 mark below the average</button><button>Scored 1 standard deviation below the average</button><button>Failed the test</button></div>
+      <p class="fb" data-ok="Exactly. A z-score is measured in SDs, not marks." data-no="A z-score counts standard deviations, not marks."></p></div>
+    <div class="qc" data-a="0"><p class="q">2. This year's monsoon rainfall is at the 75th percentile of the last 50 years. This means…</p>
+      <div class="opts"><button>About 75% of past years had less rain than this year</button><button>It rained on 75% of days</button><button>It got 75% of normal rainfall</button></div>
+      <p class="fb" data-ok="Right. A percentile is a ranking against the other years." data-no="A percentile is about rank: what fraction of years fall below this one?"></p></div>
+  </div>
+
+  <details class="deeper"><summary>🔍 Go deeper: z-score formula and turning it into a percentile</summary><div class="inner">
+    \[z = \frac{x-\mu}{\sigma}\qquad\Longleftrightarrow\qquad x = \mu + z\,\sigma\]
+    <div class="worked">Maths: \(z = (72-60)/8 = 1.5\). Science: \(z = (80-75)/10 = 0.5\). If marks are roughly bell-shaped (Section 9), then \(z=1.5\) is about the <b>93rd</b> percentile and \(z = 0.5\) is about the <b>69th</b>. So the Maths result is relatively better, even though 72 &lt; 80.</div>
+    <div class="worked">Going the other way: what Maths mark puts you in the top 10%? The 90th percentile is at \(z \approx 1.28\), so \(x = 60 + 1.28 \times 8 \approx 70.2\).</div>
+  </div></details>
+
+  <div class="teacher"><p class="th">🧑‍🏫 Teacher notes</p><ul>
+    <li>Ask: "Why do exams held in several shifts (like JEE Main) report percentiles instead of raw marks?" (Different shifts can have different difficulty, and percentiles make them fair to compare.)</li>
+    <li>Challenge: find a Maths mark and a Science mark that are <i>equally</i> good (the same z-score).</li></ul></div>
+  <div class="sec-foot"><button class="btn done-btn">Mark section done ✓</button></div>
+</section>
+
+<!-- =============================== 8. PROBABILITY =============================== -->
+<section class="lesson fam3" id="s8" data-min="15" data-title="Probability essentials">
+  <div class="sec-head"><div class="num">8</div><div><p class="kicker">Probability</p><h2>Probability essentials</h2></div>
+    <div class="budget"><span class="plan">⏱ 15 min</span><span class="left" data-left></span></div></div>
+
+  <p class="bigidea">💡 <b>Big idea:</b> A probability is a number from 0 (impossible) to 1 (certain) that measures how likely something is. Over many repeats, it's the <b>long-run fraction</b> of times the thing happens.</p>
+
+  <p>An <span class="term">experiment</span> is anything with an uncertain result, like a toss or a roll. An <span class="term">outcome</span> is one possible result. An <span class="term">event</span> is a group of outcomes we care about, like "an even number." The <span class="term">sample space</span> is the list of <i>all</i> possible outcomes.</p>
+
+  <div class="grid3">
+    <div class="card"><h4>① Between 0 and 1</h4><p>P = 0 means impossible, P = 1 means certain. P(heads) = ½.</p></div>
+    <div class="card"><h4>② "Not": the complement</h4><p>P(not A) = 1 − P(A). If P(rain) = 0.3, then P(no rain) = 0.7.</p></div>
+    <div class="card"><h4>③ "Or": add, minus the overlap</h4><p>P(A or B) = P(A) + P(B) − P(A and B). Don't count the overlap twice!</p></div>
+    <div class="card"><h4>④ "And" for independent events: multiply</h4><p><span class="term">Independent</span> means one result doesn't change the chances of the other. Two heads in a row: ½ × ½ = ¼.</p></div>
+    <div class="card"><h4>⑤ "Given": conditional probability</h4><p>P(A | B) = the chance of A <i>once we know</i> B happened. We shrink our world down to just B.</p></div>
+  </div>
+
+  <div class="example"><div class="emo">🌦️</div><div><p>The chance of rain on a random July day in Mumbai is high. The chance of rain <i>given</i> that dark clouds are gathering is even higher. That's conditional probability. Two coin tosses are <b>independent</b>, but today's rain and tomorrow's rain are <b>not</b>, because weather comes in spells.</p></div></div>
+
+  <figure class="visual">
+    <svg viewBox="0 0 700 260" role="img" aria-label="Venn diagram: class of 40, 25 like cricket, 15 like football, 8 like both">
+      <rect x="10" y="10" width="440" height="240" rx="16" fill="#fff" stroke="#50567a" stroke-width="2"/>
+      <circle cx="180" cy="130" r="95" fill="#7c3aed" fill-opacity=".18" stroke="#7c3aed" stroke-width="3"/>
+      <circle cx="290" cy="130" r="80" fill="#be185d" fill-opacity=".16" stroke="#be185d" stroke-width="3"/>
+      <g font-family="system-ui,sans-serif" text-anchor="middle" fill="#1b1f3a">
+        <text x="150" y="40" font-weight="800" fill="#7c3aed" font-size="16">🏏 Cricket (25)</text>
+        <text x="320" y="40" font-weight="800" fill="#be185d" font-size="16">⚽ Football (15)</text>
+        <text x="135" y="138" font-size="26" font-weight="800">17</text><text x="240" y="138" font-size="26" font-weight="800">8</text><text x="325" y="138" font-size="26" font-weight="800">7</text>
+        <text x="240" y="160" font-size="12">both</text>
+        <text x="400" y="236" font-size="15">neither: 8</text><text x="70" y="236" font-size="15" fill="#50567a">Class of 40</text>
+        <g text-anchor="start" font-size="16"><text x="470" y="70" font-weight="800" fill="#7c3aed">P(cricket or football)</text>
+        <text x="470" y="100">= 25/40 + 15/40 − 8/40</text><text x="470" y="130">= 32/40 = 0.8</text>
+        <text x="470" y="175" font-weight="800" fill="#be185d">P(football | cricket)</text><text x="470" y="205">= 8/25 = 0.32</text>
+        <text x="470" y="232" font-size="13" fill="#50567a">(only look inside the cricket circle)</text></g></g>
+    </svg>
+    <figcaption>Subtract the overlap so the 8 students who like both aren't counted twice. "Given" means you zoom in on one circle.</figcaption>
+  </figure>
+
+  <div class="lab">
+    <p class="lab-title">Probability playground</p>
+    <div class="tabs" id="probTabs" role="tablist"><button class="sel" data-t="dice">🎲 Dice: long-run frequency</button><button data-t="bayes">🧪 Medical test: Bayes</button></div>
+    <div id="probDice">
+      <p class="hint">Roll two dice and add them. Bars = what happened. <span class="sw swr" style="background:#1b1f3a"></span>Dots = what theory predicts. With a few rolls it's messy; with 1,000 rolls watch the bars settle onto the dots.</p>
+      <canvas id="cvDice" aria-label="Bar chart of dice sums against theoretical probabilities"></canvas>
+      <div class="controls"><button class="btn primary" data-r="1">Roll 1</button><button class="btn" data-r="10">Roll 10</button><button class="btn" data-r="100">Roll 100</button><button class="btn" data-r="1000">Roll 1000</button><button class="btn" id="diceReset">↺ Reset</button></div>
+      <div class="out" id="diceOut">Press a button to roll.</div>
+    </div>
+    <div id="probBayes" class="hide">
+      <p class="hint">1,000 people take a test for a disease. Each square is one person. <span class="sw" style="background:#be185d"></span>sick &amp; test positive <span class="sw" style="background:#fff;border:2px solid #be185d"></span>sick but missed <span class="sw" style="background:#f59e0b"></span>healthy but test positive (false alarm) <span class="sw" style="background:#dfe2ec"></span>healthy &amp; negative</p>
+      <canvas id="cvBayes" aria-label="Grid of 1000 people coloured by disease and test result"></canvas>
+      <div class="controls">
+        <label>How common is the disease? <input type="range" id="bPrev" min="0.1" max="20" step="0.1" value="1"><output id="bPrevO">1%</output></label>
+        <label>Test catches the sick (sensitivity) <input type="range" id="bSens" min="50" max="100" step="1" value="90"><output id="bSensO">90%</output></label>
+        <label>False alarm rate <input type="range" id="bFpr" min="0" max="20" step="0.5" value="5"><output id="bFprO">5%</output></label></div>
+      <div class="out" id="bayesOut"></div>
+    </div>
+  </div>
+
+  <div class="mistake"><p class="mh">⚠️ Common mistakes: the gambler's fallacy, and flipping "given"</p>
+    <p><b>"Five tails in a row, so heads is due!"</b> No. A coin has no memory, and the next toss is still ½. Also, <b>P(A | B) is not P(B | A)</b>. P(test positive | sick) might be 90%, while P(sick | test positive) is only about 15%. Mixing these up has sent innocent people to prison (it's called the "prosecutor's fallacy").</p></div>
+
+  <div class="check"><p class="mh">✅ Quick check</p>
+    <div class="qc" data-a="2"><p class="q">1. The probability that India wins the toss is 0.5 in each match. What's the chance India wins the toss in <i>both</i> of the next two matches?</p>
+      <div class="opts"><button>1</button><button>0.5</button><button>0.25</button></div>
+      <p class="fb" data-ok="Yes. The tosses are independent, so multiply: 0.5 × 0.5 = 0.25." data-no="The two tosses are independent. For 'and', multiply the probabilities."></p></div>
+    <div class="qc" data-a="1"><p class="q">2. A disease affects 1 in 1,000 people. A test catches 99% of sick people and gives a false alarm to 1% of healthy people. You test positive. Roughly what's the chance you are sick?</p>
+      <div class="opts"><button>About 99%</button><button>About 9%</button><button>About 50%</button></div>
+      <p class="fb" data-ok="Surprising but true! Out of 100,000 people: 99 sick people test positive, and so do 999 healthy people (false alarms). 99 / (99 + 999) ≈ 9%." data-no="Picture 100,000 people: about 100 are sick (99 test positive), and 1% of the 99,900 healthy people (≈ 999) also test positive. What fraction of all the positives are really sick? Try it in the Bayes lab!"></p></div>
+  </div>
+
+  <details class="deeper"><summary>🔍 Go deeper: the rules as formulas, and Bayes' theorem</summary><div class="inner">
+    \[P(A\cup B)=P(A)+P(B)-P(A\cap B)\qquad P(A\cap B)=P(A)\,P(B)\ \text{(if independent)}\]
+    \[P(A\mid B)=\frac{P(A\cap B)}{P(B)}\qquad\qquad P(A\mid B)=\frac{P(B\mid A)\,P(A)}{P(B\mid A)\,P(A)+P(B\mid \text{not }A)\,P(\text{not }A)}\]
+    <div class="worked">Take the lab's default values: prevalence 1%, sensitivity 90%, false alarm rate 5%.<br>
+      \(P(\text{sick}\mid +) = \dfrac{0.90\times0.01}{0.90\times0.01 + 0.05\times0.99} = \dfrac{0.009}{0.009+0.0495} = \dfrac{0.009}{0.0585}\approx 0.154\).<br>
+      Counting people is easier: in 1,000 people, 9 are sick and test positive, and about 50 healthy people test positive, so \(9/59 \approx 15\%\).</div>
+    <p>The key lesson: when a condition is <b>rare</b> (it has a low <i>prior</i> probability), even a good test produces mostly false alarms. That's why doctors confirm a positive result with a second test.</p>
+  </div></details>
+
+  <div class="teacher"><p class="th">🧑‍🏫 Teacher notes</p><ul>
+    <li>Everyone flips a coin 10 times and reports how many heads. How many students got exactly 5? (Only about 1 in 4 should!)</li>
+    <li>Teaser: in a class of 30, what's the chance that two people share a birthday? Take guesses. (It's about 70%!)</li>
+    <li>In the Bayes lab, drag "How common" up to 20%. Why does a positive test suddenly become much more trustworthy?</li></ul></div>
+  <div class="sec-foot"><button class="btn done-btn">Mark section done ✓</button></div>
+</section>
+
+<!-- =============================== 9. DISTRIBUTIONS =============================== -->
+<section class="lesson fam3" id="s9" data-min="15" data-title="Distributions">
+  <div class="sec-head"><div class="num">9</div><div><p class="kicker">Probability</p><h2>Distributions</h2></div>
+    <div class="budget"><span class="plan">⏱ 15 min</span><span class="left" data-left></span></div></div>
+
+  <p class="bigidea">💡 <b>Big idea:</b> A <b>distribution</b> is the <i>shape</i> of all the possible outcomes and how often each one happens. A few famous shapes turn up again and again in nature and everyday life.</p>
+
+  <p>A <span class="term">random variable</span> is a number that comes out of a chance process, like the number of heads or a person's height. Its distribution tells us which values are likely and which are rare.</p>
+
+  <div class="grid2">
+    <div class="card"><h4>🎯 Binomial</h4><p>Counts the <b>number of successes</b> in a fixed number \(n\) of yes/no tries, where each try has the same chance \(p\). <i>Example: how many of 20 customers order a samosa with their chai?</i></p></div>
+    <div class="card"><h4>🔔 Normal (bell curve)</h4><p>Symmetric and bell-shaped: most values sit near the middle, and fewer and fewer appear further out. <i>Examples: heights, measurement errors, marks on a well-designed test.</i></p></div>
+  </div>
+
+  <div class="example"><div class="emo">📏</div><div><p><b>The 68–95–99.7 rule.</b> For a normal distribution, about <b>68%</b> of values lie within 1 SD of the mean, <b>95%</b> within 2 SD, and <b>99.7%</b> within 3 SD. Say the heights of students at a college have mean 165 cm and SD 8 cm. Then about 68% are between 157 and 173 cm, and almost nobody is above 189 cm.</p></div></div>
+
+  <h3>Not everything is a bell: skewed shapes</h3>
+  <div class="minis" id="visShapes"></div>
+
+  <div class="lab">
+    <p class="lab-title">Shape shifter</p>
+    <div class="tabs" id="distTabs" role="tablist"><button class="sel" data-t="normal">🔔 Normal</button><button data-t="binom">🎯 Binomial</button></div>
+    <div id="distNormal">
+      <p class="hint">Heights of students (cm). Change the mean and SD, and pick how many SDs to shade.</p>
+      <canvas id="cvNormal" aria-label="Normal curve with shaded region"></canvas>
+      <div class="controls">
+        <label>Mean μ <input type="range" id="nMu" min="140" max="190" value="165"><output id="nMuO">165</output></label>
+        <label>SD σ <input type="range" id="nSd" min="3" max="20" value="8"><output id="nSdO">8</output></label>
+        <span class="tabs" id="nK" style="margin:0"><button class="sel" data-t="1">±1 SD</button><button data-t="2">±2 SD</button><button data-t="3">±3 SD</button></span></div>
+      <div class="out" id="normalOut"></div>
+    </div>
+    <div id="distBinom" class="hide">
+      <p class="hint">Out of <b>n</b> customers, how many buy a samosa, if each one does with probability <b>p</b>? Push n up high and switch on the bell overlay: something magical happens.</p>
+      <canvas id="cvBinom" aria-label="Binomial probability bars"></canvas>
+      <div class="controls">
+        <label>n (customers) <input type="range" id="bn" min="1" max="60" value="20"><output id="bnO">20</output></label>
+        <label>p (chance each buys) <input type="range" id="bp" min="0.05" max="0.95" step="0.05" value="0.3"><output id="bpO">0.30</output></label>
+        <label><input type="checkbox" id="bOver"> Overlay the normal curve</label></div>
+      <div class="out" id="binomOut"></div>
+    </div>
+  </div>
+
+  <div class="mistake"><p class="mh">⚠️ Common mistake: assuming everything is normal.</p>
+    <p>Incomes, waiting times, daily rainfall and house prices are <b>skewed</b>, with long tails on one side. Using the 68–95–99.7 rule on them gives wrong answers. <b>Always look at a histogram first.</b></p></div>
+
+  <div class="check"><p class="mh">✅ Quick check</p>
+    <div class="qc" data-a="1"><p class="q">1. Heights have mean 165 cm and SD 8 cm and follow a bell curve. About what percentage of students are between 157 and 173 cm?</p>
+      <div class="opts"><button>50%</button><button>68%</button><button>95%</button></div>
+      <p class="fb" data-ok="Yes. 157 to 173 is within 1 SD either side of the mean, which covers about 68%." data-no="157 = 165 − 8 and 173 = 165 + 8. That's ±1 SD. What does the rule say for 1 SD?"></p></div>
+    <div class="qc" data-a="0"><p class="q">2. "Number of sixes when you roll a die 12 times" follows which distribution?</p>
+      <div class="opts"><button>Binomial</button><button>Normal</button><button>It has no distribution</button></div>
+      <p class="fb" data-ok="Correct: a fixed number of tries (12), each a yes/no (six or not), with the same chance (1/6) each time." data-no="Check: a fixed number of tries? A yes/no result each time? The same chance each time? Then it's…"></p></div>
+  </div>
+
+  <details class="deeper"><summary>🔍 Go deeper: the formulas behind the shapes</summary><div class="inner">
+    <p><b>Binomial:</b> \(\displaystyle P(X=k)=\binom{n}{k}p^k(1-p)^{n-k}\), with mean \(np\) and SD \(\sqrt{np(1-p)}\).</p>
+    <div class="worked">P(exactly 2 sixes in 5 rolls) \(= \binom{5}{2}\left(\tfrac16\right)^2\left(\tfrac56\right)^3 = 10\times\tfrac{1}{36}\times\tfrac{125}{216}=\tfrac{1250}{7776}\approx 0.161\).</div>
+    <p><b>Normal:</b> \(\displaystyle f(x)=\frac{1}{\sigma\sqrt{2\pi}}\,e^{-\frac{(x-\mu)^2}{2\sigma^2}}\). The mean \(\mu\) sets where the peak is, and \(\sigma\) sets how wide the curve is. The total area under the curve is always 1 (100%).</p>
+    <p><b>Binomial → Normal:</b> when \(np\) and \(n(1-p)\) are both at least about 10, the binomial bars look almost exactly like a bell with mean \(np\) and SD \(\sqrt{np(1-p)}\). You can see this with the overlay in the lab.</p>
+    <p>Other shapes you'll meet later: the <i>uniform</i> distribution (all outcomes equally likely, like a fair die), <i>Poisson</i> (counts of rare events per hour, like calls to a helpline) and <i>exponential</i> (waiting times).</p>
+  </div></details>
+
+  <div class="teacher"><p class="th">🧑‍🏫 Teacher notes</p><ul>
+    <li>Ask: "Which would look bell-shaped: marks on a very easy test, or heights of Class 11 boys?" (The easy test is left-skewed, because most people score high.)</li>
+    <li>If you have time, search for "Galton board" videos: balls bouncing off pins build a bell curve live.</li>
+    <li>In the binomial lab, set p = 0.05 and n = 10. Why is that shape lopsided?</li></ul></div>
+  <div class="sec-foot"><button class="btn done-btn">Mark section done ✓</button></div>
+</section>
+
+<!-- =============================== 10. CLT =============================== -->
+<section class="lesson fam4" id="s10" data-min="10" data-title="Sampling & the CLT">
+  <div class="sec-head"><div class="num">10</div><div><p class="kicker">Inference</p><h2>Sampling &amp; the Central Limit Theorem</h2></div>
+    <div class="budget"><span class="plan">⏱ 10 min</span><span class="left" data-left></span></div></div>
+
+  <p class="bigidea">💡 <b>Big idea:</b> Even if individual values are messy and lopsided, the <b>averages of samples</b> pile up into a neat bell curve, and that bell gets <b>narrower</b> as the samples get bigger.</p>
+
+  <p>Picture taking lots of samples and working out each one's average. The distribution of all those averages is called the <span class="term">sampling distribution</span>. Its SD has a special name, the <span class="term">standard error</span>: it tells you how much a sample average typically misses the truth by.</p>
+
+  <div class="example"><div class="emo">🏪</div><div><p>A shop's daily sales jump around wildly: quiet Tuesdays, then a huge wedding order. But the <i>average</i> of any 30 random days is remarkably steady. Individual days are unpredictable, but averages behave.</p></div></div>
+
+  <figure class="visual" id="visCLT"></figure>
+
+  <div class="lab">
+    <p class="lab-title">Central Limit Theorem machine</p>
+    <p class="hint">Top: the <b>population</b> (every train delay). Bottom: a histogram of <b>sample averages</b>. Pick a weird population, set the sample size <b>n</b>, and draw lots of samples. Try n = 1, then n = 30.</p>
+    <div class="tabs" id="cltPop" role="tablist"><button class="sel" data-t="skew">📉 Skewed (train delays)</button><button data-t="unif">▭ Flat</button><button data-t="bimodal">⛰️⛰️ Two humps</button></div>
+    <canvas id="cvCLT" aria-label="Population histogram and histogram of sample means"></canvas>
+    <div class="controls">
+      <label>Sample size n <input type="range" id="cltN" min="1" max="50" value="5"><output id="cltNO">5</output></label>
+      <button class="btn" data-k="1">Draw 1 sample</button><button class="btn primary" data-k="100">Draw 100</button><button class="btn" data-k="1000">Draw 1000</button><button class="btn" id="cltReset">↺ Reset</button>
+      <label><input type="checkbox" id="cltCurve" checked> Show the predicted bell</label></div>
+    <div class="out" id="cltOut"></div>
+  </div>
+
+  <div class="mistake"><p class="mh">⚠️ Common mistake: "The CLT makes my data normal."</p>
+    <p>No! The raw data stay just as skewed as they were. It's the <b>averages of samples</b> that become bell-shaped. And "big enough" matters: n ≈ 30 is a common rule of thumb, but very skewed data need more.</p></div>
+
+  <div class="check"><p class="mh">✅ Quick check</p>
+    <div class="qc" data-a="1"><p class="q">1. You increase the sample size from 25 to 100. The spread of the sample averages…</p>
+      <div class="opts"><button>Stays the same</button><button>Halves</button><button>Quarters</button></div>
+      <p class="fb" data-ok="Yes. The standard error is σ/√n, and √100 / √25 = 10/5 = 2, so the spread halves." data-no="The standard error is σ/√n. Compare √25 with √100."></p></div>
+    <div class="qc" data-a="2"><p class="q">2. The Central Limit Theorem is about the distribution of…</p>
+      <div class="opts"><button>The raw data</button><button>The population</button><button>Sample averages</button></div>
+      <p class="fb" data-ok="Correct: averages of samples." data-no="Look at the bottom panel of the lab. What's being plotted there?"></p></div>
+  </div>
+
+  <details class="deeper"><summary>🔍 Go deeper: the theorem, precisely</summary><div class="inner">
+    <p>If you take random samples of size \(n\) from <i>any</i> population with mean \(\mu\) and SD \(\sigma\), then for large enough \(n\):</p>
+    \[\bar{X}\ \approx\ \text{Normal}\!\left(\mu,\ \frac{\sigma}{\sqrt{n}}\right)\qquad \text{Standard error: } SE = \frac{\sigma}{\sqrt{n}}\]
+    <div class="worked">Train delays have \(\mu = 10\) min and \(\sigma = 10\) min, and are very skewed. For samples of \(n = 25\) days, the averages are roughly normal with mean 10 and \(SE = 10/\sqrt{25} = 2\) min. So about 95% of 25-day averages fall between 6 and 14 minutes.</div>
+    <p>This is why so much of statistics works: it lets us use bell-curve tools on averages even when the raw data aren't bell-shaped.</p>
+  </div></details>
+
+  <div class="teacher"><p class="th">🧑‍🏫 Teacher notes</p><ul>
+    <li>Ask: "How can an opinion poll of about 2,000 people say anything about a country of 140 crore?" (Point to SE = σ/√n: population size doesn't appear!)</li>
+    <li>Run the "two humps" population with n = 1, then n = 2, then n = 30. Ask the class to predict each shape before you click.</li></ul></div>
+  <div class="sec-foot"><button class="btn done-btn">Mark section done ✓</button></div>
+</section>
+
+<!-- =============================== 11. ESTIMATION =============================== -->
+<section class="lesson fam4" id="s11" data-min="5" data-title="Estimation">
+  <div class="sec-head"><div class="num">11</div><div><p class="kicker">Inference</p><h2>Estimation: confidence intervals</h2></div>
+    <div class="budget"><span class="plan">⏱ 5 min</span><span class="left" data-left></span></div></div>
+
+  <p class="bigidea">💡 <b>Big idea:</b> A single-number guess is almost certainly a little wrong, so we give a <b>range</b> instead: "the true value is probably between here and here," along with how confident we are.</p>
+
+  <p>A <span class="term">point estimate</span> is our single best guess, like a sample mean. The <span class="term">margin of error</span> is how far either side of it we stretch. Together they make a <span class="term">confidence interval</span>. The <span class="term">confidence level</span> (e.g. 95%) says how often this <i>method</i> catches the truth.</p>
+
+  <div class="example"><div class="emo">📱</div><div><p>A survey of 100 students finds an average screen time of <b>3.2 hours ± 0.3</b> a day (95% confidence), so somewhere between 2.9 and 3.5 hours. It's like fishing: a spear (one number) usually misses, but a net (an interval) usually catches the fish.</p></div></div>
+
+  <figure class="visual">
+    <svg viewBox="0 0 700 150" role="img" aria-label="Number line with point estimate 3.2 and interval from 2.9 to 3.5">
+      <line x1="40" y1="100" x2="660" y2="100" stroke="#50567a" stroke-width="2"/>
+      <g font-family="system-ui,sans-serif" font-size="14" fill="#50567a" text-anchor="middle">
+        <text x="100" y="124">2.6</text><text x="200" y="124">2.8</text><text x="300" y="124">3.0</text><text x="400" y="124">3.2</text><text x="500" y="124">3.4</text><text x="600" y="124">3.6</text><text x="620" y="145">hours per day</text></g>
+      <g stroke="#50567a" stroke-width="2"><line x1="100" y1="96" x2="100" y2="104"/><line x1="200" y1="96" x2="200" y2="104"/><line x1="300" y1="96" x2="300" y2="104"/><line x1="400" y1="96" x2="400" y2="104"/><line x1="500" y1="96" x2="500" y2="104"/><line x1="600" y1="96" x2="600" y2="104"/></g>
+      <line x1="250" y1="75" x2="550" y2="75" stroke="#c2410c" stroke-width="8" stroke-linecap="round"/>
+      <line x1="250" y1="60" x2="250" y2="90" stroke="#c2410c" stroke-width="4"/><line x1="550" y1="60" x2="550" y2="90" stroke="#c2410c" stroke-width="4"/>
+      <circle cx="400" cy="75" r="10" fill="#1b1f3a" stroke="#fff" stroke-width="3"/>
+      <g font-family="system-ui,sans-serif" text-anchor="middle" font-weight="800">
+        <text x="400" y="40" fill="#1b1f3a" font-size="15">point estimate 3.2</text>
+        <text x="250" y="40" fill="#c2410c" font-size="14">2.9</text><text x="550" y="40" fill="#c2410c" font-size="14">3.5</text>
+        <text x="475" y="22" fill="#c2410c" font-size="13">← margin of error ±0.3 →</text></g>
+    </svg>
+    <figcaption>95% confidence interval = estimate ± margin of error</figcaption>
+  </figure>
+
+  <div class="lab">
+    <p class="lab-title">Interval catcher</p>
+    <p class="hint">Only the computer knows the true average mark (<b>50</b>). Each line is one sample's confidence interval. <span style="color:#15803d;font-weight:800">Green</span> intervals caught the truth and <span style="color:#b91c1c;font-weight:800">red</span> ones missed it. Draw lots: what fraction catch it?</p>
+    <div class="tabs" id="ciLevel" role="tablist"><button data-t="1.645">90%</button><button class="sel" data-t="1.96">95%</button><button data-t="2.576">99%</button></div>
+    <canvas id="cvCI" aria-label="Stack of confidence intervals around the true mean of 50"></canvas>
+    <div class="controls">
+      <label>Sample size n <input type="range" id="ciN" min="5" max="200" value="25"><output id="ciNO">25</output></label>
+      <button class="btn" data-k="1">Draw 1</button><button class="btn primary" data-k="20">Draw 20</button><button class="btn" data-k="100">Draw 100</button><button class="btn" id="ciReset">↺ Reset</button></div>
+    <div class="out" id="ciOut"></div>
+  </div>
+
+  <div class="mistake"><p class="mh">⚠️ Common mistake: "95% of the data lie inside the interval."</p>
+    <p>No. A confidence interval is about the <b>average</b> (the parameter), not individual students. And strictly speaking, "95% confident" means that <i>95% of intervals made this way</i> catch the truth. It's a promise about the method, which is exactly what the lab shows.</p></div>
+
+  <div class="check"><p class="mh">✅ Quick check</p>
+    <div class="qc" data-a="0"><p class="q">1. How can you make the margin of error smaller, while keeping 95% confidence?</p>
+      <div class="opts"><button>Collect a bigger sample</button><button>Use a smaller sample</button><button>Round the numbers</button></div>
+      <p class="fb" data-ok="Yes. More data means a smaller standard error, so a tighter interval. Try the n slider!" data-no="Slide n up in the lab and watch what happens to the width of the intervals."></p></div>
+    <div class="qc" data-a="1"><p class="q">2. Switching from 95% to 99% confidence makes the interval…</p>
+      <div class="opts"><button>Narrower</button><button>Wider</button><button>No different</button></div>
+      <p class="fb" data-ok="Correct. To be more sure of catching the fish, you need a bigger net." data-no="Think about the fishing net: to be more sure of catching the fish, does your net get bigger or smaller?"></p></div>
+  </div>
+
+  <details class="deeper"><summary>🔍 Go deeper: confidence interval formulas</summary><div class="inner">
+    \[\text{Mean: }\ \bar{x} \pm z^{*}\frac{\sigma}{\sqrt{n}}\qquad\qquad \text{Proportion: }\ \hat{p} \pm z^{*}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\]
+    <p>\(z^{*} = 1.645\) (90%), \(1.96\) (95%), \(2.576\) (99%). When \(\sigma\) is unknown and \(n\) is small, you use the sample SD \(s\) and a slightly bigger \(t^{*}\) value from the <i>t-distribution</i>.</p>
+    <div class="worked">\(n = 100\) students, \(\bar{x} = 3.2\) h, \(s = 1.5\) h. \(SE = 1.5/\sqrt{100} = 0.15\). Margin of error \(= 1.96 \times 0.15 \approx 0.29\). The 95% CI is \(3.2 \pm 0.29\), which is about <b>(2.91, 3.49)</b> hours.</div>
+  </div></details>
+
+  <div class="teacher"><p class="th">🧑‍🏫 Teacher notes</p><ul>
+    <li>Ask: "Would you trust a weather app that says 'tomorrow will be 31 °C' or one that says '29–33 °C'? Which one is more honest?"</li>
+    <li>Draw 100 intervals at 95%. About 5 should be red. Ask: "Were those samples badly collected?" (No, they were just unlucky. That's what 95% means.)</li></ul></div>
+  <div class="sec-foot"><button class="btn done-btn">Mark section done ✓</button></div>
+</section>
+
+<!-- =============================== 12. HYPOTHESIS TESTING =============================== -->
+<section class="lesson fam4" id="s12" data-min="10" data-title="Hypothesis testing">
+  <div class="sec-head"><div class="num">12</div><div><p class="kicker">Inference</p><h2>Hypothesis testing</h2></div>
+    <div class="budget"><span class="plan">⏱ 10 min</span><span class="left" data-left></span></div></div>
+
+  <p class="bigidea">💡 <b>Big idea:</b> A hypothesis test asks, <i>"If nothing special were going on, how surprising would our data be?"</i> If the data would be very surprising, we start to doubt the "nothing special" story.</p>
+
+  <div class="grid2">
+    <div class="card"><h4>😴 Null hypothesis H₀</h4><p>The boring default: "no effect, no difference, just chance." <i>The coin is fair.</i></p></div>
+    <div class="card"><h4>🔥 Alternative hypothesis H₁</h4><p>What we suspect instead: "there <i>is</i> an effect." <i>The coin is biased.</i></p></div>
+    <div class="card"><h4>😲 p-value</h4><p>If H₀ were true, the chance of getting results <b>at least this extreme</b>. A small p-value means "wow, that would be surprising if H₀ were true."</p></div>
+    <div class="card"><h4>🚦 Significance level α</h4><p>Your surprise threshold, decided <i>before</i> you look (often 0.05). If p &lt; α, you reject H₀.</p></div>
+  </div>
+
+  <div class="example"><div class="emo">⚖️</div><div><p><b>It works like a court case.</b> The accused is presumed innocent (H₀). We convict (reject H₀) only if the evidence would be really unlikely for an innocent person. "Not guilty" doesn't mean "proven innocent." It just means there wasn't enough evidence.</p></div></div>
+
+  <figure class="visual" id="visSurprise"></figure>
+
+  <div class="tablewrap"><table class="simple errgrid">
+    <tr><th></th><th>H₀ is actually true (coin fair / innocent)</th><th>H₀ is actually false (coin biased / guilty)</th></tr>
+    <tr><th>We reject H₀</th><td class="bad">❌ Type I error<br><small>false alarm: convicting an innocent person</small></td><td class="ok">✅ Correct</td></tr>
+    <tr><th>We don't reject H₀</th><td class="ok">✅ Correct</td><td class="bad">❌ Type II error<br><small>missed detection: a guilty person walks free</small></td></tr>
+  </table></div>
+
+  <div class="lab">
+    <p class="lab-title">Is the toss coin fair?</p>
+    <p class="hint">A local tournament's toss coin seems to love heads. Set how many tosses were made and how many came up heads. The bars show what a <b>fair</b> coin would usually give. The <span style="color:#c2410c;font-weight:800">orange bars</span> are results at least as extreme as yours, and their total area is the p-value.</p>
+    <canvas id="cvTest" aria-label="Binomial distribution under a fair coin with tails shaded"></canvas>
+    <div class="controls">
+      <label>Tosses <input type="range" id="tN" min="10" max="100" value="20"><output id="tNO">20</output></label>
+      <label>Heads seen <input type="range" id="tH" min="0" max="20" value="16"><output id="tHO">16</output></label>
+      <span class="tabs" id="tAlpha" style="margin:0"><button data-t="0.10">α = 0.10</button><button class="sel" data-t="0.05">α = 0.05</button><button data-t="0.01">α = 0.01</button></span></div>
+    <div class="out" id="testOut"></div>
+  </div>
+
+  <h3>Tools for different questions</h3>
+  <div class="grid2">
+    <div class="card"><h4>📐 t-test: comparing averages</h4><p><b>One-sample:</b> is the average battery life really 10 hours as claimed?<br><b>Two-sample:</b> did Section A score higher than Section B?<br><b>Paired:</b> did the same students improve after coaching (before vs after)?</p></div>
+    <div class="card"><h4>🧮 Chi-square (χ²): comparing counts in categories</h4><p><b>Goodness of fit:</b> does a die land on each face equally often?<br><b>Independence:</b> is favourite sport related to which school you go to?</p></div>
+  </div>
+
+  <div class="mistake"><p class="mh">⚠️ Common mistake: "p = 0.03 means there's a 3% chance H₀ is true."</p>
+    <p>No. The p-value assumes H₀ is true and asks how surprising the data are. Also: "not significant" doesn't mean "no effect" (the sample might just be too small), and "significant" doesn't mean "important." A 0.1-mark improvement can be significant with a huge sample and still be useless.</p></div>
+
+  <div class="check"><p class="mh">✅ Quick check</p>
+    <div class="qc" data-a="0"><p class="q">1. A test gives p = 0.03, and you chose α = 0.05. What do you conclude?</p>
+      <div class="opts"><button>Reject H₀: the result is statistically significant</button><button>Accept that H₀ is definitely true</button><button>H₀ has a 3% chance of being true</button></div>
+      <p class="fb" data-ok="Yes. 0.03 is less than 0.05, so the data are surprising enough to doubt H₀." data-no="Compare p with α. Is 0.03 below the threshold of 0.05?"></p></div>
+    <div class="qc" data-a="0"><p class="q">2. A smoke alarm goes off when there's no fire. That's a…</p>
+      <div class="opts"><button>Type I error (false alarm)</button><button>Type II error (missed detection)</button></div>
+      <p class="fb" data-ok="Correct: you raised the alarm even though nothing was happening (H₀ was true)." data-no="There was no fire (H₀ true), but we 'rejected' it anyway. Look at the table."></p></div>
+  </div>
+
+  <details class="deeper"><summary>🔍 Go deeper: t and χ² formulas</summary><div class="inner">
+    \[t = \frac{\bar{x}-\mu_0}{s/\sqrt{n}}\qquad\qquad \chi^2=\sum\frac{(O-E)^2}{E}\]
+    <p>Both measure "how far the data are from what H₀ predicts, in units of typical noise." A bigger value means more surprise, which means a smaller p-value.</p>
+    <div class="worked">A die is rolled 60 times and gives counts 8, 9, 12, 11, 6, 14. If the die is fair, we'd expect \(E = 10\) of each.<br>
+      \(\chi^2 = \frac{4+1+4+1+16+16}{10} = 4.2\). With 5 degrees of freedom, the 5% cut-off is 11.07. Since \(4.2 &lt; 11.07\), we can't reject "fair." The wobble is normal chance.</div>
+    <div class="worked">The coin: 16 heads in 20 tosses. \(P(X \ge 16) = \frac{4845+1140+190+20+1}{2^{20}} \approx 0.0059\). Two-sided (counting heads <i>or</i> tails that lopsided): \(p \approx 0.012 &lt; 0.05\), so we reject "fair."</div>
+  </div></details>
+
+  <div class="teacher"><p class="th">🧑‍🏫 Teacher notes</p><ul>
+    <li>Tell the "lady tasting tea" story: a woman claimed she could tell whether milk or tea went into the cup first. How many cups would <i>she</i> need to get right to convince you?</li>
+    <li>In the lab, keep 80% heads but change the tosses from 10 to 100. Why does the same proportion become far more convincing?</li>
+    <li>Ask: "In a cancer screening, which error is worse, Type I or Type II? What about a spam filter?"</li></ul></div>
+  <div class="sec-foot"><button class="btn done-btn">Mark section done ✓</button></div>
+</section>
+
+<!-- =============================== 13. RELATIONSHIPS =============================== -->
+<section class="lesson fam5" id="s13" data-min="5" data-title="Relationships">
+  <div class="sec-head"><div class="num">13</div><div><p class="kicker">Relationships &amp; beyond</p><h2>Relationships: correlation &amp; regression</h2></div>
+    <div class="budget"><span class="plan">⏱ 5 min</span><span class="left" data-left></span></div></div>
+
+  <p class="bigidea">💡 <b>Big idea:</b> <b>Correlation</b> measures how strongly two things move together. <b>Regression</b> draws the best straight line through them so you can predict one from the other. <i>Neither one proves that one thing causes the other.</i></p>
+
+  <p>The <span class="term">correlation coefficient r</span> runs from −1 (a perfect downhill line) through 0 (no straight-line pattern) to +1 (a perfect uphill line). The <span class="term">regression line</span> \(y = a + bx\) has a <b>slope b</b>, which is how much y changes, on average, when x goes up by 1.</p>
+
+  <div class="example"><div class="emo">🍦</div><div><p>Ice-cream sales and drowning accidents rise and fall together. Does ice cream cause drowning? No! Hot weather drives both. A hidden factor like this is called a <span class="term">confounder</span>.</p></div></div>
+
+  <div class="minis" id="visScatters"></div>
+
+  <div class="lab">
+    <p class="lab-title">Build your own scatter plot</p>
+    <p class="hint"><b>Tap an empty spot</b> to add a student (hours studied → marks). <b>Tap a dot</b> to remove it. Watch r and the best-fit line update. Then add one outlier and see how much damage it does!</p>
+    <canvas id="cvReg" class="clicky" aria-label="Scatter plot; click to add points"></canvas>
+    <div class="controls"><button class="btn" data-p="pos">📈 Strong positive</button><button class="btn" data-p="none">☁️ No relation</button><button class="btn" data-p="neg">📉 Negative</button><button class="btn" data-p="out">💥 Add an outlier</button><button class="btn" data-p="clear">🧹 Clear</button>
+      <label><input type="checkbox" id="regRes"> Show residuals (prediction errors)</label></div>
+    <div class="out" id="regOut"></div>
+  </div>
+
+  <div class="mistake"><p class="mh">⚠️ Common mistake: "Correlated, so one causes the other."</p>
+    <p>Correlation ≠ causation. Look for a confounder, or check whether the cause could run the other way. Also, <b>r only measures straight-line patterns</b>: a perfect U-shape can have r ≈ 0. And don't <b>extrapolate</b>: the line may not hold far outside your data (studying 30 hours a day won't get you 250 marks!).</p></div>
+
+  <div class="check"><p class="mh">✅ Quick check</p>
+    <div class="qc" data-a="2"><p class="q">1. r = −0.85 between hours of TV per day and marks means…</p>
+      <div class="opts"><button>No relationship</button><button>A weak positive relationship</button><button>A strong negative relationship: more TV tends to go with lower marks</button></div>
+      <p class="fb" data-ok="Yes. It's close to −1, so a strong downhill pattern. But it's still not proof that TV causes lower marks!" data-no="The sign gives the direction (− means downhill), and the size tells you how strong it is (0.85 is close to 1)."></p></div>
+    <div class="qc" data-a="1"><p class="q">2. Cities with more hospitals have more deaths each year. Do hospitals cause deaths?</p>
+      <div class="opts"><button>Yes, the data prove it</button><button>No: bigger cities have both more hospitals and more deaths (population is a confounder)</button></div>
+      <p class="fb" data-ok="Exactly. City size drives both numbers." data-no="Think about what makes a city have more of both hospitals and deaths."></p></div>
+  </div>
+
+  <details class="deeper"><summary>🔍 Go deeper: least squares and r</summary><div class="inner">
+    \[r=\frac{\sum (x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum (x_i-\bar{x})^2\,\sum (y_i-\bar{y})^2}}\qquad b = r\,\frac{s_y}{s_x}\qquad a=\bar{y}-b\,\bar{x}\]
+    <p>The regression line is the one that makes the sum of <b>squared residuals</b> (the vertical prediction errors) as small as possible. That's why it's called "least squares." \(R^2 = r^2\) is the fraction of the variation in y that the line explains.</p>
+    <div class="worked">x = 1, 2, 3, 4, 5 and y = 2, 4, 5, 4, 5. Here \(\bar{x}=3,\ \bar{y}=4\), \(\sum(x-\bar x)(y-\bar y) = 6\), \(\sum(x-\bar x)^2=10\) and \(\sum(y-\bar y)^2=6\).<br>
+      \(b = 6/10 = 0.6\), \(a = 4 - 0.6\times3 = 2.2\), so \(\hat{y} = 2.2 + 0.6x\). Then \(r = 6/\sqrt{60}\approx 0.77\) and \(R^2 \approx 0.6\).</div>
+  </div></details>
+
+  <div class="teacher"><p class="th">🧑‍🏫 Teacher notes</p><ul>
+    <li>Game: each group invents a silly correlation ("kids with bigger shoe sizes read better") and the others find the confounder (age!).</li>
+    <li>In the lab, make a U-shape of dots. What's r? Is there really "no relationship"?</li></ul></div>
+  <div class="sec-foot"><button class="btn done-btn">Mark section done ✓</button></div>
+</section>
+
+<!-- =============================== 14. MAP =============================== -->
+<section class="lesson fam5" id="s14" data-min="5" data-title="What comes next">
+  <div class="sec-head"><div class="num">14</div><div><p class="kicker">Relationships &amp; beyond</p><h2>The map of what comes next</h2></div>
+    <div class="budget"><span class="plan">⏱ 5 min</span><span class="left" data-left></span></div></div>
+
+  <p class="bigidea">💡 <b>Big idea:</b> Everything you learned today is the foundation. The rest of statistics takes these same ideas and scales them up: to more groups, more variables, fewer assumptions, or a different way of thinking about uncertainty.</p>
+
+  <div class="example"><div class="emo">🗺️</div><div><p>You now know the alphabet. Tap any destination on the map to see what it's for and which of today's ideas it grows from.</p></div></div>
+
+  <div class="lab">
+    <p class="lab-title">Explore the map</p>
+    <div id="mapWrap"></div>
+    <div class="out" id="mapInfo" aria-live="polite">👆 Tap a box to learn what it's for.</div>
+  </div>
+
+  <ul class="nextlist">
+    <li><b>ANOVA:</b> compares the averages of <i>3 or more</i> groups at once (e.g. results from four coaching centres). It's the t-test's big brother.</li>
+    <li><b>Multiple regression:</b> predicts one outcome from many inputs (a flat's price from its area, location and age).</li>
+    <li><b>Logistic regression:</b> predicts yes/no outcomes (will this customer repay their loan?).</li>
+    <li><b>Non-parametric tests</b> (Mann–Whitney, Wilcoxon, Kruskal–Wallis): tests based on ranks, for small or skewed data where bell-curve assumptions fail.</li>
+    <li><b>Bayesian statistics:</b> start with a prior belief and update it with data to get a posterior. It's Section 8's Bayes rule, used all the way through.</li>
+    <li><b>Time series:</b> data collected over time, used for forecasting monsoon rainfall, sales and electricity demand.</li>
+    <li><b>Experimental design / A/B testing:</b> planning experiments so their conclusions can be trusted (every app you use runs these).</li>
+    <li><b>Machine learning:</b> statistics plus computing at scale. Models learn patterns from a sample of data and must work well on new data.</li>
+  </ul>
+
+  <div class="mistake"><p class="mh">⚠️ Common mistake: "Machine learning has replaced statistics."</p>
+    <p>ML is <i>built on</i> these ideas: sampling, distributions, regression, error measurement. A biased training sample (Section 3) gives a biased AI, however clever the algorithm is.</p></div>
+
+  <div class="check"><p class="mh">✅ Quick check</p>
+    <div class="qc" data-a="1"><p class="q">1. You want to compare the average rice yield across <i>five</i> different fertilisers. Which tool fits?</p>
+      <div class="opts"><button>A two-sample t-test</button><button>ANOVA</button><button>Correlation</button></div>
+      <p class="fb" data-ok="Yes: ANOVA compares averages across 3 or more groups." data-no="A t-test compares 2 groups. For 3 or more groups you need…"></p></div>
+  </div>
+
+  <details class="deeper"><summary>🔍 Go deeper: a statistics ↔ machine learning dictionary</summary><div class="inner">
+    <div class="tablewrap"><table class="simple"><tr><th>Statistics says</th><th>Machine learning says</th></tr>
+      <tr><td>Explanatory variable</td><td>Feature</td></tr><tr><td>Response variable</td><td>Label / target</td></tr>
+      <tr><td>Estimating a model's parameters</td><td>Training</td></tr><tr><td>Sum of squared residuals</td><td>Loss function</td></tr>
+      <tr><td>Fitting noise instead of the pattern</td><td>Overfitting</td></tr><tr><td>Sample</td><td>Training set (and we hold back a test set)</td></tr></table></div>
+    \[\text{MSE}=\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2\qquad\qquad \underbrace{P(\theta\mid\text{data})}_{\text{posterior}}\ \propto\ \underbrace{P(\text{data}\mid\theta)}_{\text{likelihood}}\ \times\ \underbrace{P(\theta)}_{\text{prior}}\]
+    <div class="worked">A model predicts marks 60, 72, 80 for three students who actually scored 65, 70, 80. The errors are −5, +2 and 0, so \(\text{MSE} = (25+4+0)/3 \approx 9.67\). That's the same "average squared distance" idea as variance in Section 6!</div>
+  </div></details>
+
+  <div class="teacher"><p class="th">🧑‍🏫 Teacher notes</p><ul>
+    <li>Exit ticket: each student writes <b>one idea that surprised them</b> and <b>one question they still have</b>.</li>
+    <li>Ask: "Where could a biased sample make an AI system unfair?" (face recognition, loan approvals, hiring)</li></ul></div>
+  <div class="sec-foot"><button class="btn done-btn">Mark section done ✓</button></div>
+</section>
+
+<!-- =============================== CHEAT SHEET =============================== -->
+<section class="lesson fam0" id="cheatsheet" data-title="Cheat sheet">
+  <div class="sec-head"><div class="num">📋</div><div><p class="kicker">Keep this</p><h2>One-page cheat sheet: what to use, and when</h2></div>
+    <div class="budget no-print"><button class="btn primary fam0" id="printCheat">🖨️ Print cheat sheet</button></div></div>
+
+  <div class="flowgrid">
+    <div class="flow fam2"><h3>📊 Which graph?</h3><span class="ask">What do you want to show?</span>
+      <div class="branch"><span>Compare categories</span><span class="then">Bar chart</span></div>
+      <div class="branch"><span>Parts of a whole (≤ 5 slices)</span><span class="then">Pie chart</span></div>
+      <div class="branch"><span>Shape of one numerical variable</span><span class="then">Histogram</span></div>
+      <div class="branch"><span>Compare spreads / spot outliers</span><span class="then">Box plot</span></div>
+      <div class="branch"><span>Two numerical variables together</span><span class="then">Scatter plot</span></div>
+      <div class="branch"><span>Change over time</span><span class="then">Line chart</span></div></div>
+
+    <div class="flow fam2"><h3>🎯 Which centre &amp; spread?</h3><span class="ask">What kind of data is it?</span>
+      <div class="branch"><span>Categories (labels)</span><span class="then">Mode + % in each group</span></div>
+      <div class="branch"><span>Numbers, roughly symmetric, no outliers</span><span class="then">Mean ± SD</span></div>
+      <div class="branch"><span>Numbers that are skewed or have outliers</span><span class="then">Median + IQR</span></div>
+      <div class="branch"><span>Comparing one value with the group</span><span class="then">z-score / percentile</span></div></div>
+
+    <div class="flow fam3"><h3>🎲 Which probability tool?</h3><span class="ask">What's the situation?</span>
+      <div class="branch"><span>"Not A"</span><span class="then">1 − P(A)</span></div>
+      <div class="branch"><span>"A or B"</span><span class="then">add, subtract overlap</span></div>
+      <div class="branch"><span>"A and B", independent</span><span class="then">multiply</span></div>
+      <div class="branch"><span>"Given that…" / updating after evidence</span><span class="then">Conditional / Bayes</span></div>
+      <div class="branch"><span>Count of successes in n yes/no tries</span><span class="then">Binomial</span></div>
+      <div class="branch"><span>Continuous and bell-shaped</span><span class="then">Normal (68–95–99.7)</span></div></div>
+
+    <div class="flow fam4"><h3>🧪 Which test or estimate?</h3><span class="ask">What's your question?</span>
+      <div class="branch"><span>Estimate a value with a range</span><span class="then">Confidence interval</span></div>
+      <div class="branch"><span>One average vs a claimed value</span><span class="then">One-sample t-test</span></div>
+      <div class="branch"><span>Averages of 2 groups</span><span class="then">Two-sample t-test</span></div>
+      <div class="branch"><span>Same people, before vs after</span><span class="then">Paired t-test</span></div>
+      <div class="branch"><span>Averages of 3+ groups</span><span class="then">ANOVA</span></div>
+      <div class="branch"><span>Category counts vs expected / two categorical variables</span><span class="then">Chi-square</span></div>
+      <div class="branch"><span>Small, skewed or ranked data</span><span class="then">Non-parametric</span></div></div>
+
+    <div class="flow fam5"><h3>🔗 Relationships</h3><span class="ask">Two variables?</span>
+      <div class="branch"><span>How strongly do they move together (in a straight line)?</span><span class="then">Correlation r</span></div>
+      <div class="branch"><span>Predict one from the other</span><span class="then">Linear regression</span></div>
+      <div class="branch"><span>Predict from many inputs</span><span class="then">Multiple regression</span></div>
+      <div class="branch"><span>Predict a yes/no outcome</span><span class="then">Logistic regression</span></div>
+      <div class="branch"><span>Want to prove cause and effect?</span><span class="then">Randomised experiment</span></div></div>
+
+    <div class="flow fam1"><h3>📋 Collecting data</h3><span class="ask">How will you get data?</span>
+      <div class="branch"><span>Everyone has an equal chance</span><span class="then">Simple random</span></div>
+      <div class="branch"><span>Groups differ, so be fair to each</span><span class="then">Stratified</span></div>
+      <div class="branch"><span>Only watching or asking</span><span class="then">Shows association only</span></div>
+      <div class="branch"><span>Randomly assigning treatment</span><span class="then">Can show causation</span></div></div>
+  </div>
+
+  <h3>⭐ Golden rules</h3>
+  <ul class="rules">
+    <li>Look at a graph <b>before</b> you calculate anything.</li>
+    <li>A biased sample can't be rescued by making it bigger.</li>
+    <li>Always report a spread alongside a centre.</li>
+    <li>Percentile ≠ percentage.</li>
+    <li>P(A | B) ≠ P(B | A). Rare conditions mean lots of false alarms.</li>
+    <li>Averages of samples are bell-shaped (CLT). Raw data may not be.</li>
+    <li>Error shrinks with √n: 4× the data gives half the error.</li>
+    <li>A p-value is <i>not</i> the probability that H₀ is true.</li>
+    <li>"Not significant" ≠ "no effect." "Significant" ≠ "important."</li>
+    <li>Correlation ≠ causation. Hunt for the confounder.</li>
+  </ul>
+</section>
+
+<!-- =============================== FINAL QUIZ =============================== -->
+<section class="lesson fam0 quiz" id="quiz" data-title="Final quiz">
+  <div class="sec-head"><div class="num">🏆</div><div><p class="kicker">Test yourself</p><h2>Final quiz: 10 questions</h2></div></div>
+  <p>One question from each part of the course. Tap an answer to see instantly whether it's right.</p>
+
+  <div class="qc" data-a="0"><p class="q"><span class="qn">1</span>You survey 50 of the 1,200 students in a school. The 1,200 students are the…</p>
+    <div class="opts"><button>Population</button><button>Sample</button><button>Variable</button></div>
+    <p class="fb" data-ok="Correct: the whole group we care about." data-no="The 50 are the sample. The whole group is the population. (Section 2)"></p></div>
+
+  <div class="qc" data-a="1"><p class="q"><span class="qn">2</span>"Number of goals scored in a match" is…</p>
+    <div class="opts"><button>Categorical</button><button>Numerical, discrete</button><button>Numerical, continuous</button></div>
+    <p class="fb" data-ok="Yes. You count goals in whole numbers." data-no="You can't score 2.7 goals. Counted values are discrete. (Section 2)"></p></div>
+
+  <div class="qc" data-a="2"><p class="q"><span class="qn">3</span>Asking only your own friends which phone brand is most popular is an example of…</p>
+    <div class="opts"><button>Stratified sampling</button><button>Random sampling</button><button>Convenience sampling (likely biased)</button></div>
+    <p class="fb" data-ok="Right. Easy to do, but your friends aren't representative of everyone." data-no="Did everyone have an equal chance of being asked? (Section 3)"></p></div>
+
+  <div class="qc" data-a="1"><p class="q"><span class="qn">4</span>Monthly salaries at a company with one extremely highly paid CEO. The best "typical salary" is the…</p>
+    <div class="opts"><button>Mean</button><button>Median</button><button>Range</button></div>
+    <p class="fb" data-ok="Yes. The median resists the CEO's huge salary." data-no="One huge value drags the mean up. Which measure doesn't care how far away it is? (Section 5)"></p></div>
+
+  <div class="qc" data-a="0"><p class="q"><span class="qn">5</span>Which measure of spread uses only the two most extreme values?</p>
+    <div class="opts"><button>Range</button><button>IQR</button><button>Standard deviation</button></div>
+    <p class="fb" data-ok="Correct: maximum − minimum." data-no="Maximum minus minimum is the… (Section 6)"></p></div>
+
+  <div class="qc" data-a="2"><p class="q"><span class="qn">6</span>Your z-score in an exam is +2. This means you scored…</p>
+    <div class="opts"><button>2 marks above average</button><button>In the top 2%</button><button>2 standard deviations above the average</button></div>
+    <p class="fb" data-ok="Yes. And on a bell curve that's roughly the top 2.5%." data-no="A z-score counts standard deviations from the mean. (Section 7)"></p></div>
+
+  <div class="qc" data-a="1"><p class="q"><span class="qn">7</span>For a normal distribution, about what percentage of values lie within 2 SDs of the mean?</p>
+    <div class="opts"><button>68%</button><button>95%</button><button>99.7%</button></div>
+    <p class="fb" data-ok="Correct: 68–95–99.7." data-no="Remember 68–95–99.7 for 1, 2 and 3 SDs. (Section 9)"></p></div>
+
+  <div class="qc" data-a="0"><p class="q"><span class="qn">8</span>As the sample size grows, the distribution of sample averages becomes…</p>
+    <div class="opts"><button>More bell-shaped and narrower</button><button>More skewed</button><button>Wider</button></div>
+    <p class="fb" data-ok="Yes. That's the Central Limit Theorem, with SE = σ/√n." data-no="Remember the CLT machine: bigger n gave a tighter bell. (Section 10)"></p></div>
+
+  <div class="qc" data-a="2"><p class="q"><span class="qn">9</span>A test gives p = 0.20, and α = 0.05. What's the right conclusion?</p>
+    <div class="opts"><button>H₀ is proven true</button><button>Reject H₀</button><button>Not enough evidence to reject H₀</button></div>
+    <p class="fb" data-ok="Correct. 'Not guilty' isn't 'proven innocent.' We just didn't find enough evidence." data-no="p is bigger than α, so the data aren't surprising enough. But that never proves H₀. (Section 12)"></p></div>
+
+  <div class="qc" data-a="1"><p class="q"><span class="qn">10</span>Towns with more police officers have more crime. The best conclusion is…</p>
+    <div class="opts"><button>Police cause crime</button><button>They're correlated, probably because of a confounder like town size, so no causal conclusion</button><button>There's no relationship</button></div>
+    <p class="fb" data-ok="Exactly. Bigger towns have more of both." data-no="Correlation ≠ causation. What could drive both numbers up? (Section 13)"></p></div>
+
+  <div class="scorebox"><span class="big" id="quizScore">0 / 10</span><span id="quizMsg">Answer all 10 to get your score.</span><button class="btn" id="quizReset">↺ Try again</button></div>
+</section>
+
+<footer class="site">Statistics in 2 Hours · built for curious minds · formulas rendered by MathJax (needs internet), and everything else works offline.</footer>
+</main>
+<script>
+(function(){
+'use strict';
+/* ================= helpers ================= */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const C={c1:'#1d4ed8',c2:'#047857',c3:'#7c3aed',c4:'#c2410c',c5:'#be185d',ink:'#1b1f3a',muted:'#50567a',grid:'#ebe8df',light:'#cfd3e3',good:'#15803d',bad:'#b91c1c',gold:'#d97706',amber:'#f59e0b'};
+const FONT='system-ui,-apple-system,"Segoe UI",Roboto,sans-serif';
+const store={get(k,d){try{const v=localStorage.getItem('s2h_'+k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem('s2h_'+k,JSON.stringify(v));}catch(e){}}};
+function randn(){let u=0,v=0;while(u===0)u=Math.random();while(v===0)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const mean=a=>a.reduce((s,x)=>s+x,0)/a.length;
+function sdev(a,sample=true){if(a.length<2)return 0;const m=mean(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-(sample?1:0)));}
+function quant(a,p){const s=[...a].sort((x,y)=>x-y);const i=(s.length-1)*p;const lo=Math.floor(i),hi=Math.ceil(i);return s[lo]+(s[hi]-s[lo])*(i-lo);}
+const median=a=>quant(a,.5);
+function erf(x){const s=Math.sign(x);x=Math.abs(x);const t=1/(1+0.3275911*x);const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);return s*y;}
+const Phi=z=>0.5*(1+erf(z/Math.SQRT2));
+const npdf=(x,m,s)=>Math.exp(-0.5*((x-m)/s)**2)/(s*Math.sqrt(2*Math.PI));
+function binom(n,p){const out=new Array(n+1);let lp=n*Math.log(1-p);const r=Math.log(p)-Math.log(1-p);for(let k=0;k<=n;k++){out[k]=Math.exp(lp);if(k<n)lp+=Math.log(n-k)-Math.log(k+1)+r;}return out;}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const ord=n=>{const s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);};
+
+function prep(cv,hf){const w=Math.max(260,Math.round(cv.clientWidth||cv.parentNode.clientWidth||600));const h=Math.round(typeof hf==='function'?hf(w):hf);const d=window.devicePixelRatio||1;cv.width=Math.round(w*d);cv.height=Math.round(h*d);cv.style.height=h+'px';const ctx=cv.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w,h);ctx.lineCap='round';ctx.lineJoin='round';return{ctx,w,h};}
+function T(ctx,s,x,y,o={}){ctx.save();ctx.font=(o.b?'700 ':'')+(o.s||15)+'px '+FONT;ctx.fillStyle=o.c||C.ink;ctx.textAlign=o.a||'left';ctx.textBaseline=o.bl||'alphabetic';if(o.bg){const m=ctx.measureText(s);const pad=3;let x0=o.a==='center'?x-m.width/2:o.a==='right'?x-m.width:x;ctx.fillStyle='rgba(255,255,255,.85)';ctx.fillRect(x0-pad,y-(o.s||15),m.width+pad*2,(o.s||15)+5);ctx.fillStyle=o.c||C.ink;}ctx.fillText(s,x,y);ctx.restore();}
+function L(ctx,x1,y1,x2,y2,c,w,dash){ctx.save();ctx.strokeStyle=c;ctx.lineWidth=w||1;if(dash)ctx.setLineDash(dash);ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();}
+function D(ctx,x,y,r,fill,stroke,sw){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.lineWidth=sw||2;ctx.strokeStyle=stroke;ctx.stroke();}}
+function xAxis(ctx,X,y,v0,v1,step,fmt,col){L(ctx,X(v0),y,X(v1),y,col||C.muted,1.5);const n=Math.round((v1-v0)/step);for(let i=0;i<=n;i++){const v=v0+i*step;L(ctx,X(v),y,X(v),y+6,col||C.muted,1.5);T(ctx,fmt?fmt(v):String(+v.toFixed(2)),X(v),y+21,{a:'center',s:13,c:col||C.muted});}}
+function yGrid(ctx,Y,x0,x1,v0,v1,step,fmt){const n=Math.round((v1-v0)/step);for(let i=0;i<=n;i++){const v=v0+i*step;L(ctx,x0,Y(v),x1,Y(v),C.grid,1);T(ctx,fmt?fmt(v):String(+v.toFixed(2)),x0-6,Y(v)+4,{a:'right',s:12,c:C.muted});}}
+function curve(ctx,f,x0,x1,X,Y,steps){ctx.beginPath();for(let i=0;i<=steps;i++){const x=x0+(x1-x0)*i/steps;const px=X(x),py=Y(f(x));i?ctx.lineTo(px,py):ctx.moveTo(px,py);}}
+function evPos(cv,e){const r=cv.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
+
+const redraws=[];function reg(f){redraws.push(f);f();}
+let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>redraws.forEach(f=>{try{f();}catch(e){}}),150);});
+function tabs(el,cb){const bs=$$('button',el);bs.forEach(b=>{b.setAttribute('role','tab');b.setAttribute('aria-selected',b.classList.contains('sel'));b.addEventListener('click',()=>{bs.forEach(x=>{x.classList.toggle('sel',x===b);x.setAttribute('aria-selected',x===b);});cb(b.dataset.t,b);});});}
+function slider(id,fmt,cb){const s=$('#'+id),o=$('#'+id+'O');const up=()=>{if(o)o.textContent=fmt?fmt(+s.value):s.value;cb&&cb(+s.value);};s.addEventListener('input',up);if(o)o.textContent=fmt?fmt(+s.value):s.value;return s;}
+
+/* ================= SVG builders for static visuals ================= */
+const svgNS=(w,h,inner,label)=>`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${label||''}" font-family="${FONT.replace(/"/g,'')}">${inner}</svg>`;
+function pathOf(f,x0,x1,X,Y,n){let d='';for(let i=0;i<=n;i++){const x=x0+(x1-x0)*i/n;d+=(i?'L':'M')+X(x).toFixed(1)+','+Y(f(x)).toFixed(1);}return d;}
+
+// Section 2: population and sample
+(function(){const el=$('#visPop');if(!el)return;const rng=mulberry(3);let dots='',sd='';
+  for(let i=0;i<160;i++){const a=rng()*Math.PI*2,r=Math.sqrt(rng())*105;const x=175+Math.cos(a)*r,y=165+Math.sin(a)*r;const pick=i%9===0;dots+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="${pick?C.gold:C.c1}" ${pick?'stroke="#1b1f3a" stroke-width="1.5"':''} opacity="${pick?1:.55}"/>`;if(pick){const a2=rng()*Math.PI*2,r2=Math.sqrt(rng())*38;sd+=`<circle cx="${(590+Math.cos(a2)*r2).toFixed(1)}" cy="${(165+Math.sin(a2)*r2).toFixed(1)}" r="6" fill="${C.gold}" stroke="#1b1f3a" stroke-width="1.5"/>`;}}
+  el.innerHTML=svgNS(700,325,`<defs><marker id="arP" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="${C.muted}"/></marker><marker id="arP2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="${C.c4}"/></marker></defs>
+  <circle cx="175" cy="165" r="118" fill="#e7eeff" stroke="${C.c1}" stroke-width="3"/>${dots}
+  <circle cx="590" cy="165" r="55" fill="#fff7e6" stroke="${C.gold}" stroke-width="3"/>${sd}
+  <path d="M305,140 C380,118 450,118 525,140" fill="none" stroke="${C.muted}" stroke-width="3" marker-end="url(#arP)"/>
+  <path d="M525,195 C450,217 380,217 305,195" fill="none" stroke="${C.c4}" stroke-width="3" stroke-dasharray="7 6" marker-end="url(#arP2)"/>
+  <g text-anchor="middle" font-size="15" fill="${C.ink}"><text x="410" y="112" font-weight="800">pick a sample</text><text x="375" y="240" font-weight="800" fill="${C.c4}">estimate the population</text>
+  <text x="175" y="314" font-weight="800" font-size="14" fill="${C.c1}">POPULATION: all Class 10 students in AP</text><text x="590" y="80" font-weight="800" font-size="15" fill="#b45309">SAMPLE</text><text x="590" y="99" font-weight="700" font-size="13" fill="#b45309">the ones we measure</text>
+  <text x="175" y="26" font-size="13" fill="${C.muted}">true average height = μ (parameter, unknown)</text><text x="590" y="250" font-size="13" fill="${C.muted}">sample average = x̄</text><text x="590" y="267" font-size="13" fill="${C.muted}">(statistic)</text></g>`,'Population of dots with a few picked into a sample, used to estimate the population');})();
+
+// Section 3: sampling methods
+(function(){const el=$('#visSampMethods');if(!el)return;const N=8;const cell=22,off=14;
+  const strataCol=['#e7eeff','#e0f5ec','#f0e8ff','#fde5ef'];
+  function panel(sel,opts={}){let s='';if(opts.quads){[[0,0],[1,0],[0,1],[1,1]].forEach(([a,b],k)=>{s+=`<rect x="${off-9+a*cell*4}" y="${off-9+b*cell*4}" width="${cell*4-4}" height="${cell*4-4}" rx="8" fill="${opts.quadFill&&k===opts.quadPick?'#fff3d6':'none'}" stroke="${C.muted}" stroke-width="1.5" stroke-dasharray="4 3"/>`;});}
+    if(opts.strata){for(let r=0;r<4;r++)s+=`<rect x="${off-10}" y="${off-10+r*cell*2}" width="${cell*N}" height="${cell*2-2}" rx="6" fill="${strataCol[r]}"/>`;}
+    if(opts.gate)s+=`<text x="4" y="12" font-size="12" font-weight="800" fill="${C.bad}">🚪 gate</text>`;
+    for(let r=0;r<N;r++)for(let c=0;c<N;c++){const i=r*N+c;const x=off+c*cell,y=off+6+r*cell;const on=sel.has(i);s+=`<circle cx="${x}" cy="${y}" r="${on?7:5}" fill="${on?C.gold:'#9aa3c7'}" ${on?'stroke="#1b1f3a" stroke-width="1.8"':''}/>`;}
+    return svgNS(off*2+cell*(N-1),off*2+cell*(N-1)+8,s,'');}
+  const rng=mulberry(11);const pickN=(pool,k)=>{const a=[...pool];for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a.slice(0,k);};
+  const all=[...Array(64).keys()];
+  const sr=new Set(pickN(all,10));
+  const st=new Set([0,1,2,3].flatMap(k=>pickN(all.filter(i=>Math.floor(i/16)===k),3)));
+  const cl=new Set(all.filter(i=>{const r=Math.floor(i/8),c=i%8;return r>=4&&c<4;}));
+  const sy=new Set(all.filter(i=>i%6===2));
+  const cv=new Set(all.filter(i=>{const r=Math.floor(i/8),c=i%8;return r+c<=3;}));
+  const items=[[sr,{},'<b>Simple random</b>: everyone has an equal chance, like drawing roll numbers from a box.'],
+    [st,{strata:1},'<b>Stratified</b>: split into groups (e.g. schools), then pick randomly from <i>each</i> one.'],
+    [cl,{quads:1,quadFill:1,quadPick:2},'<b>Cluster</b>: pick a few whole groups (e.g. 1 classroom) and ask everyone in them.'],
+    [sy,{},'<b>Systematic</b>: every 6th name on the register. Fine unless the list has a pattern.'],
+    [cv,{gate:1},'<b>Convenience</b> ⚠️: whoever is easiest to reach. Fast, but usually biased.']];
+  el.innerHTML=items.map(([s,o,cap])=>`<figure>${panel(s,o)}<figcaption>${cap}</figcaption></figure>`).join('');})();
+
+// Section 6: two trains
+(function(){const el=$('#visTrains');if(!el)return;const A=[3,4,4,5,5,5,6,6,7],B=[-4,-2,0,2,5,8,10,11,15];const X=v=>90+(v+6)*26;
+  const strip=(arr,y,col,name,sd)=>{const cnt={};let s=`<rect x="${X(5-sd)}" y="${y-22}" width="${X(5+sd)-X(5-sd)}" height="44" rx="8" fill="${col}" fill-opacity=".12"/>`;arr.forEach(v=>{const k=cnt[v]||0;cnt[v]=k+1;s+=`<circle cx="${X(v)}" cy="${y-k*13+6}" r="7" fill="${col}" stroke="#fff" stroke-width="2"/>`;});return s+`<text x="10" y="${y+5}" font-size="15" font-weight="800" fill="${col}">${name}</text><text x="10" y="${y+24}" font-size="13" fill="${col}">SD ≈ ${sd}</text>`;};
+  let ticks='';for(let v=-5;v<=15;v+=5)ticks+=`<line x1="${X(v)}" y1="182" x2="${X(v)}" y2="188" stroke="${C.muted}" stroke-width="1.5"/><text x="${X(v)}" y="205" text-anchor="middle" font-size="13" fill="${C.muted}">${v}</text>`;
+  el.innerHTML=svgNS(700,225,`<line x1="${X(5)}" y1="20" x2="${X(5)}" y2="180" stroke="${C.c4}" stroke-width="3" stroke-dasharray="7 5"/><text x="${X(5)}" y="16" text-anchor="middle" font-size="14" font-weight="800" fill="${C.c4}">mean = 5 min for both</text>`+strip(A,70,C.c2,'Train A',1.3)+strip(B,145,C.c5,'Train B',6.1)+`<line x1="${X(-6)}" y1="182" x2="${X(16)}" y2="182" stroke="${C.muted}" stroke-width="1.5"/>${ticks}<text x="${X(16)}" y="222" text-anchor="end" font-size="12" fill="${C.muted}">minutes late (negative = early)</text>`,'Train A delays cluster near 5 minutes; Train B delays spread from 4 early to 15 late');
+  const f=document.createElement('figcaption');f.textContent='Same average, very different reliability. The shaded band is ±1 SD.';el.appendChild(f);})();
+
+// Section 9: skew shapes
+(function(){const el=$('#visShapes');if(!el)return;const W=240,H=160;
+  function mk(f,x0,x1,marks,title,cap){const ymax=Math.max(...Array.from({length:200},(_,i)=>f(x0+(x1-x0)*i/199)));const X=x=>14+(W-28)*(x-x0)/(x1-x0);const Y=y=>H-26-(H-50)*y/ymax;
+    let s=`<path d="${pathOf(f,x0,x1,X,Y,120)} L${X(x1)},${H-26} L${X(x0)},${H-26} Z" fill="${C.c3}" fill-opacity=".16"/><path d="${pathOf(f,x0,x1,X,Y,120)}" fill="none" stroke="${C.c3}" stroke-width="3"/><line x1="10" y1="${H-26}" x2="${W-10}" y2="${H-26}" stroke="${C.muted}" stroke-width="1.5"/>`;
+    marks.forEach(([v,col,lab],i)=>{s+=`<line x1="${X(v)}" y1="${H-26}" x2="${X(v)}" y2="${Y(f(v))}" stroke="${col}" stroke-width="2.5" ${i===1?'stroke-dasharray="5 4"':''}/><text x="${X(v)}" y="${H-8+(i===1?0:0)}" text-anchor="middle" font-size="12" font-weight="800" fill="${col}" dx="${(i-1)*0}">${lab}</text>`;});
+    return `<figure>${svgNS(W,H,`<text x="${W/2}" y="18" text-anchor="middle" font-size="15" font-weight="800" fill="${C.ink}">${title}</text>`+s,title)}<figcaption>${cap}</figcaption></figure>`;}
+  const g=x=>x>0?x*Math.exp(-x):0;
+  el.innerHTML=
+    mk(x=>npdf(x,0,1),-3.3,3.3,[[0,C.c4,'mean = median = mode']],'Symmetric','<b>Heights, errors.</b> Mean ≈ median.')+
+    mk(g,0,8,[[1,C.muted,'mode'],[1.68,C.c2,''],[2,C.c4,'']],'Right-skewed (long tail →)','<b>Income, waiting times, daily rain.</b> Mean <span style="color:#c2410c">▮</span> &gt; median <span style="color:#047857">▮</span>.')+
+    mk(x=>g(8-x),0,8,[[7,C.muted,'mode'],[6.32,C.c2,''],[6,C.c4,'']],'Left-skewed (← long tail)','<b>Marks on a very easy test.</b> Mean <span style="color:#c2410c">▮</span> &lt; median <span style="color:#047857">▮</span>.');})();
+
+// Section 10: CLT pipeline
+(function(){const el=$('#visCLT');if(!el)return;
+  const bars=(vals,x0,y0,w,h,col)=>{const m=Math.max(...vals);const bw=w/vals.length;return vals.map((v,i)=>`<rect x="${(x0+i*bw).toFixed(1)}" y="${(y0+h-v/m*h).toFixed(1)}" width="${(bw-1.5).toFixed(1)}" height="${(v/m*h).toFixed(1)}" fill="${col}"/>`).join('');};
+  const skew=[20,17,14,11,9,7,5.5,4,3,2.3,1.7,1.2,.9,.6,.4];
+  const bell=Array.from({length:15},(_,i)=>npdf(i,7,1.6));
+  let samples='';const rng=mulberry(5);for(let k=0;k<3;k++){for(let j=0;j<6;j++){samples+=`<circle cx="${285+j*14}" cy="${60+k*40}" r="5" fill="${C.c4}" opacity=".85"/>`;}samples+=`<text x="${285+6*14+6}" y="${65+k*40}" font-size="14" fill="${C.ink}">→ x̄${['₁','₂','₃'][k]}</text>`;}
+  el.innerHTML=svgNS(700,210,`<defs><marker id="arL" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="${C.muted}"/></marker></defs>
+    ${bars(skew,20,40,200,120,C.c4+'99')}<line x1="18" y1="160" x2="222" y2="160" stroke="${C.muted}"/>
+    <text x="120" y="25" text-anchor="middle" font-size="15" font-weight="800" fill="${C.ink}">1. Skewed population</text><text x="120" y="185" text-anchor="middle" font-size="13" fill="${C.muted}">e.g. daily train delays</text>
+    <line x1="228" y1="100" x2="272" y2="100" stroke="${C.muted}" stroke-width="3" marker-end="url(#arL)"/>
+    ${samples}<text x="340" y="25" text-anchor="middle" font-size="15" font-weight="800" fill="${C.ink}">2. Average many samples</text><text x="340" y="185" text-anchor="middle" font-size="13" fill="${C.muted}">…thousands of times</text>
+    <line x1="425" y1="100" x2="470" y2="100" stroke="${C.muted}" stroke-width="3" marker-end="url(#arL)"/>
+    ${bars(bell,480,40,200,120,C.c4)}<line x1="478" y1="160" x2="682" y2="160" stroke="${C.muted}"/>
+    <text x="580" y="25" text-anchor="middle" font-size="15" font-weight="800" fill="${C.ink}">3. Averages form a bell!</text><text x="580" y="185" text-anchor="middle" font-size="13" fill="${C.muted}">narrow and centred on the truth</text>`,'Skewed population, many sample averages, bell-shaped distribution of averages');})();
+
+// Section 12: surprise bell
+(function(){const el=$('#visSurprise');if(!el)return;const W=700,H=210;const X=z=>50+(W-100)*(z+4)/8;const Y=y=>H-40-(H-70)*y/0.4;
+  const f=z=>npdf(z,0,1);const tail=(a,b)=>`<path d="${pathOf(f,a,b,X,Y,40)} L${X(b)},${H-40} L${X(a)},${H-40} Z" fill="${C.c4}" fill-opacity=".75"/>`;
+  el.innerHTML=svgNS(W,H,`<path d="${pathOf(f,-1.96,1.96,X,Y,80)} L${X(1.96)},${H-40} L${X(-1.96)},${H-40} Z" fill="${C.c4}" fill-opacity=".12"/>${tail(-4,-1.96)}${tail(1.96,4)}
+    <path d="${pathOf(f,-4,4,X,Y,160)}" fill="none" stroke="${C.c4}" stroke-width="3"/><line x1="40" y1="${H-40}" x2="${W-40}" y2="${H-40}" stroke="${C.muted}" stroke-width="1.5"/>
+    <g font-size="15" text-anchor="middle" font-weight="800"><text x="${X(0)}" y="${Y(0.2)}" fill="${C.ink}">"Usual" results</text><text x="${X(0)}" y="${Y(0.2)+20}" fill="${C.muted}" font-weight="500" font-size="13">if H₀ is true (the coin is fair)</text>
+    <text x="${X(-3)}" y="${Y(0.12)}" fill="${C.c4}">Surprising!</text><text x="${X(3)}" y="${Y(0.12)}" fill="${C.c4}">Surprising!</text>
+    <text x="${X(-3)}" y="${Y(0.12)+18}" fill="${C.c4}" font-size="12" font-weight="500">→ doubt H₀</text><text x="${X(3)}" y="${Y(0.12)+18}" fill="${C.c4}" font-size="12" font-weight="500">→ doubt H₀</text>
+    <text x="${W/2}" y="${H-12}" fill="${C.muted}" font-size="13" font-weight="500">possible results → (the shaded tails add up to α, e.g. 5%)</text></g>`,'Bell curve of results under the null hypothesis with both tails shaded as surprising');})();
+
+// Section 13: mini scatters
+(function(){const el=$('#visScatters');if(!el)return;const rng=mulberry(21);const gn=()=>{let u=rng()||1e-9,v=rng();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);};
+  const W=200,H=150;function mk(pts,title,cap){const X=x=>16+(W-32)*x,Y=y=>H-16-(H-40)*y;let s=`<rect x="8" y="24" width="${W-16}" height="${H-32}" fill="none" stroke="${C.light}"/>`;pts.forEach(([x,y])=>{s+=`<circle cx="${X(clamp(x,0,1)).toFixed(1)}" cy="${Y(clamp(y,0,1)).toFixed(1)}" r="4" fill="${C.c5}" opacity=".85"/>`;});
+    return `<figure>${svgNS(W,H,`<text x="${W/2}" y="17" text-anchor="middle" font-size="15" font-weight="800" fill="${C.c5}">${title}</text>`+s,title)}<figcaption>${cap}</figcaption></figure>`;}
+  const P=[],Z=[],N=[],U=[];for(let i=0;i<30;i++){const x=rng();P.push([x,.1+.8*x+gn()*.07]);Z.push([rng(),rng()*.9+.05]);N.push([x,.9-.75*x+gn()*.11]);const u=i/29;U.push([u,.1+3.2*(u-.5)**2+gn()*.03]);}
+  el.innerHTML=mk(P,'r ≈ +0.9','Strong positive: study hours vs marks')+mk(Z,'r ≈ 0','No pattern: shoe size vs marks')+mk(N,'r ≈ −0.8','Negative: TV hours vs marks')+mk(U,'r ≈ 0 but…','A clear U-shape! r only sees straight lines.');})();
+
+/* ================= LAB 1: batters ================= */
+(function(){const cv=$('#cvBat');if(!cv)return;const A0=[30,38,27,41,35,33,29,40],B0=[2,0,112,5,31,88,4,30];let A=[...A0],B=[...B0];
+  const gA=()=>Math.max(0,Math.round(34+randn()*7));const gB=()=>{const r=Math.random();return r<.45?Math.floor(Math.random()*8):r<.75?Math.round(15+Math.random()*25):Math.round(80+Math.random()*50);};
+  function draw(){const{ctx,w,h}=prep(cv,w=>clamp(w*.45,250,340));const l=46,R=w-12,Tp=16,Bt=h-34;const n=A.length;const maxV=Math.max(125,...A,...B);const Y=v=>Bt-(v/maxV)*(Bt-Tp);const gw=(R-l)/n;const bw=Math.max(3,Math.min(22,gw*.38));
+    yGrid(ctx,Y,l,R,0,Math.floor(maxV/25)*25,25);
+    A.forEach((v,i)=>{const x=l+gw*i+gw/2;ctx.fillStyle=C.c1;ctx.fillRect(x-bw-1,Y(v),bw,Bt-Y(v));ctx.fillStyle=C.c5;ctx.fillRect(x+1,Y(B[i]),bw,Bt-Y(B[i]));if(n<=12||i%2===0)T(ctx,String(i+1),x,Bt+17,{a:'center',s:12,c:C.muted});});
+    const mA=mean(A),mB=mean(B);L(ctx,l,Y(mA),R,Y(mA),C.c1,2.5,[9,6]);L(ctx,l,Y(mB),R,Y(mB),C.c5,2.5,[3,6]);
+    T(ctx,'innings →',R,h-4,{a:'right',s:12,c:C.muted});T(ctx,'runs',4,12,{s:12,c:C.muted});
+    const low=a=>a.filter(x=>x<10).length;
+    $('#batOut').innerHTML=`Average: <b style="color:${C.c1}">Ravi ${mA.toFixed(1)}</b> vs <b style="color:${C.c5}">Arjun ${mB.toFixed(1)}</b> (the dashed lines).<br>Innings under 10 runs: Ravi <b>${low(A)}</b>, Arjun <b>${low(B)}</b>. Highest score: Ravi ${Math.max(...A)}, Arjun ${Math.max(...B)}.<br>🤔 Almost the same average… but would you trust them equally in a final?`;}
+  reg(draw);$('#batPlay').onclick=()=>{A.push(gA());B.push(gB());if(A.length>20){A.shift();B.shift();}draw();};$('#batReset').onclick=()=>{A=[...A0];B=[...B0];draw();};})();
+
+/* ================= LAB 2: variable sorter ================= */
+(function(){const box=$('#sortVar');if(!box)return;
+  const K=['Categorical · nominal','Categorical · ordinal','Numerical · discrete','Numerical · continuous'];
+  const items=[['Favourite IPL team',0,'Just labels with no natural order, so it\'s nominal.'],['Number of wickets taken in a match',2,'You count wickets in whole numbers, so it\'s discrete.'],['Journey time of a train from Kacheguda to Bengaluru',3,'Time is measured and can be any value (6 h 42.5 min…), so it\'s continuous.'],['Exam grade (A1, A2, B1, B2…)',1,'The grades have an order, but the gaps between them aren\'t equal numbers, so it\'s ordinal.'],['Monsoon rainfall in a district (mm)',3,'Rainfall is measured, so it\'s continuous.'],['Blood group (A, B, AB, O)',0,'Labels with no order, so it\'s nominal.'],['Hotel rating (1 to 5 ★)',1,'The stars are ordered, but a 4★ hotel isn\'t "twice" a 2★ one, so it\'s ordinal.'],['Customers entering a kirana shop per hour',2,'Counted, so discrete. You can\'t have 3.5 customers!'],['Height of a student',3,'Measured, so continuous.'],['How you travel to school (bus / bike / walk)',0,'Categories with no order, so it\'s nominal.'],['PIN code',0,'A trick one! PIN codes are numbers, but they\'re only labels for places. Averaging them is meaningless, so it\'s nominal.'],['T-shirt size (S, M, L, XL)',1,'Ordered categories, so ordinal.'],['Number of siblings',2,'Counted in whole numbers, so discrete.'],['Weight of a mango (g)',3,'Measured, so continuous.']];
+  let order=[],idx=0,score=0,done=false;const opts=$('#sortOpts'),fb=$('#sortFb'),sc=$('#sortScore'),next=$('#sortNext');
+  function shuffle(){order=items.map((_,i)=>i);for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}idx=0;score=0;}
+  function show(){done=false;const it=items[order[idx]];box.textContent=it[0];opts.innerHTML=K.map((k,i)=>`<button data-i="${i}">${k}</button>`).join('');fb.textContent='';fb.className='fb';next.textContent=idx===items.length-1?'See my score':'Next ➜';next.disabled=true;sc.textContent=`Question ${idx+1} of ${items.length} · Score ${score}`;
+    $$('button',opts).forEach(b=>b.onclick=()=>{if(done)return;done=true;const i=+b.dataset.i;const ok=i===it[1];if(ok)score++;$$('button',opts).forEach(x=>{x.disabled=true;if(+x.dataset.i===it[1])x.classList.add('right');else if(x===b)x.classList.add('wrong');});fb.textContent=(ok?'✅ ':'💭 ')+it[2];fb.className='fb '+(ok?'ok':'no');sc.textContent=`Question ${idx+1} of ${items.length} · Score ${score}`;next.disabled=false;});}
+  let ended=false;
+  next.onclick=()=>{if(ended){ended=false;shuffle();show();return;}if(!done)return;if(idx<items.length-1){idx++;show();}else{ended=true;box.textContent=`🎉 You scored ${score} / ${items.length}!`;opts.innerHTML='';fb.textContent=score>=11?'Brilliant, you really get variable types.':'Good effort! Watch out for the tricky ones: PIN codes and star ratings.';fb.className='fb ok';sc.textContent='';next.textContent='Play again ↺';next.disabled=false;}};
+  shuffle();show();})();
+
+/* ================= LAB 3: sampling detective ================= */
+(function(){const cv=$('#cvSamp');if(!cv)return;const COLS=40,ROWS=10;const schools=['City','Town','Village','Remote village'];const rates=[.9,.7,.5,.3];
+  const rng=mulberry(7);const pop=new Array(400);
+  for(let s=0;s<4;s++){const ids=[];for(let c=s*10;c<s*10+10;c++)for(let r=0;r<ROWS;r++)ids.push(c*ROWS+r);for(let i=ids.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[ids[i],ids[j]]=[ids[j],ids[i]];}ids.forEach((id,k)=>pop[id]={school:s,phone:k<rates[s]*100});}
+  const truth=pop.filter(p=>p.phone).length/400;let sample=[],hist=[];
+  const col={random:C.c1,conv:C.bad,strat:C.good},names={random:'Random',conv:'Convenience',strat:'Stratified'};
+  const all=[...Array(400).keys()];const bySchool=s=>all.filter(i=>pop[i].school===s);
+  function pick(ids,k){const a=[...ids],out=[];for(let i=0;i<k;i++){const j=i+Math.floor(Math.random()*(a.length-i));[a[i],a[j]]=[a[j],a[i]];out.push(a[i]);}return out;}
+  function draw(){const{ctx,w,h}=prep(cv,w=>{const cell=(w-16)/COLS;return 30+cell*ROWS+100;});const cell=(w-16)/COLS,top=30,left=8;
+    for(let s=0;s<4;s++){T(ctx,schools[s]+' '+Math.round(rates[s]*100)+'%',left+cell*(s*10+5),19,{a:'center',s:w<500?11:14,b:1});if(s>0)L(ctx,left+cell*s*10,top-4,left+cell*s*10,top+cell*ROWS+2,C.light,2,[4,4]);}
+    const inS=new Set(sample);const r=Math.max(2.2,cell*.33);
+    for(let i=0;i<400;i++){const c=Math.floor(i/ROWS),rr=i%ROWS;const x=left+cell*(c+.5),y=top+cell*(rr+.5);if(pop[i].phone)D(ctx,x,y,r,C.c1);else D(ctx,x,y,r,'#fff','#9aa0bb',1.3);}
+    for(const i of inS){const c=Math.floor(i/ROWS),rr=i%ROWS;D(ctx,left+cell*(c+.5),top+cell*(rr+.5),r+2.6,null,C.gold,2.6);}
+    const sy=top+cell*ROWS+56;const X=v=>left+20+(w-left-40)*v;xAxis(ctx,X,sy,0,1,.2,v=>Math.round(v*100)+'%');
+    L(ctx,X(truth),sy-44,X(truth),sy,C.ink,3);T(ctx,'truth '+Math.round(truth*100)+'%',X(truth)+6,sy-34,{s:12,b:1});
+    const cnt={};hist.forEach(o=>{const k=o.est.toFixed(3);const n=cnt[k]||0;cnt[k]=n+1;D(ctx,X(o.est),sy-7-Math.min(n,4)*8,4.5,col[o.m],'#fff',1);});
+    T(ctx,'Each dot below = the estimate from one sample of 40',left+20,sy+42,{s:12,c:C.muted});}
+  function take(m){if(m==='random')sample=pick(all,40);else if(m==='conv')sample=pick(bySchool(0),40);else sample=[0,1,2,3].flatMap(s=>pick(bySchool(s),10));
+    const est=sample.filter(i=>pop[i].phone).length/40;hist.push({m,est});if(hist.length>80)hist.shift();draw();
+    const avg=k=>{const a=hist.filter(o=>o.m===k).map(o=>o.est);return a.length?Math.round(mean(a)*100)+'% (from '+a.length+')':'–';};
+    $('#sampOut').innerHTML=`<b>${names[m]} sample</b> of 40 says <b>${Math.round(est*100)}%</b> own a smartphone. The true answer for all 400 is <b>${Math.round(truth*100)}%</b>.<br>${m==='conv'?'😬 Too high every time, because we only asked city-school students near the gate. That\'s <b>bias</b>.':m==='strat'?'🎯 A fair share from every school, so it lands close to the truth every time.':'🎲 It wobbles around the truth, but it doesn\'t lean in any particular direction.'}<br><small>Average estimate so far: Random ${avg('random')} · Convenience ${avg('conv')} · Stratified ${avg('strat')}</small>`;}
+  reg(draw);$$('[data-m]',cv.parentNode).forEach(b=>b.onclick=()=>take(b.dataset.m));$('#sampReset').onclick=()=>{sample=[];hist=[];draw();$('#sampOut').textContent='Pick a method to draw a sample of 40 students.';};})();
+
+/* ================= LAB 4: chart switcher ================= */
+(function(){const cv=$('#cvChart');if(!cv)return;let tab='bar';
+  const sales=[['Tea',96],['Samosa',90],['Coffee',84],['Bun',78],['Biscuit',72]];
+  const marks=[22,35,42,48,51,53,55,56,58,60,61,62,63,64,65,66,67,68,68,69,70,71,72,72,73,74,75,76,77,78,79,80,81,82,84,85,87,89,91,94];
+  const secB=[48,52,55,58,60,61,62,63,64,65,65,66,67,68,69,70,71,72,74,76],secC=[30,38,45,50,55,58,62,66,70,74,78,82,85,88,90,92,95,96,98,99];
+  const hrs=[1,1.5,2,2.5,3,3,3.5,4,4,4.5,5,5.5,6,6,6.5,7,7.5,8,8.5,9],hm=[38,35,45,48,50,58,52,60,55,62,66,63,70,74,72,78,75,84,80,88];
+  const pal=[C.c1,C.c2,C.c3,C.c4,C.c5];
+  const use={bar:'<b>Bar chart</b>: a tea stall\'s sales by item. Use it to <b>compare categories</b>. Turn on the misleading axis and see how the story changes!',pie:'<b>Pie chart</b>: the same sales as shares of the whole day. When the slices are nearly equal, a pie makes them hard to compare, so a bar chart is better here.',hist:'<b>Histogram</b>: marks of 40 students grouped into ranges. It shows the <b>shape</b>: most students scored 55–85, with a lonely 22 on the far left. Try the bin-width slider.',box:'<b>Box plot</b>: marks for three sections. Box = middle 50%, thick line = median, whiskers = the usual range, dots = outliers. Section C has the <b>widest spread</b>, and Section A has an <b>outlier</b> (22).',scatter:'<b>Scatter plot</b>: hours studied vs marks for 20 students. It shows the <b>relationship</b> between two numbers: more hours tend to go with higher marks.'};
+  function draw(){const{ctx,w,h}=prep(cv,w=>clamp(w*.5,260,370));const l=50,R=w-16,Tp=18,Bt=h-42;
+    if(tab==='bar'){const tr=$('#trunc').checked;const v0=tr?70:0;const Y=v=>Bt-(v-v0)/(100-v0)*(Bt-Tp);yGrid(ctx,Y,l,R,v0,100,tr?5:20);const gw=(R-l)/sales.length;
+      sales.forEach(([n,v],i)=>{const x=l+gw*i+gw*.18;ctx.fillStyle=C.c2;ctx.fillRect(x,Y(v),gw*.64,Bt-Y(v));T(ctx,String(v),x+gw*.32,Y(v)-6,{a:'center',s:14,b:1});T(ctx,n,x+gw*.32,Bt+20,{a:'center',s:w<480?11:14});});
+      if(w>=480)T(ctx,'cups / pieces sold',l,12,{s:12,c:C.muted});if(tr)T(ctx,'⚠ y-axis starts at 70!',R,14,{a:'right',s:w<480?12:13,b:1,c:C.bad,bg:1});}
+    else if(tab==='pie'){const tot=sales.reduce((s,x)=>s+x[1],0);const cx=w/2,cy=(h)/2+4,r=Math.min(h/2-34,w*.2);let a=-Math.PI/2;
+      sales.forEach(([n,v],i)=>{const da=v/tot*Math.PI*2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,a,a+da);ctx.closePath();ctx.fillStyle=pal[i];ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();const m=a+da/2;const lx=cx+Math.cos(m)*(r+16),ly=cy+Math.sin(m)*(r+16);T(ctx,`${n} ${Math.round(v/tot*100)}%`,lx,ly+5,{a:Math.cos(m)>0.15?'left':Math.cos(m)<-0.15?'right':'center',s:w<480?12:14,b:1,c:pal[i]});a+=da;});}
+    else if(tab==='hist'){const bw=+$('#bins').value;const X=v=>l+(R-l)*v/100;const bins=[];for(let s=0;s<100;s+=bw)bins.push({s,e:Math.min(100,s+bw),n:0});marks.forEach(m=>{const i=Math.min(bins.length-1,Math.floor(m/bw));bins[i].n++;});const mx=Math.max(...bins.map(b=>b.n));const top=Math.ceil(mx/5)*5||5;const Y=v=>Bt-v/top*(Bt-Tp);
+      yGrid(ctx,Y,l,R,0,top,top>10?5:1);bins.forEach(b=>{if(!b.n)return;ctx.fillStyle=C.c2;ctx.fillRect(X(b.s)+.5,Y(b.n),X(b.e)-X(b.s)-1,Bt-Y(b.n));});xAxis(ctx,X,Bt,0,100,10);T(ctx,'number of students',l,12,{s:12,c:C.muted});T(ctx,'marks',R,h-4,{a:'right',s:12,c:C.muted});}
+    else if(tab==='box'){const X=v=>l+(R-l)*v/100;const groups=[['Sec A',marks],['Sec B',secB],['Sec C',secC]];const rowH=(Bt-Tp)/3;xAxis(ctx,X,Bt,0,100,10);
+      groups.forEach(([n,a],i)=>{const y=Tp+rowH*i+rowH/2;const q1=quant(a,.25),q2=quant(a,.5),q3=quant(a,.75),iq=q3-q1;const lo=Math.min(...a.filter(v=>v>=q1-1.5*iq)),hi=Math.max(...a.filter(v=>v<=q3+1.5*iq));const bh=Math.min(34,rowH*.5);
+        L(ctx,X(lo),y,X(q1),y,C.ink,2);L(ctx,X(q3),y,X(hi),y,C.ink,2);L(ctx,X(lo),y-bh/3,X(lo),y+bh/3,C.ink,2);L(ctx,X(hi),y-bh/3,X(hi),y+bh/3,C.ink,2);
+        ctx.fillStyle='#e0f5ec';ctx.fillRect(X(q1),y-bh/2,X(q3)-X(q1),bh);ctx.strokeStyle=C.c2;ctx.lineWidth=2.5;ctx.strokeRect(X(q1),y-bh/2,X(q3)-X(q1),bh);L(ctx,X(q2),y-bh/2,X(q2),y+bh/2,C.c2,5);
+        a.filter(v=>v<q1-1.5*iq||v>q3+1.5*iq).forEach(v=>{D(ctx,X(v),y,5,C.bad);T(ctx,'outlier '+v,X(v),y-10,{a:'center',s:11,c:C.bad,b:1});});T(ctx,n,l-8,y+5,{a:'right',s:14,b:1});});T(ctx,'marks',R,h-4,{a:'right',s:12,c:C.muted});}
+    else{const X=v=>l+(R-l)*v/10,Y=v=>Bt-(v-20)/80*(Bt-Tp);yGrid(ctx,Y,l,R,20,100,20);xAxis(ctx,X,Bt,0,10,1);hrs.forEach((x,i)=>D(ctx,X(x),Y(hm[i]),6,C.c2,'#fff',1.5));T(ctx,'marks',l,12,{s:12,c:C.muted});T(ctx,'hours studied',R,h-4,{a:'right',s:12,c:C.muted});}
+    $('#chartUse').innerHTML=use[tab];}
+  tabs($('#chartTabs'),t=>{tab=t;$('#truncWrap').classList.toggle('hide',t!=='bar');$('#binWrap').classList.toggle('hide',t!=='hist');draw();});
+  $('#trunc').onchange=draw;slider('bins',null,draw);reg(draw);})();
+
+/* ================= LAB 5: mean vs median drag ================= */
+(function(){const cv=$('#cvCentre');if(!cv)return;const init=[42,48,55,58,61,63,67,70,74];let pts=[...init];let drag=-1,lay=null;
+  function layout(w,h){const l=30,R=w-30;const X=v=>l+(R-l)*v/100;const ay=h-78;const seen={};return{X,ay,l,R,pos:pts.map(v=>{const k=seen[v]||0;seen[v]=k+1;return{x:X(v),y:ay-16-k*26};})};}
+  function draw(){const{ctx,w,h}=prep(cv,280);lay=layout(w,h);const{X,ay,pos}=lay;
+    const m=mean(pts),md=median(pts);
+    L(ctx,X(md),30,X(md),ay,C.c2,3,[7,5]);T(ctx,'Median '+(+md.toFixed(1)),clamp(X(md),60,w-60),22,{a:'center',s:15,b:1,c:C.c2,bg:1});
+    xAxis(ctx,X,ay,0,100,10);
+    pos.forEach((p,i)=>D(ctx,p.x,p.y,12,i===drag?C.c1:'#3b6cf0','#fff',2.5));
+    const mx=X(m);ctx.fillStyle=C.c4;ctx.beginPath();ctx.moveTo(mx,ay+28);ctx.lineTo(mx-13,ay+50);ctx.lineTo(mx+13,ay+50);ctx.closePath();ctx.fill();
+    T(ctx,'Mean '+m.toFixed(1)+' (balance point)',clamp(mx,110,w-110),ay+70,{a:'center',s:15,b:1,c:C.c4});
+    const cnt={};pts.forEach(v=>cnt[v]=(cnt[v]||0)+1);const mc=Math.max(...Object.values(cnt));const modes=Object.keys(cnt).filter(k=>cnt[k]===mc);
+    $('#centreOut').innerHTML=`<b style="color:${C.c4}">Mean = ${m.toFixed(1)}</b> · <b style="color:${C.c2}">Median = ${+md.toFixed(1)}</b> · Mode = ${mc>1?'<b>'+modes.join(', ')+'</b> (appears '+mc+' times)':'none, every mark is different (drag two dots onto the same mark!)'}<br>Gap between mean and median: <b>${Math.abs(m-md).toFixed(1)}</b> marks ${Math.abs(m-md)>5?'😮 An extreme value is pulling the mean away!':'(close together, so the data are roughly balanced)'} · ${pts.length} students`;}
+  cv.addEventListener('pointerdown',e=>{const p=evPos(cv,e);let best=-1,bd=26;lay.pos.forEach((q,i)=>{const d=Math.hypot(q.x-p.x,q.y-p.y);if(d<bd){bd=d;best=i;}});if(best>=0){drag=best;cv.setPointerCapture(e.pointerId);e.preventDefault();draw();}});
+  cv.addEventListener('pointermove',e=>{if(drag<0)return;const p=evPos(cv,e);pts[drag]=Math.round(clamp((p.x-lay.l)/(lay.R-lay.l)*100,0,100));draw();});
+  const end=()=>{if(drag>=0){drag=-1;draw();}};cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+  $('#cAdd').onclick=()=>{if(pts.length<20){pts.push(40+Math.floor(Math.random()*41));draw();}};$('#cDel').onclick=()=>{if(pts.length>2){pts.pop();draw();}};
+  $('#cOut').onclick=()=>{if(pts.length<20){pts.push(5);draw();}};$('#cReset').onclick=()=>{pts=[...init];draw();};reg(draw);})();
+
+/* ================= LAB 6: spread ================= */
+(function(){const cv=$('#cvSpread');if(!cv)return;const d=[0.3,-1.1,0.9,-0.2,1.2,-0.6,0,-1.6,0.5,-0.1,1.1,-0.4,0.7,-0.8,0.1];
+  function data(){const s=+$('#spreadS').value;const a=d.map(x=>Math.round((5+s*x)*10)/10);if($('#spreadOut').checked)a.push(60);return a;}
+  function draw(){const a=data();const n=a.length;const rowH=16;const{ctx,w,h}=prep(cv,56+n*rowH+44);const l=16,R=w-16;const X=v=>l+(R-l)*(v+20)/90;const top=48;
+    const m=mean(a),s=sdev(a),q1=quant(a,.25),q3=quant(a,.75),mn=Math.min(...a),mx=Math.max(...a);
+    ctx.fillStyle='rgba(4,120,87,.10)';ctx.fillRect(X(m-s),top-6,X(m+s)-X(m-s),n*rowH+8);
+    T(ctx,'±1 SD',X(m+s)-4,top+n*rowH-2,{a:'right',s:12,c:C.c2,b:1});
+    L(ctx,X(q1),24,X(q3),24,C.c3,4);L(ctx,X(q1),16,X(q1),32,C.c3,3);L(ctx,X(q3),16,X(q3),32,C.c3,3);T(ctx,'IQR '+(q3-q1).toFixed(1),(X(q1)+X(q3))/2,13,{a:'center',s:12,b:1,c:C.c3});
+    L(ctx,X(mn),38,X(mx),38,C.muted,2,[2,4]);T(ctx,'range',X(mx)+6,42,{s:12,c:C.muted});
+    const showD=$('#spreadDist').checked;
+    a.forEach((v,i)=>{const y=top+i*rowH+rowH/2;if(showD)L(ctx,X(m),y,X(v),y,v>=m?'rgba(190,24,93,.55)':'rgba(29,78,216,.55)',3);D(ctx,X(v),y,5.5,v===60&&$('#spreadOut').checked&&i===n-1?C.bad:C.ink);});
+    L(ctx,X(m),top-8,X(m),top+n*rowH+4,C.c4,3);T(ctx,'mean '+m.toFixed(1),X(m),top+n*rowH+18,{a:'center',s:13,b:1,c:C.c4});
+    xAxis(ctx,X,h-26,-20,70,10);
+    $('#spreadOutTxt').innerHTML=`Mean <b>${m.toFixed(1)}</b> min · Range <b>${(mx-mn).toFixed(1)}</b> · IQR <b>${(q3-q1).toFixed(1)}</b> · SD <b>${s.toFixed(1)}</b> min<br>${+$('#spreadS').value===0&&!$('#spreadOut').checked?'Perfectly predictable: every day is exactly 5 minutes late, so every spread measure is 0.':$('#spreadOut').checked?'😱 One terrible day: the range and SD jump, but the IQR hardly moves. That\'s why the IQR is called <b>robust</b>.':'The SD is roughly the "typical" length of those coloured distance lines.'}`;}
+  slider('spreadS',null,draw);$('#spreadDist').onchange=draw;$('#spreadOut').onchange=draw;reg(draw);})();
+
+/* ================= LAB 7: z-scores ================= */
+(function(){const cv=$('#cvZ');if(!cv)return;const subj=[{n:'Maths',mu:60,sd:8,col:C.c1,id:'zM'},{n:'Science',mu:75,sd:10,col:C.c5,id:'zS'}];
+  function draw(){const{ctx,w,h}=prep(cv,300);const l=20,R=w-20;const Xz=z=>l+(R-l)*(z+3.5)/7;const ph=(h-20)/2;
+    subj.forEach((s,k)=>{const x=+$('#'+s.id).value;const z=(x-s.mu)/s.sd;const base=18+ph*(k+1)-28,top=18+ph*k+22;const Y=y=>base-(base-top)*y/0.4;const f=zz=>npdf(zz,0,1);
+      ctx.beginPath();const zc=clamp(z,-3.5,3.5);for(let i=0;i<=80;i++){const zz=-3.5+(zc+3.5)*i/80;const px=Xz(zz),py=Y(f(zz));i?ctx.lineTo(px,py):ctx.moveTo(px,py);}ctx.lineTo(Xz(zc),base);ctx.lineTo(Xz(-3.5),base);ctx.closePath();ctx.fillStyle=s.col+'33';ctx.fill();
+      curve(ctx,f,-3.5,3.5,Xz,Y,140);ctx.strokeStyle=s.col;ctx.lineWidth=3;ctx.stroke();L(ctx,l,base,R,base,C.muted,1.5);
+      for(let t=-3;t<=3;t++){L(ctx,Xz(t),base,Xz(t),base+5,C.muted,1.5);T(ctx,String(s.mu+t*s.sd),Xz(t),base+18,{a:'center',s:12,c:C.muted});}
+      L(ctx,Xz(zc),top-6,Xz(zc),base,s.col,3.5);const pct=Math.round(Phi(z)*100);
+      const lab=w<520?`${x} → z = ${z>=0?'+':''}${z.toFixed(2)}, beats ~${pct}%`:`${s.n}: ${x} → z = ${z>=0?'+':''}${z.toFixed(2)}, beats ~${pct}%`;const fs=w<520?12:14;ctx.font='700 '+fs+'px '+FONT;const hw=ctx.measureText(lab).width/2+6;T(ctx,lab,clamp(Xz(zc),hw,w-hw),top-10,{a:'center',s:fs,b:1,c:s.col,bg:1});
+      T(ctx,s.n+' (mean '+s.mu+', SD '+s.sd+')',l,top+14,{s:12,c:C.muted});});
+    const zm=(+$('#zM').value-60)/8,zs=(+$('#zS').value-75)/10;
+    $('#zOut').innerHTML=`Maths z = <b style="color:${C.c1}">${zm.toFixed(2)}</b> (about the ${ord(Math.round(Phi(zm)*100))} percentile) · Science z = <b style="color:${C.c5}">${zs.toFixed(2)}</b> (about the ${ord(Math.round(Phi(zs)*100))} percentile)<br>${Math.abs(zm-zs)<0.05?'🤝 Equally impressive: the same z-score!':zm>zs?'🏆 <b>Maths</b> is the relatively better result, compared with the rest of the class.':'🏆 <b>Science</b> is the relatively better result, compared with the rest of the class.'}`;}
+  slider('zM',null,draw);slider('zS',null,draw);reg(draw);})();
+
+/* ================= LAB 8: dice + Bayes ================= */
+(function(){const cvD=$('#cvDice'),cvB=$('#cvBayes');if(!cvD)return;let cnt=new Array(13).fill(0),tot=0,last=null;const theo=k=>(6-Math.abs(k-7))/36;const faces='⚀⚁⚂⚃⚄⚅';
+  function drawD(){if($('#probDice').classList.contains('hide'))return;const{ctx,w,h}=prep(cvD,w=>clamp(w*.45,240,320));const l=50,R=w-12,Tp=16,Bt=h-36;const fr=k=>tot?cnt[k]/tot:0;let mx=0.2;for(let k=2;k<=12;k++)mx=Math.max(mx,fr(k));let step=.05;if(mx>0.5){mx=Math.ceil(mx*4)/4;step=.25;}else mx=Math.ceil(mx*20)/20;const Y=v=>Bt-v/mx*(Bt-Tp);
+    yGrid(ctx,Y,l,R,0,mx,step,v=>Math.round(v*100)+'%');const gw=(R-l)/11;
+    for(let k=2;k<=12;k++){const x=l+gw*(k-2);ctx.fillStyle=k===7?C.c3:'#b9a3f5';ctx.fillRect(x+gw*.15,Y(fr(k)),gw*.7,Bt-Y(fr(k)));D(ctx,x+gw/2,Y(theo(k)),5.5,C.ink,'#fff',1.5);T(ctx,String(k),x+gw/2,Bt+18,{a:'center',s:13});}
+    T(ctx,'sum of two dice',R,h-2,{a:'right',s:12,c:C.muted});
+    $('#diceOut').innerHTML=tot?`Rolls: <b>${tot}</b>${last?` · Last roll ${faces[last[0]-1]} ${faces[last[1]-1]} = ${last[0]+last[1]}`:''}<br>Sum of 7 so far: <b>${(fr(7)*100).toFixed(1)}%</b> of rolls. Theory: 6 ways out of 36 = <b>16.7%</b>. ${tot>=500?'✅ Very close! That\'s the <b>law of large numbers</b>.':'(Keep rolling… small numbers of rolls are noisy.)'}<br><small>Why is 7 the most common? It has the most ways to happen: 1+6, 2+5, 3+4, 4+3, 5+2, 6+1.</small>`:'Press a button to roll.';}
+  function roll(k){for(let i=0;i<k;i++){const a=1+Math.floor(Math.random()*6),b=1+Math.floor(Math.random()*6);cnt[a+b]++;tot++;last=[a,b];}drawD();}
+  $$('[data-r]',$('#probDice')).forEach(b=>b.onclick=()=>roll(+b.dataset.r));$('#diceReset').onclick=()=>{cnt=new Array(13).fill(0);tot=0;last=null;drawD();};
+  function drawB(){if($('#probBayes').classList.contains('hide'))return;const prev=+$('#bPrev').value/100,sens=+$('#bSens').value/100,fpr=+$('#bFpr').value/100;const N=1000;
+    const sick=Math.round(N*prev),tp=Math.round(sick*sens),fn=sick-tp,healthy=N-sick,fp=Math.round(healthy*fpr),tn=healthy-fp;
+    const cols=50,rows=20;const{ctx,w}=prep(cvB,w=>(w-8)/cols*rows+8);const c=(w-8)/cols;const types=[];[[0,tp],[1,fn],[2,fp],[3,tn]].forEach(([t,k])=>{for(let i=0;i<k;i++)types.push(t);});
+    types.forEach((t,i)=>{const col=i%cols,row=Math.floor(i/cols);const x=4+col*c,y=4+row*c,s=c-1.5;if(t===0){ctx.fillStyle=C.c5;ctx.fillRect(x,y,s,s);}else if(t===1){ctx.fillStyle='#fff';ctx.fillRect(x,y,s,s);ctx.strokeStyle=C.c5;ctx.lineWidth=1.6;ctx.strokeRect(x+.8,y+.8,s-1.6,s-1.6);}else if(t===2){ctx.fillStyle=C.amber;ctx.fillRect(x,y,s,s);}else{ctx.fillStyle='#dfe2ec';ctx.fillRect(x,y,s,s);}});
+    const exact=prev*sens/(prev*sens+(1-prev)*fpr||1);const pos=tp+fp;
+    $('#bayesOut').innerHTML=`Out of 1,000 people, <b>${sick}</b> are sick. The test says "positive" for <b>${pos}</b> people: <b style="color:${C.c5}">${tp} really sick</b> + <b style="color:#b45309">${fp} false alarms</b>.<br>So if <i>you</i> test positive, the chance you're really sick is ${pos?`<b>${tp} ÷ ${pos} ≈ ${Math.round(tp/pos*100)}%</b>`:'undefined (nobody tested positive)'} <small>(exact Bayes answer: ${(exact*100).toFixed(1)}%)</small><br>${exact<0.3?'😮 Most positives are false alarms, because the disease is <b>rare</b> and healthy people vastly outnumber sick ones.':exact>0.8?'👍 Now a positive result is quite trustworthy: the disease is common enough, or the test is precise enough.':'🤔 A positive result is a real warning sign, but it isn\'t conclusive. Doctors would run a second test.'}`;}
+  slider('bPrev',v=>v+'%',drawB);slider('bSens',v=>v+'%',drawB);slider('bFpr',v=>v+'%',drawB);
+  tabs($('#probTabs'),t=>{$('#probDice').classList.toggle('hide',t!=='dice');$('#probBayes').classList.toggle('hide',t!=='bayes');drawD();drawB();});
+  reg(()=>{drawD();drawB();});})();
+
+/* ================= LAB 9: normal + binomial ================= */
+(function(){const cvN=$('#cvNormal'),cvBi=$('#cvBinom');if(!cvN)return;let K=1;const P=[68.27,95.45,99.73];
+  function drawN(){if($('#distNormal').classList.contains('hide'))return;const mu=+$('#nMu').value,sd=+$('#nSd').value;const{ctx,w,h}=prep(cvN,w=>clamp(w*.45,250,330));const l=20,R=w-20,Bt=h-44,Tp=34;const X=x=>l+(R-l)*(x-100)/130;const pk=npdf(mu,mu,sd);const Y=y=>Bt-(Bt-Tp)*y/pk;const f=x=>npdf(x,mu,sd);
+    const a=clamp(mu-K*sd,100,230),b=clamp(mu+K*sd,100,230);curve(ctx,f,a,b,X,Y,100);ctx.lineTo(X(b),Bt);ctx.lineTo(X(a),Bt);ctx.closePath();ctx.fillStyle='rgba(124,58,237,.25)';ctx.fill();
+    curve(ctx,f,100,230,X,Y,260);ctx.strokeStyle=C.c3;ctx.lineWidth=3;ctx.stroke();xAxis(ctx,X,Bt,100,230,10);
+    for(let k=-3;k<=3;k++){const x=mu+k*sd;if(x<100||x>230)continue;L(ctx,X(x),Y(f(x)),X(x),Bt,k===0?C.c3:'rgba(124,58,237,.45)',k===0?2.5:1.5,k?[4,4]:null);if(k)T(ctx,(k>0?'+':'−')+Math.abs(k)+'σ',X(x),Tp-4+(Math.abs(k)%2)*14,{a:'center',s:12,c:C.c3,b:1});}
+    T(ctx,P[K-1]+'%',X(mu),Y(pk*.45),{a:'center',s:20,b:1,c:C.ink,bg:1});T(ctx,'height (cm)',R,h-4,{a:'right',s:12,c:C.muted});
+    $('#normalOut').innerHTML=`About <b>${Math.round(P[K-1]*10)/10}%</b> of students are between <b>${mu-K*sd}</b> and <b>${mu+K*sd}</b> cm (mean ${mu} ± ${K} × ${sd}).<br>A bigger σ gives a wider, flatter bell. The total area under it always stays 100%.`;}
+  function drawBi(){if($('#distBinom').classList.contains('hide'))return;const n=+$('#bn').value,p=+$('#bp').value;const pm=binom(n,p);const{ctx,w,h}=prep(cvBi,w=>clamp(w*.45,250,330));const l=50,R=w-12,Tp=14,Bt=h-36;const mx=Math.max(...pm)*1.15;const Y=v=>Bt-(Bt-Tp)*v/mx;const gw=(R-l)/(n+1);const X=k=>l+gw*(k+.5);
+    const st=mx>.5?.2:mx>.2?.05:mx>.08?.02:.01;yGrid(ctx,Y,l,R,0,Math.floor(mx/st)*st,st,v=>Math.round(v*100)+'%');
+    pm.forEach((q,k)=>{ctx.fillStyle=C.c3;ctx.fillRect(X(k)-gw*.4,Y(q),gw*.8,Bt-Y(q));const every=n>40?10:n>20?5:n>10?2:1;if(k%every===0)T(ctx,String(k),X(k),Bt+17,{a:'center',s:12,c:C.muted});});
+    const m=n*p,s=Math.sqrt(n*p*(1-p));L(ctx,X(m),Tp,X(m),Bt,C.c4,2.5,[6,5]);T(ctx,'mean np = '+(+m.toFixed(2)),clamp(X(m)+6,l,R-120),Tp+12,{s:13,b:1,c:C.c4,bg:1});
+    if($('#bOver').checked&&s>0){curve(ctx,x=>npdf(x,m,s),-0.5,n+.5,x=>X(x),Y,200);ctx.strokeStyle=C.c5;ctx.lineWidth=3;ctx.stroke();}
+    T(ctx,'number who buy',R,h-2,{a:'right',s:12,c:C.muted});let best=0;pm.forEach((q,k)=>{if(q>pm[best])best=k;});const good=m>=10&&n*(1-p)>=10;
+    $('#binomOut').innerHTML=`Mean = np = <b>${m.toFixed(1)}</b> · SD = √(np(1−p)) = <b>${s.toFixed(2)}</b> · Most likely count: <b>${best}</b> (chance ${(pm[best]*100).toFixed(1)}%)<br>${good?'🔔 np and n(1−p) are both at least 10, so the bars look like a bell. The binomial ≈ normal here!':(m>=5&&n*(1-p)>=5)?'🙂 Already fairly bell-shaped. Push n higher and the match with the bell gets even closer.':'📐 Lopsided or blocky: n is too small, or p is too close to 0 or 1, for a bell shape.'}`;}
+  slider('nMu',null,drawN);slider('nSd',null,drawN);tabs($('#nK'),t=>{K=+t;drawN();});slider('bn',null,drawBi);slider('bp',v=>v.toFixed(2),drawBi);$('#bOver').onchange=drawBi;
+  tabs($('#distTabs'),t=>{$('#distNormal').classList.toggle('hide',t!=='normal');$('#distBinom').classList.toggle('hide',t!=='binom');drawN();drawBi();});
+  reg(()=>{drawN();drawBi();});})();
+
+/* ================= LAB 10: CLT ================= */
+(function(){const cv=$('#cvCLT');if(!cv)return;
+  const pops={skew:()=>{let x;do{x=-10*Math.log(1-Math.random());}while(x>=60);return x;},unif:()=>Math.random()*60,bimodal:()=>{let x;do{x=Math.random()<.5?12+4*randn():45+5*randn();}while(x<0||x>=60);return x;}};
+  let pk='skew',info={},means=[],lastS=[];
+  function setup(){const f=pops[pk];const a=[];for(let i=0;i<20000;i++)a.push(f());const bins=new Array(30).fill(0);a.forEach(v=>bins[Math.min(29,Math.floor(v/2))]++);info={mu:mean(a),sd:sdev(a,false),bins};means=[];lastS=[];}
+  function draw(){const n=+$('#cltN').value;const{ctx,w,h}=prep(cv,w=>clamp(w*.62,380,460));const l=14,R=w-14;const X=v=>l+(R-l)*v/60;
+    const t0=24,t1=Math.round(h*.38);const bm=Math.max(...info.bins);const Y1=v=>t1-(t1-t0)*v/bm;
+    T(ctx,'POPULATION (every single day\'s delay)',l,16,{s:13,b:1,c:C.muted});
+    info.bins.forEach((v,i)=>{ctx.fillStyle='rgba(194,65,12,.35)';ctx.fillRect(X(i*2)+.5,Y1(v),X(2)-X(0)-1,t1-Y1(v));});
+    L(ctx,l,t1,R,t1,C.muted,1.5);L(ctx,X(info.mu),t0,X(info.mu),t1,C.ink,2,[5,4]);T(ctx,'μ = '+info.mu.toFixed(1),X(info.mu)+5,t0+12,{s:12,b:1});
+    lastS.forEach(v=>D(ctx,X(v),t1-7,5,C.gold,'#1b1f3a',1.2));if(lastS.length){const sm=mean(lastS);L(ctx,X(sm),t1-18,X(sm),t1+14,C.c4,3);T(ctx,'x̄ = '+sm.toFixed(1),X(sm),t1+28,{a:'center',s:12,b:1,c:C.c4,bg:1});}
+    const b0=t1+54,b1=h-40;T(ctx,'SAMPLE AVERAGES (one block per sample of '+n+')',l,b0-8,{s:13,b:1,c:C.muted});
+    const bw=0.5,nb=120,hb=new Array(nb).fill(0);means.forEach(m=>hb[Math.min(nb-1,Math.floor(m/bw))]++);const se=info.sd/Math.sqrt(n);const M=means.length;
+    const pred=x=>M*bw*npdf(x,info.mu,se);const showC=$('#cltCurve').checked&&M>0;let top=Math.max(1,...hb);if(showC)top=Math.max(top,pred(info.mu));const Y2=v=>b1-(b1-b0-6)*v/top;
+    hb.forEach((v,i)=>{if(v){ctx.fillStyle=C.c4;ctx.fillRect(X(i*bw)+.3,Y2(v),Math.max(1,X(bw)-X(0)-.6),b1-Y2(v));}});
+    if(showC){curve(ctx,pred,Math.max(0,info.mu-4.5*se),Math.min(60,info.mu+4.5*se),X,Y2,200);ctx.strokeStyle=C.c3;ctx.lineWidth=2.5;ctx.stroke();}
+    xAxis(ctx,X,b1,0,60,10);T(ctx,'minutes',R,h-2,{a:'right',s:12,c:C.muted});
+    $('#cltOut').innerHTML=M?`Samples drawn: <b>${M}</b> · Average of the averages: <b>${mean(means).toFixed(2)}</b> (true μ = ${info.mu.toFixed(2)})<br>Spread of the averages: <b>${sdev(means,false).toFixed(2)}</b> · CLT prediction σ/√n = ${info.sd.toFixed(1)}/√${n} = <b>${se.toFixed(2)}</b>`:`Population: mean μ = <b>${info.mu.toFixed(1)}</b>, SD σ = <b>${info.sd.toFixed(1)}</b>. Now draw some samples!`;}
+  function drawK(k){const n=+$('#cltN').value;const f=pops[pk];for(let j=0;j<k;j++){const s=[];for(let i=0;i<n;i++)s.push(f());means.push(mean(s));lastS=s;}if(means.length>20000)means=means.slice(-20000);draw();}
+  $$('[data-k]',cv.parentNode).forEach(b=>b.onclick=()=>drawK(+b.dataset.k));slider('cltN',null,()=>{means=[];lastS=[];draw();});
+  $('#cltReset').onclick=()=>{means=[];lastS=[];draw();};$('#cltCurve').onchange=draw;tabs($('#cltPop'),t=>{pk=t;setup();draw();});setup();reg(draw);})();
+
+/* ================= LAB 11: confidence intervals ================= */
+(function(){const cv=$('#cvCI');if(!cv)return;const MU=50,SIG=15;let z=1.96,ints=[],total=0,hit=0;const lvl={'1.645':90,'1.96':95,'2.576':99};
+  function one(){const n=+$('#ciN').value;let s=0;for(let i=0;i<n;i++)s+=MU+SIG*randn();const xb=s/n,me=z*SIG/Math.sqrt(n);const ok=Math.abs(xb-MU)<=me;ints.push({xb,me,ok});total++;if(ok)hit++;if(ints.length>50)ints.shift();}
+  function draw(){const rowH=7;const{ctx,w,h}=prep(cv,50*rowH+62);const l=16,R=w-16;const X=v=>l+(R-l)*(clamp(v,25,75)-25)/50;const top=22;
+    ints.forEach((o,i)=>{const y=top+i*rowH+3;L(ctx,X(o.xb-o.me),y,X(o.xb+o.me),y,o.ok?C.good:C.bad,3.2);D(ctx,X(o.xb),y,2.2,C.ink);});
+    L(ctx,X(MU),top-8,X(MU),top+50*rowH+2,C.ink,2.5,[6,4]);T(ctx,'true mean = 50',X(MU),top-10,{a:'center',s:13,b:1});xAxis(ctx,X,h-30,25,75,5);
+    if(!ints.length)T(ctx,'Press "Draw 20" to take samples',w/2,top+120,{a:'center',s:16,c:C.muted});
+    const n=+$('#ciN').value;const me=z*SIG/Math.sqrt(n);
+    $('#ciOut').innerHTML=`Each interval = sample mean ± <b>${me.toFixed(1)}</b> marks (n = ${n}, ${lvl[String(z)]}% level)<br>${total?`Intervals so far: <b>${total}</b> · caught the truth: <b style="color:${C.good}">${hit}</b> = <b>${(hit/total*100).toFixed(1)}%</b> (the method promises ${lvl[String(z)]}% in the long run)`:'No intervals yet.'}`;}
+  function reset(){ints=[];total=0;hit=0;draw();}
+  $$('[data-k]',cv.parentNode).forEach(b=>b.onclick=()=>{for(let i=0;i<+b.dataset.k;i++)one();draw();});$('#ciReset').onclick=reset;slider('ciN',null,reset);tabs($('#ciLevel'),t=>{z=+t;reset();});reg(draw);})();
+
+/* ================= LAB 12: coin test ================= */
+(function(){const cv=$('#cvTest');if(!cv)return;const tN=$('#tN'),tH=$('#tH');let alpha=0.05,prevN=+tN.value;
+  function draw(){const n=+tN.value,hd=+tH.value;$('#tNO').textContent=n;$('#tHO').textContent=hd;const pm=binom(n,.5);const dev=Math.abs(hd-n/2);let p=0;pm.forEach((q,k)=>{if(Math.abs(k-n/2)>=dev-1e-9)p+=q;});p=Math.min(1,p);
+    const{ctx,w,h}=prep(cv,w=>clamp(w*.45,250,320));const l=50,R=w-12,Tp=30,Bt=h-36;const mx=Math.max(...pm)*1.15;const Y=v=>Bt-(Bt-Tp)*v/mx;const gw=(R-l)/(n+1);const X=k=>l+gw*(k+.5);
+    const st=mx>.2?.05:mx>.1?.02:.01;yGrid(ctx,Y,l,R,0,Math.floor(mx/st)*st,st,v=>Math.round(v*100)+'%');
+    pm.forEach((q,k)=>{const ext=Math.abs(k-n/2)>=dev-1e-9;ctx.fillStyle=ext?C.c4:'#c9cde0';ctx.fillRect(X(k)-gw*.42,Y(q),Math.max(1,gw*.84),Bt-Y(q));const every=n>50?10:n>24?5:2;if(k%every===0)T(ctx,String(k),X(k),Bt+17,{a:'center',s:12,c:C.muted});});
+    ctx.fillStyle=C.ink;ctx.beginPath();ctx.moveTo(X(hd),Bt-2);ctx.lineTo(X(hd)-8,Tp-2);ctx.lineTo(X(hd)+8,Tp-2);ctx.closePath();ctx.globalAlpha=.0;ctx.fill();ctx.globalAlpha=1;
+    L(ctx,X(hd),Tp-4,X(hd),Bt,C.ink,2.5,[5,4]);T(ctx,'you saw '+hd+' heads',clamp(X(hd),70,w-70),Tp-10,{a:'center',s:13,b:1,bg:1});T(ctx,'number of heads (if the coin were fair)',R,h-2,{a:'right',s:12,c:C.muted});
+    const ps=p<0.001?'< 0.001':p.toFixed(3);const rej=p<alpha;const oneIn=p>0?Math.round(1/p):Infinity;
+    $('#testOut').innerHTML=`p-value = <b>${ps}</b> (the orange area) · α = ${alpha}<br>In plain words: <i>if the coin were fair, a result at least this lopsided would happen ${p>=0.5?'more often than not':p>0?`about 1 time in ${oneIn.toLocaleString('en-IN')}`:'almost never'}.</i><br>${rej?`🚨 <b>Reject H₀.</b> ${ps} &lt; ${alpha}, so we have good evidence the coin is <b>not fair</b>.`:`😐 <b>Not enough evidence to reject H₀.</b> p ≥ ${alpha}. The coin <i>might</i> be fair (this isn't proof that it is).`}`;}
+  tN.addEventListener('input',()=>{const n=+tN.value;const r=+tH.value/prevN;tH.max=n;tH.value=Math.round(r*n);prevN=n;draw();});tH.addEventListener('input',draw);tabs($('#tAlpha'),t=>{alpha=+t;draw();});reg(draw);})();
+
+/* ================= LAB 13: regression ================= */
+(function(){const cv=$('#cvReg');if(!cv)return;let pts=[];let lay=null;
+  function preset(k){const a=[];if(k==='pos')for(let i=0;i<14;i++){const x=.5+Math.random()*9;a.push([x,clamp(25+6.5*x+randn()*6,2,98)]);}
+    else if(k==='none')for(let i=0;i<14;i++)a.push([.5+Math.random()*9,15+Math.random()*75]);
+    else if(k==='neg')for(let i=0;i<14;i++){const x=.5+Math.random()*9;a.push([x,clamp(90-6*x+randn()*8,2,98)]);}return a;}
+  function fit(){const n=pts.length;if(n<2)return null;const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);const mx=mean(xs),my=mean(ys);let sxy=0,sxx=0,syy=0;pts.forEach(([x,y])=>{sxy+=(x-mx)*(y-my);sxx+=(x-mx)**2;syy+=(y-my)**2;});if(sxx<1e-9)return null;const b=sxy/sxx,a=my-b*mx;const r=n>=3&&syy>1e-9?sxy/Math.sqrt(sxx*syy):null;return{a,b,r};}
+  function draw(){const{ctx,w,h}=prep(cv,w=>clamp(w*.55,280,380));const l=48,R=w-14,Tp=14,Bt=h-40;const X=v=>l+(R-l)*v/10,Y=v=>Bt-(Bt-Tp)*v/100;lay={l,R,Tp,Bt,X,Y};
+    yGrid(ctx,Y,l,R,0,100,20);xAxis(ctx,X,Bt,0,10,1);T(ctx,'marks',l,Tp-2+10,{s:12,c:C.muted});T(ctx,'hours studied',R,h-2,{a:'right',s:12,c:C.muted});
+    const f=fit();if(f){ctx.save();ctx.beginPath();ctx.rect(l,Tp,R-l,Bt-Tp);ctx.clip();if($('#regRes').checked)pts.forEach(([x,y])=>L(ctx,X(x),Y(y),X(x),Y(f.a+f.b*x),'rgba(190,24,93,.6)',2,[3,3]));L(ctx,X(0),Y(f.a),X(10),Y(f.a+f.b*10),C.c5,3.5);ctx.restore();}
+    pts.forEach(([x,y])=>D(ctx,X(x),Y(y),7,C.c1,'#fff',2));
+    if(!pts.length)T(ctx,'Tap anywhere to add a student',(l+R)/2,(Tp+Bt)/2,{a:'center',s:16,c:C.muted});
+    let txt='';if(!f)txt=`Add at least <b>2</b> points (with different hours) to draw a line, and 3 for r. Points: ${pts.length}`;
+    else{const r=f.r;let desc='–';if(r!==null){const ar=Math.abs(r);desc=ar>=.7?'strong':ar>=.4?'moderate':ar>=.15?'weak':'almost no';desc+=ar>=.15?(r>0?' positive (uphill)':' negative (downhill)'):' straight-line'}
+      txt=`r = <b>${r===null?'–':r.toFixed(2)}</b> → ${desc} relationship${r!==null?` · R² = <b>${(r*r).toFixed(2)}</b> (the line explains ${Math.round(r*r*100)}% of the variation)`:''}<br>Best-fit line: marks = <b>${f.a.toFixed(1)}</b> ${f.b>=0?'+':'−'} <b>${Math.abs(f.b).toFixed(1)}</b> × hours · Prediction for 5 hours: <b>${(f.a+f.b*5).toFixed(0)}</b> marks · Points: ${pts.length}`;}
+    $('#regOut').innerHTML=txt;}
+  cv.addEventListener('pointerdown',e=>{const p=evPos(cv,e);const{l,R,Tp,Bt,X,Y}=lay;let hitI=-1,bd=14;pts.forEach(([x,y],i)=>{const d=Math.hypot(X(x)-p.x,Y(y)-p.y);if(d<bd){bd=d;hitI=i;}});
+    if(hitI>=0)pts.splice(hitI,1);else if(p.x>=l&&p.x<=R&&p.y>=Tp&&p.y<=Bt){pts.push([(p.x-l)/(R-l)*10,(Bt-p.y)/(Bt-Tp)*100]);}draw();});
+  $$('[data-p]',cv.parentNode).forEach(b=>b.onclick=()=>{const k=b.dataset.p;if(k==='clear')pts=[];else if(k==='out')pts.push([9.5,8]);else pts=preset(k);draw();});
+  $('#regRes').onchange=draw;pts=preset('pos');reg(draw);})();
+
+/* ================= LAB 14: map ================= */
+(function(){const el=$('#mapWrap');if(!el)return;
+  const nodes=[['ANOVA',C.c4,'Compares the averages of <b>3 or more groups</b> in one test.','Sections 6 &amp; 12 (variance, t-test)','Do four coaching centres produce different average JEE scores?'],
+    ['Multiple regression',C.c5,'Predicts one outcome from <b>many inputs at once</b>.','Section 13 (regression)','A flat\'s price from its area, location, floor and age.'],
+    ['Logistic regression',C.c5,'Predicts the <b>probability of a yes/no</b> outcome.','Sections 8 &amp; 13','Will this customer repay the loan?'],
+    ['Non-parametric tests',C.c4,'Tests that use <b>ranks</b> instead of raw values, so there\'s no need for bell-curve assumptions.','Sections 7 &amp; 12','Comparing 1–5 ★ satisfaction ratings of two hospitals.'],
+    ['Bayesian statistics',C.c3,'Prior belief + data → an updated <b>posterior</b> belief about unknowns.','Section 8 (Bayes\' rule)','Updating a team\'s chance of winning ball by ball.'],
+    ['Time series',C.c2,'Data recorded <b>over time</b>, with trends and seasons, used for forecasting.','Sections 4 &amp; 13','Forecasting monsoon rainfall or festival-season sales.'],
+    ['A/B tests & design',C.c1,'Planning <b>randomised experiments</b> so cause-and-effect conclusions can be trusted.','Sections 3 &amp; 12','Does a new app button design increase sign-ups?'],
+    ['Machine learning',C.c3,'Statistics + computing at scale: models <b>learn patterns</b> from training data and are judged on new data.','Nearly everything, especially Sections 3, 6, 10 &amp; 13','Spam filters, video recommendations, crop-disease detection from photos.']];
+  const W=720,H=480,cx=360,cy=240;let s=`<ellipse cx="${cx}" cy="${cy}" rx="120" ry="62" fill="#1b1f3a"/><text x="${cx}" y="${cy-6}" text-anchor="middle" fill="#fff" font-size="20" font-weight="800">Today's toolkit</text><text x="${cx}" y="${cy+18}" text-anchor="middle" fill="#cfd3e3" font-size="13">describe · probability · inference</text>`;let g='';
+  nodes.forEach((n,i)=>{const a=-Math.PI/2+i*Math.PI*2/8;const x=cx+Math.cos(a)*262,y=cy+Math.sin(a)*185;s=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${n[1]}" stroke-width="3" stroke-dasharray="6 5"/>`+s;
+    g+=`<g class="node" data-i="${i}" tabindex="0" role="button" aria-label="${n[0]}"><rect x="${x-92}" y="${y-27}" width="184" height="54" rx="14" fill="#fff" stroke="${n[1]}" stroke-width="3"/><text x="${x}" y="${y+6}" text-anchor="middle" font-size="16" font-weight="800" fill="${n[1]}">${n[0]}</text></g>`;});
+  el.innerHTML=svgNS(W,H,s+g,'Map of advanced statistics topics around today\'s toolkit')+`<div class="mapbtns">${nodes.map((n,i)=>`<button class="node" data-i="${i}" style="border-color:${n[1]};color:${n[1]}">${n[0]}</button>`).join('')}</div>`;
+  $$('.node',el).forEach(nd=>{const act=()=>{$$('.node',el).forEach(x=>x.classList.toggle('sel',x.dataset.i===nd.dataset.i));const n=nodes[+nd.dataset.i];$('#mapInfo').innerHTML=`<b style="color:${n[1]}">${n[0]}</b>: ${n[2]}<br><small><b>Grows from:</b> ${n[3]} · <b>Example:</b> ${n[4]}</small>`;};nd.addEventListener('click',act);if(nd.tagName!=='BUTTON')nd.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act();}});});})();
+
+/* ================= quick checks + quiz ================= */
+function updateScore(){const qs=$$('#quiz .qc');const ans=qs.filter(q=>q.dataset.done);const ok=qs.filter(q=>q.dataset.done==='ok').length;$('#quizScore').textContent=`${ok} / ${qs.length}`;
+  $('#quizMsg').textContent=ans.length<qs.length?`${ans.length} of ${qs.length} answered…`:ok===10?'🏆 Perfect! You\'re a statistics star.':ok>=8?'🌟 Excellent! You\'ve got the big picture.':ok>=5?'👍 Good work. Revisit the sections you missed.':'💪 A good start. Scroll back through the sections and try again!';}
+$$('.qc').forEach(qc=>{const a=+qc.dataset.a;const btns=$$('.opts button',qc);const fb=$('.fb',qc);btns.forEach((b,i)=>b.addEventListener('click',()=>{if(qc.dataset.done)return;const ok=i===a;qc.dataset.done=ok?'ok':'no';
+  btns.forEach((x,j)=>{x.disabled=true;if(j===a)x.classList.add('right');else if(j===i)x.classList.add('wrong');});fb.textContent=(ok?'✅ ':'💭 ')+(ok?fb.dataset.ok:fb.dataset.no);fb.className='fb '+(ok?'ok':'no');if(qc.closest('#quiz'))updateScore();}));});
+$('#quizReset').onclick=()=>{$$('#quiz .qc').forEach(qc=>{delete qc.dataset.done;$$('.opts button',qc).forEach(b=>{b.disabled=false;b.classList.remove('right','wrong');});const fb=$('.fb',qc);fb.textContent='';fb.className='fb';});updateScore();$('#quizMsg').textContent='Answer all 10 to get your score.';$('#quiz').scrollIntoView({behavior:'smooth'});};
+
+/* ================= navigation, progress, clock, teacher notes ================= */
+const allSecs=$$('main section.lesson');const secs=allSecs.filter(s=>s.dataset.min);const toc=$('#toc');
+allSecs.forEach(s=>{const a=document.createElement('a');a.href='#'+s.id;a.dataset.id=s.id;const fam=[...s.classList].find(c=>/^fam\d$/.test(c));if(fam)a.classList.add(fam);a.textContent=s.id==='cheatsheet'?'📋':s.id==='quiz'?'🏆':s.id.slice(1);a.title=s.dataset.title+(s.dataset.min?` (${s.dataset.min} min)`:'');toc.appendChild(a);});
+const tocLinks=$$('a',toc);
+let done=new Set(store.get('done',[]));
+function renderDone(){secs.forEach(s=>{const b=$('.done-btn',s);const d=done.has(s.id);b.classList.toggle('is-done',d);b.textContent=d?'✓ Done: click to undo':'Mark section done ✓';});tocLinks.forEach(a=>a.classList.toggle('done',done.has(a.dataset.id)));$('#progBar').style.width=(done.size/secs.length*100)+'%';}
+secs.forEach(s=>{$('.done-btn',s).onclick=()=>{done.has(s.id)?done.delete(s.id):done.add(s.id);store.set('done',[...done]);renderDone();};});renderDone();
+
+let cur=null;function detect(){const y=window.innerHeight*0.35;let c=allSecs[0];for(const s of allSecs){if(s.getBoundingClientRect().top<y)c=s;}if(c!==cur){cur=c;tocLinks.forEach(a=>a.classList.toggle('active',a.dataset.id===c.id));const a=tocLinks.find(a=>a.dataset.id===c.id);if(a){const left=a.offsetLeft-toc.offsetLeft-toc.clientWidth/2+a.clientWidth/2;toc.scrollTo({left,behavior:'smooth'});}renderClock();}}
+let sT;window.addEventListener('scroll',()=>{if(sT)return;sT=requestAnimationFrame(()=>{sT=null;detect();});},{passive:true});
+
+const budgets=secs.map(s=>+s.dataset.min*60000);const cum=[];let acc=0;budgets.forEach(b=>{cum.push(acc);acc+=b;});const TOTAL=acc;
+let st=store.get('clock',null);if(!st||!Array.isArray(st.spent)||st.spent.length!==secs.length)st={el:0,spent:secs.map(()=>0)};
+let running=false,last=0,lastSave=0;
+const mmss=ms=>{const t=Math.floor(Math.max(0,ms)/1000);return String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0');};
+function renderClock(){$('#clockTime').textContent=mmss(st.el)+' / '+mmss(TOTAL);
+  secs.forEach((s,i)=>{const el=$('[data-left]',s);const rem=budgets[i]-st.spent[i];const txt=rem>=0?mmss(rem)+' left':'+'+mmss(-rem)+' over';if(el.textContent!==txt)el.textContent=txt;el.classList.toggle('over',rem<0);});
+  const pace=$('#pace');const idx=secs.indexOf(cur);pace.className='pace';
+  if(!running&&st.el===0){pace.textContent='Clock not started';return;}
+  if(idx<0){pace.textContent=running?'Wrap-up time':'Paused';return;}
+  const start=cum[idx],end=start+budgets[idx];
+  if(st.el>end+30000){pace.textContent=`Behind by ${Math.ceil((st.el-end)/60000)} min`;pace.classList.add('behind');}
+  else if(st.el<start-30000){pace.textContent=`Ahead by ${Math.floor((start-st.el)/60000)} min`;pace.classList.add('ahead');}
+  else pace.textContent=(running?'':'⏸ ')+'On pace ✓';}
+function tick(){if(running){const now=performance.now();const dt=now-last;last=now;st.el+=dt;const i=secs.indexOf(cur);if(i>=0)st.spent[i]+=dt;if(now-lastSave>5000){store.set('clock',st);lastSave=now;}}renderClock();}
+setInterval(tick,500);
+function toggleClock(){running=!running;last=performance.now();const b=$('#clockBtn');b.textContent=running?'⏸ Pause':'▶ '+(st.el>0?'Resume':'Start');store.set('clock',st);renderClock();}
+$('#clockBtn').onclick=toggleClock;
+let resetArm=null;$('#clockReset').onclick=()=>{const b=$('#clockReset');if(!resetArm){b.textContent='Reset?';resetArm=setTimeout(()=>{b.textContent='↺';resetArm=null;},2500);return;}clearTimeout(resetArm);resetArm=null;b.textContent='↺';running=false;st={el:0,spent:secs.map(()=>0)};store.set('clock',st);$('#clockBtn').textContent='▶ Start';renderClock();};
+if(st.el>0)$('#clockBtn').textContent='▶ Resume';
+
+function setTeacher(on){document.body.classList.toggle('teacher-on',on);const b=$('#teacherBtn');b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);store.set('teacher',on);}
+$('#teacherBtn').onclick=()=>setTeacher(!document.body.classList.contains('teacher-on'));setTeacher(!!store.get('teacher',false));
+document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey)return;const t=e.target;if(t&&(t.tagName==='TEXTAREA'||(t.tagName==='INPUT'&&t.type==='text')))return;const k=e.key.toLowerCase();if(k==='p'){e.preventDefault();toggleClock();}else if(k==='t'){e.preventDefault();$('#teacherBtn').click();}});
+
+$('#printCheat').onclick=()=>{document.body.classList.add('print-cheat');window.print();};window.addEventListener('afterprint',()=>document.body.classList.remove('print-cheat'));
+window.addEventListener('beforeunload',()=>store.set('clock',st));
+detect();renderClock();
+})();
+</script>
+</body>
+</html>

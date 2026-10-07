@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Functions - Reusable Code</title>
+    <style>
+        @media print {
+            html { display: none !important; }
+            body { display: none !important; }
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header { text-align: center; color: white; margin-bottom: 30px; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .breadcrumb { color: rgba(255,255,255,0.8); text-align: center; margin-bottom: 20px; }
+        .breadcrumb a { color: white; text-decoration: none; }
+        .section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .section h2 { color: #30cfd0; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #30cfd0; font-size: 1.8em; }
+        .section h3 { color: #333; margin-top: 25px; margin-bottom: 15px; font-size: 1.3em; }
+        .concept-box { background: #e8f5f5; border-left: 4px solid #30cfd0; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; overflow-x: auto; margin: 15px 0; font-family: 'Courier New', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; border-left: 4px solid #30cfd0; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .interactive-section { background: #e8f5f5; border: 2px solid #30cfd0; border-radius: 10px; padding: 20px; margin: 20px 0; }
+        textarea { width: 100%; min-height: 150px; padding: 15px; border: 2px solid #30cfd0; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.95em; margin-bottom: 10px; }
+        button { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: bold; transition: all 0.3s ease; margin-right: 10px; }
+        button:hover { transform: scale(1.05); }
+        .output-box { background: #1e1e1e; color: #4ec9b0; padding: 15px; border-radius: 8px; margin-top: 15px; font-family: 'Courier New', monospace; min-height: 50px; max-height: 300px; overflow-y: auto; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 40px; }
+        .nav-buttons a { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        table th { background: #30cfd0; color: white; padding: 12px; text-align: left; }
+        table td { border-bottom: 1px solid #ddd; padding: 10px 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb"><a href="../index.html">← Back to Learning Path</a></div>
+        <header>
+            <h1>⚙️ Functions</h1>
+            <p>Write Reusable Code</p>
+        </header>
+
+        <div class="section">
+            <h2>What Are Functions?</h2>
+            <p>Functions are <strong>reusable blocks of code</strong> that perform specific tasks. They help you avoid repeating code and organize your programs.</p>
+
+            <div class="concept-box">
+                <strong>Why Functions?</strong><br>
+                ✓ Reuse code multiple times<br>
+                ✓ Keep code organized<br>
+                ✓ Make debugging easier<br>
+                ✓ Make code more readable
+            </div>
+
+            <h3>Function Structure</h3>
+            <div class="code-block">
+def function_name(parameters):
+    """This is a docstring - describes what the function does"""
+    # Function body - the code
+    return result
+
+# Calling the function
+function_name(arguments)
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Basic Functions</h2>
+
+            <h3>Simple Function</h3>
+            <div class="code-block">
+def greet():
+    print("Hello, World!")
+
+greet()  # Calling the function
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Functions</h4>
+                <textarea id="code1">def say_hello():
+    print("Hello! Welcome to Python!")
+
+def add_numbers(a, b):
+    return a + b
+
+def multiply(x, y):
+    result = x * y
+    return result
+
+# Call functions
+say_hello()
+
+sum_result = add_numbers(5, 3)
+print(f"5 + 3 = {sum_result}")
+
+product = multiply(4, 6)
+print(f"4 × 6 = {product}")</textarea>
+                <button type="button" onclick="runCode('code1', 'output1'); return false;">▶ Run Code</button>
+                <div id="output1" class="output-box"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Parameters & Return Values</h2>
+
+            <h3>Parameters (inputs)</h3>
+            <p>Parameters are variables that functions receive:</p>
+
+            <div class="code-block">
+def calculate_age(birth_year, current_year):
+    age = current_year - birth_year
+    return age
+
+result = calculate_age(2000, 2024)
+print(result)  # Output: 24
+            </div>
+
+            <h3>Return Values (outputs)</h3>
+            <p>Return statement sends a value back to the caller:</p>
+
+            <div class="code-block">
+def square(number):
+    return number ** 2
+
+result = square(5)
+print(result)  # Output: 25
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Parameters & Returns</h4>
+                <textarea id="code2">def calculate_bmi(weight, height):
+    """Calculate Body Mass Index"""
+    bmi = weight / (height ** 2)
+    return bmi
+
+def celsius_to_fahrenheit(celsius):
+    fahrenheit = (celsius * 9/5) + 32
+    return fahrenheit
+
+# Using functions
+my_bmi = calculate_bmi(70, 1.75)
+print(f"BMI: {my_bmi:.1f}")
+
+temp_f = celsius_to_fahrenheit(25)
+print(f"25°C = {temp_f}°F")</textarea>
+                <button type="button" onclick="runCode('code2', 'output2')">▶ Run Code</button>
+                <div id="output2" class="output-box"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Default Parameters & Variable Arguments</h2>
+
+            <h3>Default Parameters</h3>
+            <div class="code-block">
+def greet(name="Friend"):
+    print(f"Hello, {name}!")
+
+greet()  # Uses default: "Friend"
+greet("Alice")  # Uses "Alice"
+            </div>
+
+            <h3>Multiple Return Values</h3>
+            <div class="code-block">
+def get_person_info():
+    name = "John"
+    age = 25
+    city = "NYC"
+    return name, age, city
+
+# Unpacking returns
+name, age, city = get_person_info()
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Advanced Functions</h4>
+                <textarea id="code3">def introduce(name, age=18, city="Unknown"):
+    return f"{name} is {age} years old and lives in {city}"
+
+print(introduce("Alice"))
+print(introduce("Bob", 25))
+print(introduce("Charlie", 30, "Boston"))
+
+def divide(a, b):
+    if b == 0:
+        return None, "Error: Cannot divide by zero"
+    return a / b, "Success"
+
+result, message = divide(10, 2)
+print(f"{result} - {message}")</textarea>
+                <button type="button" onclick="runCode('code3', 'output3')">▶ Run Code</button>
+                <div id="output3" class="output-box"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Key Takeaways</h2>
+            <div class="concept-box">
+                <strong>1. Define Functions:</strong> Use def keyword<br><br>
+                <strong>2. Parameters:</strong> Inputs to the function<br><br>
+                <strong>3. Return:</strong> Send result back<br><br>
+                <strong>4. Default Values:</strong> Parameter defaults<br><br>
+                <strong>5. Call Functions:</strong> Use function_name()
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="../03_Data_Structures/index.html">← Previous: Data Structures</a>
+            <a href="../05_OOP/index.html">Next: Object-Oriented Programming →</a>
+        </div>
+    </div>
+
+    <script>
+        function runCode(textareaId, outputId) {
+            const code = document.getElementById(textareaId).value;
+            const outputBox = document.getElementById(outputId);
+            outputBox.innerHTML = '';
+            try {
+                let output = '';
+                const originalLog = console.log;
+                console.log = function(...args) {
+                    output += args.join(' ') + '\n';
+                };
+                eval(code);
+                console.log = originalLog;
+                outputBox.innerHTML = output || '✓ Code executed!';
+            } catch (error) {
+                outputBox.innerHTML = `<span style="color: #ff6b6b;">❌ Error: ${error.message}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>

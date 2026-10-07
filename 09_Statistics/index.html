@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics & Probability - Data Analysis Fundamentals</title>
+    <style>
+        @media print { html, body { display: none !important; } }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI'; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header { text-align: center; color: white; margin-bottom: 30px; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.1em; }
+        .section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .section h2 { color: #667eea; margin-bottom: 20px; border-bottom: 3px solid #667eea; padding-bottom: 10px; }
+        .section h3 { color: #333; margin-top: 25px; margin-bottom: 15px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; margin: 15px 0; font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6; border-left: 4px solid #667eea; overflow-x: auto; }
+        .keyword { color: #569cd6; font-weight: bold; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; font-style: italic; }
+        .breadcrumb { color: rgba(255,255,255,0.8); text-align: center; margin-bottom: 20px; }
+        .breadcrumb a { color: white; text-decoration: none; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 40px; }
+        .nav-buttons a { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons a:hover { transform: scale(1.05); }
+        .concept-box { background: #f0f4ff; border-left: 4px solid #667eea; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .progression-level { background: #f0f4ff; border: 2px solid #667eea; border-radius: 8px; padding: 15px; margin: 15px 0; }
+        .progression-level.beginner { border-color: #28a745; background: #d4edda; }
+        .progression-level.intermediate { border-color: #ffc107; background: #fff3cd; }
+        .progression-level.advanced { border-color: #dc3545; background: #f8d7da; }
+        .level-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; margin-right: 10px; }
+        .level-badge.beginner { background: #28a745; color: white; }
+        .level-badge.intermediate { background: #ffc107; color: black; }
+        .level-badge.advanced { background: #dc3545; color: white; }
+        .interactive-section { background: #f0f4ff; border: 2px solid #667eea; border-radius: 10px; padding: 20px; margin: 20px 0; }
+        textarea { width: 100%; min-height: 150px; padding: 15px; border: 2px solid #667eea; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.95em; margin-bottom: 10px; }
+        button { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: bold; transition: all 0.3s ease; margin-right: 10px; }
+        button:hover { transform: scale(1.05); }
+        .output-box { background: #1e1e1e; color: #4ec9b0; padding: 15px; border-radius: 8px; margin-top: 15px; font-family: 'Courier New', monospace; min-height: 50px; max-height: 300px; overflow-y: auto; }
+        .success-badge { background: #d4edda; border: 1px solid #28a745; color: #155724; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .note { background: #e7f3ff; border-left: 4px solid #2196F3; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        table th { background: #667eea; color: white; padding: 12px; text-align: left; }
+        table td { border-bottom: 1px solid #ddd; padding: 10px 12px; }
+        table tr:hover { background: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb"><a href="../index.html">← Back to Learning Path</a></div>
+        <header>
+            <h1>📈 Statistics & Probability</h1>
+            <p>Data Analysis Foundations for Machine Learning</p>
+        </header>
+
+        <!-- INTRO -->
+        <div class="section">
+            <h2>🎯 Why Statistics Matter</h2>
+            <p>Statistics is the science of understanding data. Without statistics, you're just guessing. With statistics, you make informed decisions!</p>
+            <div class="concept-box">
+                <strong>Real-World Applications:</strong><br>
+                🏥 <strong>Medical:</strong> Test effectiveness (p-values)<br>
+                📊 <strong>Business:</strong> Sales prediction, market analysis<br>
+                🗳️ <strong>Politics:</strong> Election polling<br>
+                🎮 <strong>Gaming:</strong> Player behavior analytics<br>
+                🚗 <strong>Insurance:</strong> Risk assessment
+            </div>
+        </div>
+
+        <!-- SECTION 1: BASIC STATISTICS -->
+        <div class="section">
+            <h2>📊 Descriptive Statistics (Describe Your Data)</h2>
+
+            <div class="progression-level beginner">
+                <span class="level-badge beginner">BEGINNER</span>
+                <strong>The 5 Numbers You Need to Know</strong>
+            </div>
+
+            <table>
+                <tr>
+                    <th>Statistic</th>
+                    <th>What It Means</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><strong>Mean (Average)</strong></td>
+                    <td>Add all values, divide by count</td>
+                    <td>[10,20,30] → mean=20</td>
+                </tr>
+                <tr>
+                    <td><strong>Median (Middle)</strong></td>
+                    <td>Middle value when sorted</td>
+                    <td>[10,20,30] → median=20</td>
+                </tr>
+                <tr>
+                    <td><strong>Mode (Most Common)</strong></td>
+                    <td>Value that appears most</td>
+                    <td>[1,1,2,3,3,3] → mode=3</td>
+                </tr>
+                <tr>
+                    <td><strong>Range</strong></td>
+                    <td>Max - Min</td>
+                    <td>[10,20,30] → range=20</td>
+                </tr>
+                <tr>
+                    <td><strong>Std Dev</strong></td>
+                    <td>How spread out is the data?</td>
+                    <td>Small=clustered, Large=spread</td>
+                </tr>
+            </table>
+
+            <h3>Calculate Statistics</h3>
+            <div class="code-block">
+<span class="keyword">import</span> statistics<br>
+<br>
+<span class="comment"># Sample data</span><br>
+scores = [<span class="number">85</span>, <span class="number">90</span>, <span class="number">88</span>, <span class="number">92</span>, <span class="number">87</span>, <span class="number">85</span>, <span class="number">91</span>]<br>
+<br>
+<span class="comment"># Calculate statistics</span><br>
+mean = statistics.mean(scores)              <span class="comment"># 88.3</span><br>
+median = statistics.median(scores)          <span class="comment"># 88</span><br>
+stdev = statistics.stdev(scores)            <span class="comment"># 2.67</span><br>
+<br>
+<span class="keyword">print</span>(f<span class="string">"Mean: {mean:.1f}"</span>)<br>
+<span class="keyword">print</span>(f<span class="string">"Median: {median}"</span>)<br>
+<span class="keyword">print</span>(f<span class="string">"Std Dev: {stdev:.2f}"</span>)
+            </div>
+
+            <div class="interactive-section">
+                <h4>⚡ Calculate Statistics</h4>
+                <textarea id="code1">import statistics
+
+# Test scores data
+scores = [75, 82, 88, 91, 85, 79, 88, 92, 86]
+
+print("=== Descriptive Statistics ===")
+print(f"Data: {scores}")
+print(f"Count: {len(scores)}")
+print(f"Mean (Average): {statistics.mean(scores):.2f}")
+print(f"Median (Middle): {statistics.median(scores)}")
+print(f"Std Deviation: {statistics.stdev(scores):.2f}")
+print(f"Min: {min(scores)}")
+print(f"Max: {max(scores)}")
+print(f"Range: {max(scores) - min(scores)}")
+
+# Quartiles
+sorted_scores = sorted(scores)
+q1 = sorted_scores[len(scores)//4]
+q3 = sorted_scores[3*len(scores)//4]
+print(f"\nQuartiles:")
+print(f"Q1 (25%): {q1}")
+print(f"Q3 (75%): {q3}")</textarea>
+                <button type="button" onclick="runCode('code1', 'output1', event);">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code1', 'import statistics\n\n# Test scores data\nscores = [75, 82, 88, 91, 85, 79, 88, 92, 86]\n\nprint("=== Descriptive Statistics ===")\nprint(f"Data: {scores}")\nprint(f"Count: {len(scores)}")\nprint(f"Mean (Average): {statistics.mean(scores):.2f}")\nprint(f"Median (Middle): {statistics.median(scores)}")\nprint(f"Std Deviation: {statistics.stdev(scores):.2f}")\nprint(f"Min: {min(scores)}")\nprint(f"Max: {max(scores)}")\nprint(f"Range: {max(scores) - min(scores)}")\n\n# Quartiles\nsorted_scores = sorted(scores)\nq1 = sorted_scores[len(scores)//4]\nq3 = sorted_scores[3*len(scores)//4]\nprint(f"\nQuartiles:")\nprint(f"Q1 (25%): {q1}")\nprint(f"Q3 (75%): {q3}")'); return false;">↻ Reset</button>
+                <div id="output1" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: PROBABILITY -->
+        <div class="section">
+            <h2>🎲 Probability (Chance & Randomness)</h2>
+
+            <div class="progression-level intermediate">
+                <span class="level-badge intermediate">INTERMEDIATE</span>
+                <strong>What is Probability?</strong>
+            </div>
+
+            <p><strong>Probability = chance that something happens</strong></p>
+
+            <div class="concept-box">
+                <strong>Coin Toss:</strong> P(Heads) = 1/2 = 0.5 = 50%<br>
+                <strong>Dice Roll:</strong> P(Rolling 6) = 1/6 ≈ 16.7%<br>
+                <strong>Weather:</strong> 80% chance of rain tomorrow<br><br>
+                <strong>Always between 0 and 1:</strong><br>
+                0 = impossible, 0.5 = 50/50, 1 = certain
+            </div>
+
+            <h3>Random Number Generation</h3>
+            <div class="code-block">
+<span class="keyword">import</span> random<br>
+<br>
+<span class="comment"># Random integer between 1-100</span><br>
+dice_roll = random.randint(<span class="number">1</span>, <span class="number">6</span>)<br>
+<br>
+<span class="comment"># Random float between 0-1</span><br>
+probability = random.random()<br>
+<br>
+<span class="comment"># Random choice from list</span><br>
+coin = random.choice([<span class="string">'heads'</span>, <span class="string">'tails'</span>])<br>
+<br>
+<span class="comment"># Shuffle a list</span><br>
+cards = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]<br>
+random.shuffle(cards)<br>
+<br>
+<span class="comment"># Random sample (no replacement)</span><br>
+winners = random.sample([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>], k=<span class="number">2</span>)
+            </div>
+
+            <div class="interactive-section">
+                <h4>⚡ Simulate Probability</h4>
+                <textarea id="code2">import random
+
+# Simulate coin flips
+print("=== Coin Flip Simulation ===")
+flips = 100
+heads = sum(1 for _ in range(flips) if random.random() < 0.5)
+tails = flips - heads
+print(f"Flips: {flips}")
+print(f"Heads: {heads} ({heads/flips*100:.1f}%)")
+print(f"Tails: {tails} ({tails/flips*100:.1f}%)")
+
+# Dice roll distribution
+print("\n=== Dice Roll Simulation ===")
+rolls = 600
+results = {i: 0 for i in range(1, 7)}
+for _ in range(rolls):
+    roll = random.randint(1, 6)
+    results[roll] += 1
+
+for num in range(1, 7):
+    count = results[num]
+    pct = count / rolls * 100
+    print(f"Roll {num}: {count} times ({pct:.1f}%)")
+
+# Birthday paradox simulation
+print("\n=== Random Numbers ===")
+print(f"Random decimal: {random.random():.3f}")
+print(f"Random 1-10: {random.randint(1, 10)}")
+print(f"Random choice: {random.choice(['A', 'B', 'C', 'D'])}")</textarea>
+                <button type="button" onclick="runCode('code2', 'output2', event);">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code2', 'import random\n\n# Simulate coin flips\nprint("=== Coin Flip Simulation ===")\nflips = 100\nheads = sum(1 for _ in range(flips) if random.random() < 0.5)\ntails = flips - heads\nprint(f"Flips: {flips}")\nprint(f"Heads: {heads} ({heads/flips*100:.1f}%)")\nprint(f"Tails: {tails} ({tails/flips*100:.1f}%)")\n\n# Dice roll distribution\nprint("\n=== Dice Roll Simulation ===")\nrolls = 600\nresults = {i: 0 for i in range(1, 7)}\nfor _ in range(rolls):\n    roll = random.randint(1, 6)\n    results[roll] += 1\n\nfor num in range(1, 7):\n    count = results[num]\n    pct = count / rolls * 100\n    print(f"Roll {num}: {count} times ({pct:.1f}%)")\n\n# Birthday paradox simulation\nprint("\n=== Random Numbers ===")\nprint(f"Random decimal: {random.random():.3f}")\nprint(f"Random 1-10: {random.randint(1, 10)}")\nprint(f"Random choice: {random.choice([\'A\', \'B\', \'C\', \'D\'])}")'); return false;">↻ Reset</button>
+                <div id="output2" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: DISTRIBUTIONS -->
+        <div class="section">
+            <h2>📊 Probability Distributions</h2>
+
+            <div class="progression-level advanced">
+                <span class="level-badge advanced">ADVANCED</span>
+                <strong>Normal Distribution (Bell Curve)</strong>
+            </div>
+
+            <p>The most common distribution in nature! Heights, test scores, IQ—all follow this pattern:</p>
+
+            <div class="concept-box">
+                <strong>Bell Curve Properties:</strong><br>
+                • 68% of data within 1 std dev<br>
+                • 95% of data within 2 std devs<br>
+                • 99.7% of data within 3 std devs<br>
+                • Symmetric around mean<br>
+                • Most values near center
+            </div>
+
+            <h3>Working with Distributions</h3>
+            <div class="code-block">
+<span class="keyword">import</span> random<br>
+<br>
+<span class="comment"># Normal distribution (bell curve)</span><br>
+<span class="comment"># Mean=100, StdDev=15 (like IQ scores)</span><br>
+iq_score = random.gauss(mu=<span class="number">100</span>, sigma=<span class="number">15</span>)<br>
+<br>
+<span class="comment"># Generate multiple scores</span><br>
+iq_scores = [random.gauss(<span class="number">100</span>, <span class="number">15</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">1000</span>)]<br>
+<br>
+<span class="comment"># Create histogram to visualize</span><br>
+<span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt<br>
+plt.hist(iq_scores, bins=<span class="number">30</span>)<br>
+plt.title(<span class="string">'IQ Score Distribution'</span>)<br>
+plt.xlabel(<span class="string">'IQ Score'</span>)<br>
+plt.ylabel(<span class="string">'Frequency'</span>)<br>
+plt.show()
+            </div>
+        </div>
+
+        <!-- SECTION 4: CORRELATION & REGRESSION -->
+        <div class="section">
+            <h2>🔗 Correlation & Relationships</h2>
+
+            <div class="progression-level advanced">
+                <span class="level-badge advanced">ADVANCED</span>
+                <strong>Finding Patterns in Data</strong>
+            </div>
+
+            <p><strong>Correlation:</strong> Do two variables move together?</p>
+
+            <div class="concept-box">
+                <strong>Correlation Coefficient (r):</strong><br>
+                +1.0 = Perfect positive (both increase together)<br>
+                0.0 = No relationship<br>
+                -1.0 = Perfect negative (one increases, other decreases)<br><br>
+                <strong>Examples:</strong><br>
+                Height & Weight: +0.8 (positive)<br>
+                Speed & Time to Finish: -0.9 (negative)<br>
+                Shoe Size & IQ: 0.0 (no correlation)
+            </div>
+
+            <h3>Calculate Correlation</h3>
+            <div class="code-block">
+<span class="keyword">import</span> statistics<br>
+<br>
+<span class="comment"># Data: Hours studied vs Test Score</span><br>
+hours = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]<br>
+scores = [<span class="number">60</span>, <span class="number">70</span>, <span class="number">75</span>, <span class="number">85</span>, <span class="number">90</span>]<br>
+<br>
+<span class="comment"># Calculate correlation coefficient</span><br>
+n = len(hours)<br>
+mean_h = statistics.mean(hours)<br>
+mean_s = statistics.mean(scores)<br>
+<br>
+<span class="comment"># Covariance calculation (simplified)</span><br>
+covariance = sum((hours[i]-mean_h)*(scores[i]-mean_s) <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for i in range(n)) / n
+            </div>
+        </div>
+
+        <!-- KEY TAKEAWAYS -->
+        <div class="section">
+            <h2>✨ Key Takeaways</h2>
+
+            <div class="concept-box">
+                <strong>✅ Descriptive Statistics:</strong><br>
+                • Mean = average<br>
+                • Median = middle value<br>
+                • Std Dev = spread/variability<br><br>
+
+                <strong>✅ Probability:</strong><br>
+                • Ranges from 0 to 1<br>
+                • random.randint(), random.choice()<br>
+                • Simulations reveal patterns<br><br>
+
+                <strong>✅ Distributions:</strong><br>
+                • Normal (bell curve) is most common<br>
+                • 68-95-99.7 rule<br>
+                • Visualization shows patterns<br><br>
+
+                <strong>🎯 Golden Rule:</strong><br>
+                <strong>"Let the data speak! Use statistics to find truth."</strong>
+            </div>
+
+            <h3>📚 What's Next?</h3>
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li>🤖 <strong>Machine Learning:</strong> Use statistics to predict</li>
+                <li>🧠 <strong>Deep Learning:</strong> Neural networks & AI</li>
+                <li>💡 <strong>AI Projects:</strong> Real-world applications</li>
+            </ul>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="../08_Data_Visualization/index.html">← Previous: Data Visualization</a>
+            <a href="../10_Machine_Learning/index.html">Next: Machine Learning →</a>
+        </div>
+    </div>
+
+    <script>
+        function runCode(textareaId, outputId, event) {
+            if (event) { event.preventDefault(); event.stopPropagation(); }
+            const code = document.getElementById(textareaId).value;
+            const outputBox = document.getElementById(outputId);
+            outputBox.innerHTML = '';
+            try {
+                let output = '';
+                const customLog = function(...args) { output += args.join(' ') + '\n'; };
+                const originalLog = console.log;
+                console.log = customLog;
+                eval(code);
+                console.log = originalLog;
+                outputBox.innerHTML = output || '✓ Code executed!';
+            } catch (error) {
+                outputBox.innerHTML = `<span style="color: #ff6b6b;">❌ Error: ${error.message}</span>`;
+            }
+            return false;
+        }
+
+        function resetCode(textareaId, defaultCode, event) {
+            if (event) { event.preventDefault(); event.stopPropagation(); }
+            document.getElementById(textareaId).value = defaultCode;
+            const outputId = textareaId.replace('code', 'output');
+            document.getElementById(outputId).innerHTML = '';
+            return false;
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) {
+                e.preventDefault();
+            }
+        }, true);
+        window.print = function() { return false; };
+    </script>
+</body>
+</html>

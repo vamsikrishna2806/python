@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Learning Journey: Zero to AI Development</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: slideDown 0.8s ease;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .learning-path {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .module {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .module-level {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .level-beginner { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .level-advanced { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .level-expert { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+
+        .module-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .module h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .module p {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .module-topics {
+            font-size: 0.85em;
+            color: #888;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
+        .module-topics li {
+            list-style: none;
+            padding: 4px 0;
+        }
+
+        .module-topics li:before {
+            content: "✓ ";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .roadmap {
+            margin-top: 50px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .roadmap h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .roadmap-timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .roadmap-item {
+            display: flex;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .roadmap-item:before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 40px;
+            bottom: -30px;
+            width: 2px;
+            background: #667eea;
+        }
+
+        .roadmap-item:last-child:before {
+            display: none;
+        }
+
+        .roadmap-circle {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .roadmap-content {
+            margin-left: 30px;
+            flex: 1;
+        }
+
+        .roadmap-content h3 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .roadmap-content p {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .features {
+            margin-top: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .features h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐍 Python Learning Journey</h1>
+            <p class="subtitle">From Zero to AI Development Expert</p>
+            <div class="progress-bar">
+                <div style="height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); width: 0%;"></div>
+            </div>
+        </header>
+
+        <div class="learning-path">
+            <!-- BEGINNER MODULES -->
+            <div class="module" onclick="location.href='01_Python_Basics/index.html'">
+                <span class="module-level level-beginner">BEGINNER</span>
+                <div class="module-icon">🚀</div>
+                <h3>1. Python Basics</h3>
+                <p>Start your Python journey with fundamental concepts and syntax.</p>
+                <ul class="module-topics">
+                    <li>Variables & Data Types</li>
+                    <li>Operations</li>
+                    <li>Input/Output</li>
+                </ul>
+                <button class="cta-button">Start Learning →</button>
+            </div>
+
+            <div class="module" onclick="location.href='02_Control_Flow/index.html'">
+                <span class="module-level level-beginner">BEGINNER</span>
+                <div class="module-icon">🔀</div>
+                <h3>2. Control Flow</h3>
+                <p>Learn how to make decisions and repeat code with conditions and loops.</p>
+                <ul class="module-topics">
+                    <li>If/Else Statements</li>
+                    <li>For & While Loops</li>
+                    <li>Loop Control</li>
+                </ul>
+                <button class="cta-button">Start Learning →</button>
+            </div>
+
+            <div class="module" onclick="location.href='03_Data_Structures/index.html'">
+                <span class="module-level level-beginner">BEGINNER</span>
+                <div class="module-icon">📦</div>
+                <h3>3. Data Structures</h3>
+                <p>Master lists, tuples, dictionaries and sets for efficient data handling.</p>
+                <ul class="module-topics">
+                    <li>Lists & Operations</li>
+                    <li>Dictionaries</li>
+                    <li>Sets & Tuples</li>
+                </ul>
+                <button class="cta-button">Start Learning →</button>
+            </div>
+
+            <!-- INTERMEDIATE MODULES -->
+            <div class="module" onclick="location.href='04_Functions/index.html'">
+                <span class="module-level level-intermediate">INTERMEDIATE</span>
+                <div class="module-icon">⚙️</div>
+                <h3>4. Functions</h3>
+                <p>Write reusable code with functions, parameters, and return values.</p>
+                <ul class="module-topics">
+                    <li>Function Definition</li>
+                    <li>Parameters & Returns</li>
+                    <li>Scope & Closures</li>
+                </ul>
+                <button class="cta-button">Start Learning →</button>
+            </div>
+
+            <div class="module" onclick="location.href='05_OOP/index.html'">
+                <span class="module-level level-intermediate">INTERMEDIATE</span>
+                <div class="module-icon">🏗️</div>
+                <h3>5. Object-Oriented Programming</h3>
+                <p>Build scalable applications with classes, inheritance, and polymorphism.</p>
+                <ul class="module-topics">
+                    <li>Classes & Objects</li>
+                    <li>Inheritance</li>
+                    <li>Polymorphism</li>
+                </ul>
+                <button class="cta-button">Start Learning →</button>
+            </div>
+
+            <div class="module" onclick="location.href='06_File_Handling/index.html'">
+                <span class="module-level level-intermediate">INTERMEDIATE</span>
+                <div class="module-icon">📄</div>
+                <h3>6. File Handling</h3>
+                <p>Read, write, and manage files with Python.</p>
+                <ul class="module-topics">
+                    <li>File Operations</li>
+                    <li>Text Processing</li>
+                    <li>JSON & CSV</li>
+                </ul>
+                <button class="cta-button">Start Learning →</button>
+            </div>
+
+            <!-- ADVANCED MODULES -->
+            <div class="module" onclick="location.href='07_Libraries/index.html'">
+                <span class="module-level level-advanced">ADVANCED</span>
+                <div class="module-icon">📚</div>
+                <h3>7. Popular Libraries</h3>
+                <p>Explore NumPy, Pandas, and other essential Python libraries.</p>
+                <ul class="module-topics">
+                    <li>NumPy Arrays</li>
+                    <li>Pandas DataFrames</li>
+                    <li>Data Manipulation</li>
+                </ul>
+                <button class="cta-button">Start Learning →</button>
+            </div>
+
+            <div class="module" onclick="location.href='08_Data_Visualization/index.html'">
+                <span class="module-level level-advanced">ADVANCED</span>
+                <div class="module-icon">📊</div>
+                <h3>8. Data Visualization</h3>
+                <p>Create beautiful charts and graphs with Matplotlib and Seaborn.</p>
+                <ul class="module-topics">
+                    <li>Matplotlib Basics</li>
+                    <li>Advanced Plots</li>
+                    <li>Interactive Viz</li>
+                </ul>
+                <button class="cta-button">Start Learning →</button>
+            </div>
+
+            <!-- EXPERT MODULES -->
+            <div class="module" onclick="location.href='09_Statistics/index.html'">
+                <span class="module-level level-expert">EXPERT</span>
+                <div class="module-icon">📈</div>
+                <h3>9. Statistics & Probability</h3>
+                <p>Understand statistical concepts essential for data science and AI.</p>
+                <ul class="module-topics">
+                    <li>Descriptive Stats</li>
+                    <li>Distributions</li>
+                    <li>Hypothesis Testing</li>
+                </ul>
+                <button class="cta-button">Start Learning →</button>
+            </div>
+
+            <div class="module" onclick="location.href='10_Machine_Learning/index.html'">
+                <span class="module-level level-expert">EXPERT</span>
+                <div class="module-icon">🤖</div>
+                <h3>10. Machine Learning Fundamentals</h3>
+                <p>Build, train, and evaluate machine learning models.</p>
+                <ul class="module-topics">
+                    <li>Supervised Learning</li>
+                    <li>Unsupervised Learning</li>
+                    <li>Model Evaluation</li>
+                </ul>
+                <button class="cta-button">Start Learning →</button>
+            </div>
+
+            <div class="module" onclick="location.href='11_Deep_Learning/index.html'">
+                <span class="module-level level-expert">EXPERT</span>
+                <div class="module-icon">🧠</div>
+                <h3>11. Deep Learning & Neural Networks</h3>
+                <p>Master neural networks, CNNs, RNNs, and modern deep learning.</p>
+                <ul class="module-topics">
+                    <li>Neural Networks</li>
+                    <li>CNNs & RNNs</li>
+                    <li>TensorFlow/Keras</li>
+                </ul>
+                <button class="cta-button">Start Learning →</button>
+            </div>
+
+            <div class="module" onclick="location.href='12_AI_Projects/index.html'">
+                <span class="module-level level-expert">EXPERT</span>
+                <div class="module-icon">🎯</div>
+                <h3>12. Real-World AI Projects</h3>
+                <p>Apply all concepts with complete AI/ML projects from start to finish.</p>
+                <ul class="module-topics">
+                    <li>Image Classification</li>
+                    <li>NLP Applications</li>
+                    <li>Predictive Analytics</li>
+                </ul>
+                <button class="cta-button">Start Learning →</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>🐍 Start your Python journey today | Learn at your own pace | From Beginner to AI Expert</p>
+        </footer>
+    </div>
+</body>
+</html>

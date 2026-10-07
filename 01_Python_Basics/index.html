@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Basics - Complete Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @media print {
+            html { display: none !important; }
+            body { display: none !important; }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb {
+            color: rgba(255,255,255,0.8);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            font-size: 1.8em;
+        }
+
+        .section h3 {
+            color: #333;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .concept-box {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .concept-box strong {
+            color: #667eea;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', 'Consolas', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .keyword { color: #569cd6; font-weight: bold; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; font-style: italic; }
+
+        .interactive-section {
+            background: #f0f4ff;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .interactive-section h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .interactive-section h4:before {
+            content: "⚡ ";
+            margin-right: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .output-box {
+            background: #1e1e1e;
+            color: #4ec9b0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            min-height: 50px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #667eea;
+        }
+
+        .output-line {
+            margin: 5px 0;
+        }
+
+        .visualization {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .example-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .example-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .example-table td {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 12px;
+        }
+
+        .example-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .nav-buttons a {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-buttons a:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .data-type-viz {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .data-type-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .data-type-card h4 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .data-type-card p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .comparison-viz {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .comparison-item {
+            flex: 1;
+            min-width: 200px;
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="../index.html">← Back to Learning Path</a>
+        </div>
+
+        <header>
+            <h1>🚀 Python Basics</h1>
+            <p>Your First Steps into Programming</p>
+        </header>
+
+        <!-- SECTION 1: WHAT IS PYTHON? -->
+        <div class="section">
+            <h2>📚 What is Python?</h2>
+
+            <p>Python is a <strong>high-level, interpreted programming language</strong> known for its simplicity and readability. Think of it as a way to give instructions to a computer in a language that's easy for humans to understand.</p>
+
+            <div class="concept-box">
+                <strong>Why Python?</strong><br>
+                ✓ Easy to learn and read<br>
+                ✓ Powerful for data science and AI<br>
+                ✓ Large community and libraries<br>
+                ✓ Used by Google, Netflix, NASA, etc.<br>
+            </div>
+
+            <h3>Python in Real World</h3>
+            <div class="data-type-viz">
+                <div class="data-type-card">
+                    <h4>🌐 Web</h4>
+                    <p>Instagram, Spotify, Netflix</p>
+                </div>
+                <div class="data-type-card">
+                    <h4>🤖 AI/ML</h4>
+                    <p>Tesla, Google, Facebook</p>
+                </div>
+                <div class="data-type-card">
+                    <h4>📊 Data Science</h4>
+                    <p>NASA, Banking, Finance</p>
+                </div>
+                <div class="data-type-card">
+                    <h4>🎮 Games</h4>
+                    <p>Game Development, Scripting</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: YOUR FIRST PROGRAM -->
+        <div class="section">
+            <h2>👋 Your First Program</h2>
+
+            <p>Every programmer starts with printing "Hello, World!" Let's do it together:</p>
+
+            <div class="code-block">
+<span class="keyword">print</span>(<span class="string">"Hello, World!"</span>)
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try It Yourself</h4>
+                <p>Edit the code below and click "Run Code" to see what happens:</p>
+                <textarea id="code1" placeholder="Enter Python code here...">print("Hello, World!")</textarea>
+                <button type="button" onclick="runCode('code1', 'output1', event); return false;" onmousedown="event.preventDefault(); return false;">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code1', 'print(\"Hello, World!\")'); return false;">↻ Reset</button>
+                <div id="output1" class="output-box"></div>
+            </div>
+
+            <div class="success">
+                🎉 <strong>Congratulations!</strong> You just ran your first Python program!
+            </div>
+        </div>
+
+        <!-- SECTION 3: VARIABLES AND DATA TYPES -->
+        <div class="section">
+            <h2>📦 Variables & Data Types</h2>
+
+            <p>Variables are like <strong>containers that store information</strong>. Data types tell us what kind of data is stored.</p>
+
+            <h3>Main Data Types in Python</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Data Type</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>int</strong></td>
+                        <td>Whole numbers</td>
+                        <td>age = 25</td>
+                    </tr>
+                    <tr>
+                        <td><strong>float</strong></td>
+                        <td>Decimal numbers</td>
+                        <td>height = 5.9</td>
+                    </tr>
+                    <tr>
+                        <td><strong>str</strong></td>
+                        <td>Text/Characters</td>
+                        <td>name = "John"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>bool</strong></td>
+                        <td>True or False</td>
+                        <td>is_student = True</td>
+                    </tr>
+                    <tr>
+                        <td><strong>list</strong></td>
+                        <td>Ordered collection</td>
+                        <td>colors = ["red", "blue"]</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>🎨 Visual Understanding of Variables</h3>
+            <div class="visualization">
+                <canvas id="variableViz"></canvas>
+            </div>
+
+            <h3>Creating and Using Variables</h3>
+            <div class="code-block">
+<span class="comment"># Creating variables</span><br>
+<span class="keyword">name</span> = <span class="string">"Alice"</span>            <span class="comment"># String variable</span><br>
+<span class="keyword">age</span> = <span class="number">20</span>               <span class="comment"># Integer variable</span><br>
+<span class="keyword">height</span> = <span class="number">5.6</span>             <span class="comment"># Float variable</span><br>
+<span class="keyword">is_student</span> = <span class="keyword">True</span>        <span class="comment"># Boolean variable</span><br>
+<br>
+<span class="comment"># Using variables</span><br>
+<span class="keyword">print</span>(<span class="keyword">name</span>)<br>
+<span class="keyword">print</span>(<span class="string">"Age:"</span>, <span class="keyword">age</span>)
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Creating Variables</h4>
+                <textarea id="code2" placeholder="Enter Python code here...">name = "Your Name"
+age = 20
+height = 5.8
+
+print("Name:", name)
+print("Age:", age)
+print("Height:", height)</textarea>
+                <button type="button" onclick="runCode('code2', 'output2', event); return false;" onmousedown="event.preventDefault(); return false;">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code2', 'name = \"Your Name\"\nage = 20\nheight = 5.8\n\nprint(\"Name:\", name)\nprint(\"Age:\", age)\nprint(\"Height:\", height)', event); return false;" onmousedown="event.preventDefault(); return false;">↻ Reset</button>
+                <div id="output2" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: BASIC OPERATIONS -->
+        <div class="section">
+            <h2>🔢 Basic Operations</h2>
+
+            <h3>Arithmetic Operations</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Symbol</th>
+                        <th>Example</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Addition</td>
+                        <td>+</td>
+                        <td>5 + 3</td>
+                        <td>8</td>
+                    </tr>
+                    <tr>
+                        <td>Subtraction</td>
+                        <td>-</td>
+                        <td>10 - 4</td>
+                        <td>6</td>
+                    </tr>
+                    <tr>
+                        <td>Multiplication</td>
+                        <td>*</td>
+                        <td>6 * 7</td>
+                        <td>42</td>
+                    </tr>
+                    <tr>
+                        <td>Division</td>
+                        <td>/</td>
+                        <td>15 / 3</td>
+                        <td>5.0</td>
+                    </tr>
+                    <tr>
+                        <td>Integer Division</td>
+                        <td>//</td>
+                        <td>17 // 5</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>Modulus (Remainder)</td>
+                        <td>%</td>
+                        <td>17 % 5</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>Power</td>
+                        <td>**</td>
+                        <td>2 ** 3</td>
+                        <td>8</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Let's Calculate!</h3>
+            <div class="code-block">
+<span class="comment"># Basic math operations</span><br>
+<span class="keyword">x</span> = <span class="number">10</span><br>
+<span class="keyword">y</span> = <span class="number">3</span><br>
+<br>
+<span class="keyword">print</span>(<span class="string">"10 + 3 ="</span>, <span class="keyword">x</span> + <span class="keyword">y</span>)<br>
+<span class="keyword">print</span>(<span class="string">"10 - 3 ="</span>, <span class="keyword">x</span> - <span class="keyword">y</span>)<br>
+<span class="keyword">print</span>(<span class="string">"10 * 3 ="</span>, <span class="keyword">x</span> * <span class="keyword">y</span>)<br>
+<span class="keyword">print</span>(<span class="string">"10 / 3 ="</span>, <span class="keyword">x</span> / <span class="keyword">y</span>)<br>
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Mathematical Operations</h4>
+                <textarea id="code3" placeholder="Enter Python code here...">a = 20
+b = 5
+
+print("Addition:", a + b)
+print("Subtraction:", a - b)
+print("Multiplication:", a * b)
+print("Division:", a / b)
+print("Power (a to power b):", a ** 2)</textarea>
+                <button type="button" onclick="runCode('code3', 'output3', event); return false;" onmousedown="event.preventDefault(); return false;">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code3', 'a = 20\nb = 5\n\nprint(\"Addition:\", a + b)\nprint(\"Subtraction:\", a - b)\nprint(\"Multiplication:\", a * b)\nprint(\"Division:\", a / b)\nprint(\"Power (a to power b):\", a ** 2)'); return false;">↻ Reset</button>
+                <div id="output3" class="output-box"></div>
+            </div>
+
+            <h3>String Operations</h3>
+            <p>You can also perform operations on text (strings):</p>
+
+            <div class="code-block">
+<span class="comment"># Concatenating (joining) strings</span><br>
+first_name = <span class="string">"John"</span><br>
+last_name = <span class="string">"Doe"</span><br>
+full_name = first_name + <span class="string">" "</span> + last_name<br>
+<span class="keyword">print</span>(full_name)  <span class="comment"># Output: John Doe</span><br>
+<br>
+<span class="comment"># Repeating strings</span><br>
+<span class="keyword">print</span>(<span class="string">"Python"</span> * 3)  <span class="comment"># Output: PythonPythonPython</span>
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try String Operations</h4>
+                <textarea id="code4" placeholder="Enter Python code here...">greeting = "Hello"
+name = "World"
+
+# Combine strings
+message = greeting + ", " + name + "!"
+print(message)
+
+# Repeat strings
+print("*" * 20)
+print(greeting * 2)</textarea>
+                <button type="button" onclick="runCode('code4', 'output4', event); return false;" onmousedown="event.preventDefault(); return false;">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code4', 'greeting = \"Hello\"\nname = \"World\"\n\n# Combine strings\nmessage = greeting + \", \" + name + \"!\"\nprint(message)\n\n# Repeat strings\nprint(\"*\" * 20)\nprint(greeting * 2)'); return false;">↻ Reset</button>
+                <div id="output4" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: INPUT & OUTPUT -->
+        <div class="section">
+            <h2>📥 Input & Output</h2>
+
+            <h3>Getting Input from User</h3>
+            <p>The <code>input()</code> function lets users give you information:</p>
+
+            <div class="code-block">
+<span class="comment"># Ask user for input</span><br>
+name = <span class="keyword">input</span>(<span class="string">"What is your name? "</span>)<br>
+age = <span class="keyword">input</span>(<span class="string">"How old are you? "</span>)<br>
+<br>
+<span class="keyword">print</span>(<span class="string">"Hello,</span> " + name)<br>
+<span class="keyword">print</span>(<span class="string">"You are "</span> + age + <span class="string">" years old"</span>)
+            </div>
+
+            <div class="note">
+                ⚠️ <strong>Note:</strong> The input() function always returns text (string), even if the user types numbers. We'll learn how to convert this later!
+            </div>
+
+            <h3>Different Ways to Print</h3>
+
+            <div class="code-block">
+<span class="comment"># Simple print</span><br>
+<span class="keyword">print</span>(<span class="string">"Welcome to Python!"</span>)<br>
+<br>
+<span class="comment"># Print multiple items</span><br>
+<span class="keyword">print</span>(<span class="string">"Name:"</span>, <span class="string">"John"</span>, <span class="string">"Age:"</span>, 25)<br>
+<br>
+<span class="comment"># Print with new lines</span><br>
+<span class="keyword">print</span>(<span class="string">"Line 1</span><span class="string">\n</span><span class="string">Line 2"</span>)<br>
+<br>
+<span class="comment"># Print with formatting (f-strings)</span><br>
+name = <span class="string">"Alice"</span><br>
+age = 30<br>
+<span class="keyword">print</span>(<span class="string">f"My name is {name} and I am {age} years old"</span>)
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Different Print Statements</h4>
+                <textarea id="code5" placeholder="Enter Python code here...">name = "Your Name"
+score = 95
+
+# Different printing methods
+print("Simple output")
+print("Name:", name)
+print("Score:", score)
+print(f"My name is {name} and my score is {score}")
+print("=" * 40)  # Print a line</textarea>
+                <button type="button" onclick="runCode('code5', 'output5', event); return false;" onmousedown="event.preventDefault(); return false;">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code5', 'name = \"Your Name\"\nscore = 95\n\n# Different printing methods\nprint(\"Simple output\")\nprint(\"Name:\", name)\nprint(\"Score:\", score)\nprint(f\"My name is {name} and my score is {score}\")\nprint(\"=\" * 40)  # Print a line'); return false;">↻ Reset</button>
+                <div id="output5" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: CHALLENGE PROJECT -->
+        <div class="section">
+            <h2>🎯 Challenge Project</h2>
+
+            <h3>Create a Simple Calculator</h3>
+            <p>Use everything you learned to create a calculator that:</p>
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li>✅ Takes two numbers as input</li>
+                <li>✅ Adds them together</li>
+                <li>✅ Displays the result nicely</li>
+            </ul>
+
+            <h3>Solution:</h3>
+            <div class="code-block">
+<span class="comment"># Simple Calculator</span><br>
+num1 = <span class="keyword">float</span>(<span class="keyword">input</span>(<span class="string">"Enter first number: "</span>))<br>
+num2 = <span class="keyword">float</span>(<span class="keyword">input</span>(<span class="string">"Enter second number: "</span>))<br>
+<br>
+sum_result = num1 + num2<br>
+<br>
+<span class="keyword">print</span>(<span class="string">f"{num1} + {num2} = {sum_result}"</span>)
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try the Calculator</h4>
+                <textarea id="code6" placeholder="Enter Python code here..."># Calculator Program
+num1 = float(input("Enter first number: "))
+num2 = float(input("Enter second number: "))
+
+sum_result = num1 + num2
+difference = num1 - num2
+product = num1 * num2
+division = num1 / num2
+
+print(f"\n{num1} + {num2} = {sum_result}")
+print(f"{num1} - {num2} = {difference}")
+print(f"{num1} * {num2} = {product}")
+print(f"{num1} / {num2} = {division}")</textarea>
+                <button type="button" onclick="runCode('code6', 'output6', event); return false;" onmousedown="event.preventDefault(); return false;">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code6', '# Calculator Program\nnum1 = float(input(\"Enter first number: \"))\nnum2 = float(input(\"Enter second number: \"))\n\nsum_result = num1 + num2\ndifference = num1 - num2\nproduct = num1 * num2\ndivision = num1 / num2\n\nprint(f\"\\n{num1} + {num2} = {sum_result}\")\nprint(f\"{num1} - {num2} = {difference}\")\nprint(f\"{num1} * {num2} = {product}\")\nprint(f\"{num1} / {num2} = {division}\")'); return false;">↻ Reset</button>
+                <div id="output6" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- KEY TAKEAWAYS -->
+        <div class="section">
+            <h2>✨ Key Takeaways</h2>
+
+            <div class="concept-box">
+                <strong>1. Variables:</strong> Containers that store data<br><br>
+                <strong>2. Data Types:</strong> int, float, str, bool, list<br><br>
+                <strong>3. Operations:</strong> +, -, *, /, %, **, //<br><br>
+                <strong>4. Output:</strong> print() to display results<br><br>
+                <strong>5. Input:</strong> input() to get user data<br>
+            </div>
+
+            <h3>What's Next?</h3>
+            <p>Now that you understand the basics, you're ready to learn about <strong>Control Flow</strong> - how to make decisions in your code using if/else statements and loops!</p>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="../index.html">← Back to Learning Path</a>
+            <a href="../02_Control_Flow/index.html">Next: Control Flow →</a>
+        </div>
+    </div>
+
+    <script>
+        function runCode(textareaId, outputId, event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+            }
+
+            const code = document.getElementById(textareaId).value;
+            const outputBox = document.getElementById(outputId);
+            outputBox.innerHTML = '';
+
+            try {
+                let output = '';
+                const customLog = function(...args) {
+                    output += args.join(' ') + '\n';
+                };
+
+                const originalLog = console.log;
+                console.log = customLog;
+
+                // Also intercept window.print to prevent dialog
+                const originalPrint = window.print;
+                window.print = function() { console.log("[Print output]"); };
+
+                eval(code);
+
+                console.log = originalLog;
+                window.print = originalPrint;
+
+                outputBox.innerHTML = output || '✓ Code executed successfully!';
+            } catch (error) {
+                outputBox.innerHTML = `<span style="color: #ff6b6b;">❌ Error: ${error.message}</span>`;
+            }
+            return false;
+        }
+
+        function resetCode(textareaId, defaultCode, event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+            }
+            document.getElementById(textareaId).value = defaultCode;
+            const outputId = textareaId.replace('code', 'output');
+            document.getElementById(outputId).innerHTML = '';
+            return false;
+        }
+
+        // Aggressive print prevention
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                return false;
+            }
+        }, true);
+
+        // Also prevent through window.print()
+        window.print = function() {
+            console.log("Print blocked - use code execution instead");
+            return false;
+        };
+
+        // Prevent printing via any method
+        document.onkeydown = function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        };
+
+        // Stop beforeprint event
+        window.addEventListener('beforeprint', function(e) {
+            e.preventDefault();
+            return false;
+        }, true);
+
+        // Create visualization for variables
+        window.addEventListener('load', function() {
+            const ctx = document.getElementById('variableViz');
+            if (ctx) {
+                ctx.width = ctx.parentElement.offsetWidth;
+                ctx.height = 250;
+
+                const canvasContext = ctx.getContext('2d');
+
+                // Draw boxes for variables
+                const boxes = [
+                    {x: 20, y: 40, label: 'name', value: '"Alice"', color: '#667eea'},
+                    {x: 270, y: 40, label: 'age', value: '20', color: '#764ba2'},
+                    {x: 520, y: 40, label: 'height', value: '5.6', color: '#f5576c'}
+                ];
+
+                boxes.forEach(box => {
+                    canvasContext.fillStyle = box.color;
+                    canvasContext.fillRect(box.x, box.y, 200, 80);
+                    canvasContext.fillStyle = '#ffffff';
+                    canvasContext.font = 'bold 14px Arial';
+                    canvasContext.fillText(box.label + ':', box.x + 10, box.y + 30);
+                    canvasContext.font = '12px Arial';
+                    canvasContext.fillText(box.value, box.x + 10, box.y + 55);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

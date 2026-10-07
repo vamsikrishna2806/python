@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Structures - Lists, Dicts, Sets & Tuples</title>
+    <style>
+        @media print {
+            html { display: none !important; }
+            body { display: none !important; }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .breadcrumb {
+            color: rgba(255,255,255,0.8);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section h2 {
+            color: #fa709a;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #fa709a;
+            font-size: 1.8em;
+        }
+
+        .section h3 {
+            color: #333;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .concept-box {
+            background: #fff5f7;
+            border-left: 4px solid #fa709a;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', 'Consolas', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+            border-left: 4px solid #fa709a;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .interactive-section {
+            background: #fff5f7;
+            border: 2px solid #fa709a;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #fa709a;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .output-box {
+            background: #1e1e1e;
+            color: #4ec9b0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            min-height: 50px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .comparison-card {
+            background: #fff5f7;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #fa709a;
+        }
+
+        .comparison-card h4 {
+            color: #fa709a;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        table th {
+            background: #fa709a;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table td {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 12px;
+        }
+
+        table tr:hover {
+            background: #fff5f7;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .nav-buttons a {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="../index.html">← Back to Learning Path</a>
+        </div>
+
+        <header>
+            <h1>📦 Data Structures</h1>
+            <p>Lists, Dictionaries, Sets & Tuples</p>
+        </header>
+
+        <!-- LISTS -->
+        <div class="section">
+            <h2>📝 Lists - Ordered Collections</h2>
+
+            <p>Lists are <strong>ordered collections of items</strong> that can be changed. Perfect for storing related data!</p>
+
+            <div class="concept-box">
+                <strong>Key Points:</strong><br>
+                ✓ Ordered (maintains position)<br>
+                ✓ Mutable (can be changed)<br>
+                ✓ Allow duplicates<br>
+                ✓ Use square brackets []
+            </div>
+
+            <h3>Creating & Accessing Lists</h3>
+            <div class="code-block">
+# Creating a list
+fruits = ["apple", "banana", "cherry"]
+
+# Accessing items (0-indexed)
+print(fruits[0])  # apple
+print(fruits[1])  # banana
+print(fruits[-1]) # cherry (last item)
+
+# List length
+print(len(fruits))  # 3
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Working with Lists</h4>
+                <textarea id="code1">numbers = [1, 2, 3, 4, 5]
+
+# Access items
+print("First:", numbers[0])
+print("Last:", numbers[-1])
+print("Length:", len(numbers))
+
+# Add items
+numbers.append(6)
+print("After append:", numbers)
+
+# Remove items
+numbers.remove(3)
+print("After remove:", numbers)
+
+# Modify items
+numbers[0] = 10
+print("After modification:", numbers)
+
+# Slice a list
+print("First 3:", numbers[0:3])</textarea>
+                <button type="button" onclick="runCode('code1', 'output1'); return false;">▶ Run Code</button>
+                <div id="output1" class="output-box"></div>
+            </div>
+
+            <h3>List Methods</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>append()</td>
+                        <td>Add item to end</td>
+                        <td>list.append(5)</td>
+                    </tr>
+                    <tr>
+                        <td>insert()</td>
+                        <td>Add item at position</td>
+                        <td>list.insert(0, 5)</td>
+                    </tr>
+                    <tr>
+                        <td>remove()</td>
+                        <td>Remove first occurrence</td>
+                        <td>list.remove(5)</td>
+                    </tr>
+                    <tr>
+                        <td>pop()</td>
+                        <td>Remove last item</td>
+                        <td>list.pop()</td>
+                    </tr>
+                    <tr>
+                        <td>sort()</td>
+                        <td>Sort list</td>
+                        <td>list.sort()</td>
+                    </tr>
+                    <tr>
+                        <td>reverse()</td>
+                        <td>Reverse order</td>
+                        <td>list.reverse()</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- DICTIONARIES -->
+        <div class="section">
+            <h2>🔑 Dictionaries - Key-Value Pairs</h2>
+
+            <p>Dictionaries store <strong>key-value pairs</strong> for quick lookup. Like a real dictionary!</p>
+
+            <div class="concept-box">
+                <strong>Key Points:</strong><br>
+                ✓ Unordered (indexed by key)<br>
+                ✓ Mutable (can be changed)<br>
+                ✓ Use curly braces {}<br>
+                ✓ Access with key, not position
+            </div>
+
+            <h3>Creating & Using Dictionaries</h3>
+            <div class="code-block">
+# Creating a dictionary
+student = {
+    "name": "Alice",
+    "age": 20,
+    "grade": "A"
+}
+
+# Accessing values
+print(student["name"])  # Alice
+print(student["age"])   # 20
+
+# Adding new key-value pair
+student["email"] = "alice@email.com"
+
+# Modifying values
+student["age"] = 21
+
+# Getting all keys and values
+print(student.keys())
+print(student.values())
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Working with Dictionaries</h4>
+                <textarea id="code2">person = {
+    "name": "John",
+    "age": 25,
+    "city": "New York",
+    "job": "Engineer"
+}
+
+# Access values
+print("Name:", person["name"])
+print("Age:", person["age"])
+
+# Add new key
+person["hobby"] = "Programming"
+print("Updated:", person)
+
+# Update existing key
+person["age"] = 26
+print("New age:", person["age"])
+
+# Check if key exists
+if "name" in person:
+    print("Name exists!")
+
+# Get all pairs
+print("\nAll information:")
+for key, value in person.items():
+    print(f"  {key}: {value}")</textarea>
+                <button type="button" onclick="runCode('code2', 'output2'); return false;">▶ Run Code</button>
+                <div id="output2" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SETS -->
+        <div class="section">
+            <h2>🎯 Sets - Unique Values</h2>
+
+            <p>Sets are <strong>unordered collections of unique items</strong>. Perfect for removing duplicates!</p>
+
+            <div class="concept-box">
+                <strong>Key Points:</strong><br>
+                ✓ Unordered<br>
+                ✓ No duplicates<br>
+                ✓ Mutable<br>
+                ✓ Use curly braces {} (without colons)
+            </div>
+
+            <h3>Creating & Using Sets</h3>
+            <div class="code-block">
+# Creating a set
+colors = {"red", "green", "blue"}
+
+# Adding items
+colors.add("yellow")
+
+# Removing items
+colors.remove("blue")
+
+# Remove duplicates
+numbers = [1, 1, 2, 2, 3, 3]
+unique_numbers = set(numbers)  # {1, 2, 3}
+
+# Set operations
+set1 = {1, 2, 3}
+set2 = {2, 3, 4}
+print(set1 | set2)  # Union: {1, 2, 3, 4}
+print(set1 & set2)  # Intersection: {2, 3}
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Working with Sets</h4>
+                <textarea id="code3">colors1 = {"red", "green", "blue"}
+colors2 = {"green", "blue", "yellow"}
+
+print("Set 1:", colors1)
+print("Set 2:", colors2)
+
+# Union - all colors from both
+union = colors1 | colors2
+print("Union (all):", union)
+
+# Intersection - colors in both
+intersection = colors1 & colors2
+print("Intersection (common):", intersection)
+
+# Remove duplicates
+numbers = [1, 2, 2, 3, 3, 4, 5, 5]
+unique = set(numbers)
+print("\nOriginal list:", numbers)
+print("Unique set:", unique)</textarea>
+                <button onclick="runCode('code3', 'output3')">▶ Run Code</button>
+                <div id="output3" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- TUPLES -->
+        <div class="section">
+            <h2>📌 Tuples - Immutable Sequences</h2>
+
+            <p>Tuples are <strong>like lists but cannot be changed</strong> once created. Great for protecting data!</p>
+
+            <div class="concept-box">
+                <strong>Key Points:</strong><br>
+                ✓ Ordered (maintains position)<br>
+                ✓ Immutable (cannot be changed)<br>
+                ✓ Use parentheses ()<br>
+                ✓ Faster than lists
+            </div>
+
+            <h3>Creating & Using Tuples</h3>
+            <div class="code-block">
+# Creating a tuple
+coordinates = (10, 20, 30)
+
+# Accessing items (like lists)
+print(coordinates[0])  # 10
+
+# Length
+print(len(coordinates))  # 3
+
+# Cannot modify (this will give an error!)
+# coordinates[0] = 15  # Error!
+
+# Unpacking
+x, y, z = coordinates
+print(x, y, z)
+
+# Creating single item tuple
+single = (42,)  # Note the comma!
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Working with Tuples</h4>
+                <textarea id="code4">point = (5, 10)
+print("Coordinate:", point)
+print("X:", point[0])
+print("Y:", point[1])
+
+# Unpacking
+x, y = point
+print(f"X={x}, Y={y}")
+
+# Tuples from lists
+list_data = [1, 2, 3]
+tuple_data = tuple(list_data)
+print("\nFrom list to tuple:", tuple_data)
+
+# Multiple values
+person = ("Alice", 25, "Engineer")
+name, age, job = person
+print(f"\nName: {name}")
+print(f"Age: {age}")
+print(f"Job: {job}")</textarea>
+                <button onclick="runCode('code4', 'output4')">▶ Run Code</button>
+                <div id="output4" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- COMPARISON -->
+        <div class="section">
+            <h2>⚖️ Comparing Data Structures</h2>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>📝 List</h4>
+                    <p><strong>Ordered</strong> ✓<br>
+                    <strong>Mutable</strong> ✓<br>
+                    <strong>Indexed</strong> ✓<br>
+                    Use when: You need ordered, changeable data</p>
+                </div>
+
+                <div class="comparison-card">
+                    <h4>🔑 Dictionary</h4>
+                    <p><strong>Unordered</strong><br>
+                    <strong>Mutable</strong> ✓<br>
+                    <strong>Key-based</strong> ✓<br>
+                    Use when: You need fast lookups by key</p>
+                </div>
+
+                <div class="comparison-card">
+                    <h4>🎯 Set</h4>
+                    <p><strong>Unordered</strong><br>
+                    <strong>Mutable</strong> ✓<br>
+                    <strong>No duplicates</strong> ✓<br>
+                    Use when: You need unique values</p>
+                </div>
+
+                <div class="comparison-card">
+                    <h4>📌 Tuple</h4>
+                    <p><strong>Ordered</strong> ✓<br>
+                    <strong>Immutable</strong><br>
+                    <strong>Indexed</strong> ✓<br>
+                    Use when: Data shouldn't change</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHALLENGE -->
+        <div class="section">
+            <h2>🎯 Challenge Project</h2>
+
+            <h3>Build a Student Management System</h3>
+            <div class="interactive-section">
+                <h4>Try the Project</h4>
+                <textarea id="code5"># Student Management System
+students = {}
+
+# Add students
+students["alice"] = {
+    "name": "Alice",
+    "age": 20,
+    "grades": [90, 85, 92]
+}
+
+students["bob"] = {
+    "name": "Bob",
+    "age": 21,
+    "grades": [78, 82, 80]
+}
+
+# Display all students
+print("All Students:")
+for username, student in students.items():
+    name = student["name"]
+    avg_grade = sum(student["grades"]) / len(student["grades"])
+    print(f"{name} - Average Grade: {avg_grade:.1f}")
+
+# Find highest average
+best_student = None
+best_avg = 0
+for student in students.values():
+    avg = sum(student["grades"]) / len(student["grades"])
+    if avg > best_avg:
+        best_avg = avg
+        best_student = student["name"]
+
+print(f"\nTop Student: {best_student} ({best_avg:.1f})")</textarea>
+                <button type="button" onclick="runCode('code5', 'output5'); return false;">▶ Run Code</button>
+                <div id="output5" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- KEY TAKEAWAYS -->
+        <div class="section">
+            <h2>✨ Key Takeaways</h2>
+
+            <div class="concept-box">
+                <strong>Lists [:]</strong> - Ordered, changeable, duplicates allowed<br><br>
+                <strong>Dictionaries {key: value}</strong> - Key-value pairs, fast lookup<br><br>
+                <strong>Sets {item}</strong> - Unique items, no duplicates<br><br>
+                <strong>Tuples ()</strong> - Immutable, protected data<br>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="../02_Control_Flow/index.html">← Previous: Control Flow</a>
+            <a href="../04_Functions/index.html">Next: Functions →</a>
+        </div>
+    </div>
+
+    <script>
+        function runCode(textareaId, outputId) {
+            const code = document.getElementById(textareaId).value;
+            const outputBox = document.getElementById(outputId);
+            outputBox.innerHTML = '';
+
+            try {
+                let output = '';
+                const originalLog = console.log;
+                console.log = function(...args) {
+                    output += args.join(' ') + '\n';
+                };
+
+                eval(code);
+                console.log = originalLog;
+
+                outputBox.innerHTML = output || '✓ Code executed!';
+            } catch (error) {
+                outputBox.innerHTML = `<span style="color: #ff6b6b;">❌ Error: ${error.message}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>

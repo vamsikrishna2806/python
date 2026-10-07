@@ -1,0 +1,1668 @@
+<title>Python Learning Guide - Enhanced</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #4f46e5;
+    --accent-light: #e0e7ff;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --neutral-50: #fafafa;
+    --neutral-200: #e5e7eb;
+    --neutral-400: #9ca3af;
+    --neutral-600: #4b5563;
+
+    --font-display: "Poppins", "Inter", system-ui, sans-serif;
+    --font-body: "Inter", system-ui, -apple-system, sans-serif;
+    --font-code: "JetBrains Mono", "Monaco", monospace;
+
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f172a;
+      --fg: #e2e8f0;
+      --accent: #60a5fa;
+      --accent-light: #1e3a8a;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --danger: #f87171;
+      --neutral-50: #1e293b;
+      --neutral-200: #334155;
+      --neutral-400: #94a3b8;
+      --neutral-600: #cbd5e1;
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0f172a;
+    --fg: #e2e8f0;
+    --accent: #60a5fa;
+    --accent-light: #1e3a8a;
+    --success: #34d399;
+    --warning: #fbbf24;
+    --danger: #f87171;
+    --neutral-50: #1e293b;
+    --neutral-200: #334155;
+    --neutral-400: #94a3b8;
+    --neutral-600: #cbd5e1;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    padding: 1rem;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-block: 2rem;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--accent-light);
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+    background: linear-gradient(135deg, var(--accent), var(--success));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: var(--neutral-400);
+    margin: 0;
+  }
+
+  nav {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+
+  nav button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    background: var(--accent-light);
+    color: var(--accent);
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+  }
+
+  nav button.active {
+    background: var(--accent);
+    color: white;
+  }
+
+  nav button:hover {
+    transform: translateY(-2px);
+  }
+
+  .section {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  .section.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 2rem 0 1rem 0;
+    color: var(--accent);
+  }
+
+  .subsection {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--neutral-50);
+    border-radius: 12px;
+    border-left: 4px solid var(--accent);
+  }
+
+  .subsection h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    margin: 0 0 0.8rem 0;
+    color: var(--fg);
+  }
+
+  .subsection p {
+    margin: 0.5rem 0;
+    color: var(--neutral-600);
+    line-height: 1.7;
+  }
+
+  .code-block {
+    background: var(--bg);
+    border: 1px solid var(--neutral-200);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+    font-family: var(--font-code);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .code-block code {
+    color: var(--accent);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .card {
+    background: var(--neutral-50);
+    border: 1px solid var(--neutral-200);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  }
+
+  .card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .card h4 {
+    font-family: var(--font-display);
+    margin: 1rem 0 0.5rem 0;
+    color: var(--fg);
+  }
+
+  .card p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: var(--neutral-600);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .badge-lib { background: var(--accent-light); color: var(--accent); }
+  .badge-type { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+  .badge-level { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+  }
+
+  .flow-step {
+    background: var(--accent);
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .arrow {
+    color: var(--neutral-400);
+    font-size: 1.5rem;
+  }
+
+  .tips {
+    background: rgba(245, 158, 11, 0.1);
+    border-left: 4px solid var(--warning);
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1rem 0;
+  }
+
+  .tips strong {
+    color: var(--warning);
+  }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--neutral-200);
+    text-align: center;
+    color: var(--neutral-400);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 1.8rem; }
+    .section-title { font-size: 1.5rem; }
+    nav { gap: 0.25rem; }
+    nav button { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+  }
+</style>
+
+<div class="container">
+  <header>
+    <h1>🐍 Python Complete Learning Guide</h1>
+    <p class="subtitle">Master Python from basics to advanced AI projects - with detailed examples</p>
+    <nav>
+      <button class="nav-btn active" data-section="files">📁 File Handling</button>
+      <button class="nav-btn" data-section="libraries">📚 Libraries</button>
+      <button class="nav-btn" data-section="data">📊 Data & Stats</button>
+      <button class="nav-btn" data-section="ml">🤖 Machine Learning</button>
+      <button class="nav-btn" data-section="dl">🧠 Deep Learning</button>
+      <button class="nav-btn" data-section="projects">✨ AI Projects</button>
+    </nav>
+  </header>
+
+  <!-- FILE HANDLING - ENHANCED -->
+  <section id="files" class="section active">
+    <h2 class="section-title">📁 File Handling - Complete Guide</h2>
+
+    <div class="subsection">
+      <h3>Reading & Writing Files - Best Practices</h3>
+      <p>Always use context managers (with statement) to safely handle files.</p>
+      <div class="code-block"><code>
+# ✅ BEST PRACTICE - Context Manager (auto-closes file)
+with open('data.txt', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# Reading line by line (memory efficient)
+with open('data.txt', 'r') as f:
+    for line in f:
+        print(line.rstrip())  # rstrip removes trailing \n
+
+# Read all lines into a list
+with open('data.txt', 'r') as f:
+    lines = f.readlines()
+
+# Writing files
+with open('output.txt', 'w', encoding='utf-8') as f:
+    f.write('Hello World\n')
+    f.write('Second line\n')
+
+# Appending to existing file
+with open('data.txt', 'a') as f:
+    f.write('\nAppended line')
+
+# Writing multiple lines at once
+lines = ['Line 1\n', 'Line 2\n', 'Line 3\n']
+with open('output.txt', 'w') as f:
+    f.writelines(lines)
+      </code></div>
+      <div class="tips">
+        <strong>💡 Tip:</strong> Always specify encoding='utf-8' for text files. Never rely on system default encoding.
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>File Modes Comprehensive Reference</h3>
+      <div class="grid">
+        <div class="card">
+          <h4>'r' - Read Only</h4>
+          <p>Read mode (default). File must exist. Pointer at start. Can't write.</p>
+        </div>
+        <div class="card">
+          <h4>'w' - Write</h4>
+          <p>Write mode. Creates file or truncates if exists. Starts fresh.</p>
+        </div>
+        <div class="card">
+          <h4>'a' - Append</h4>
+          <p>Append mode. Adds to end of file. Creates if doesn't exist.</p>
+        </div>
+        <div class="card">
+          <h4>'r+' - Read/Write</h4>
+          <p>Read and write. File must exist. Pointer at beginning.</p>
+        </div>
+        <div class="card">
+          <h4>'w+' - Write/Read</h4>
+          <p>Write and read. Truncates file if exists. Pointer at beginning.</p>
+        </div>
+        <div class="card">
+          <h4>'x' - Create</h4>
+          <p>Create mode. Fails if file already exists. Creates new file.</p>
+        </div>
+        <div class="card">
+          <h4>'b' - Binary Mode</h4>
+          <p>Add to any mode for binary files (images, videos, etc)</p>
+        </div>
+        <div class="card">
+          <h4>Example: 'rb', 'wb'</h4>
+          <p>rb = read binary, wb = write binary</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>CSV Files - Multiple Methods</h3>
+      <div class="code-block"><code>
+# METHOD 1: csv module (built-in)
+import csv
+
+# Read as dictionaries (first row = keys)
+with open('data.csv', 'r') as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        print(row)  # {'name': 'John', 'age': '30', 'city': 'NYC'}
+
+# Read as lists
+with open('data.csv', 'r') as f:
+    reader = csv.reader(f)
+    next(reader)  # Skip header
+    for row in reader:
+        print(row)  # ['John', '30', 'NYC']
+
+# Write CSV files
+with open('output.csv', 'w', newline='') as f:
+    writer = csv.DictWriter(f, fieldnames=['name', 'age', 'city'])
+    writer.writeheader()
+    writer.writerow({'name': 'John', 'age': 30, 'city': 'NYC'})
+
+# METHOD 2: Pandas (RECOMMENDED - more powerful)
+import pandas as pd
+
+# Read with options
+df = pd.read_csv('data.csv')
+df = pd.read_csv('data.csv', delimiter=';')  # Different delimiter
+df = pd.read_csv('data.csv', usecols=['name', 'age'])  # Specific columns
+df = pd.read_csv('data.csv', nrows=100)  # First 100 rows
+df = pd.read_csv('data.csv', skiprows=2)  # Skip first 2 rows
+
+# Write CSV
+df.to_csv('output.csv', index=False)
+df.to_csv('output.csv', sep='\t')  # Tab-separated
+
+# Data operations with Pandas
+df['age'].mean()  # Average age
+df.groupby('city')['age'].sum()  # Group by city
+df[df['age'] > 25]  # Filter
+      </code></div>
+      <div class="tips">
+        <strong>💡 Tip:</strong> Use Pandas for most CSV work - it's much more powerful than csv module.
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>JSON Files - Structured Data</h3>
+      <div class="code-block"><code>
+import json
+
+# READING JSON
+with open('data.json', 'r') as f:
+    data = json.load(f)  # Parses to Python dict/list
+    print(data['name'])
+
+# WRITING JSON (pretty print)
+data = {'name': 'John', 'age': 30, 'skills': ['Python', 'ML']}
+with open('output.json', 'w') as f:
+    json.dump(data, f, indent=2)  # indent=2 for readability
+
+# STRING CONVERSION
+json_string = '{"name": "John", "age": 30}'
+data = json.loads(json_string)  # String to Python object
+
+python_data = {'name': 'John', 'age': 30}
+json_string = json.dumps(python_data, indent=2)  # Python object to string
+
+# NESTED JSON (complex structures)
+nested = {
+    'users': [
+        {'id': 1, 'name': 'John', 'projects': ['AI', 'Web']},
+        {'id': 2, 'name': 'Jane', 'projects': ['Data', 'ML']}
+    ],
+    'timestamp': '2024-01-01'
+}
+
+with open('nested.json', 'w') as f:
+    json.dump(nested, f, indent=2)
+
+# READING nested data
+with open('nested.json', 'r') as f:
+    data = json.load(f)
+    for user in data['users']:
+        print(f"{user['name']}: {user['projects']}")
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Path Operations - Modern Way (pathlib)</h3>
+      <div class="code-block"><code>
+from pathlib import Path
+
+# CREATING PATHS
+p = Path('data/file.txt')
+p = Path.cwd()  # Current working directory
+p = Path.home()  # Home directory (/home/user or C:\Users\user)
+
+# READING/WRITING
+p = Path('file.txt')
+content = p.read_text()  # Read entire file as string
+p.write_text('New content')  # Write string
+p.read_bytes()  # Read as bytes (for binary)
+p.write_bytes(b'binary content')  # Write bytes
+
+# CHECKING FILE PROPERTIES
+p.exists()          # Does it exist?
+p.is_file()         # Is it a file?
+p.is_dir()          # Is it a directory?
+p.name              # 'file.txt'
+p.stem              # 'file' (without extension)
+p.suffix            # '.txt' (extension)
+p.parent            # Parent directory
+p.parts             # ('data', 'file.txt')
+p.absolute()        # Full absolute path
+
+# PATH OPERATIONS
+p = Path('data') / 'subdir' / 'file.txt'  # Join paths
+p.mkdir(parents=True, exist_ok=True)  # Create directories
+p.unlink()          # Delete file
+p.rename('new_name.txt')  # Rename file
+p.stat().st_size    # File size in bytes
+p.stat().st_mtime   # Last modified time
+
+# LISTING FILES
+p = Path('data')
+txt_files = list(p.glob('*.txt'))  # All .txt files in dir
+all_txt = list(p.glob('**/*.txt'))  # Recursive search
+only_files = [f for f in p.iterdir() if f.is_file()]
+only_dirs = [d for d in p.iterdir() if d.is_dir()]
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Text Encodings - Important!</h3>
+      <div class="code-block"><code>
+# ALWAYS specify encoding - don't rely on defaults
+
+# UTF-8 (RECOMMENDED - supports all languages)
+with open('file.txt', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# Other encodings
+with open('file.txt', 'r', encoding='latin-1') as f:
+    content = f.read()  # European languages
+
+with open('file.txt', 'r', encoding='ascii') as f:
+    content = f.read()  # ASCII only (limited)
+
+# HANDLING ERRORS
+# Ignore problematic characters
+with open('file.txt', 'r', encoding='utf-8', errors='ignore') as f:
+    content = f.read()
+
+# Replace problematic with ?
+with open('file.txt', 'r', encoding='utf-8', errors='replace') as f:
+    content = f.read()
+
+# WRITING with encoding
+with open('output.txt', 'w', encoding='utf-8') as f:
+    f.write('International chars: é, ñ, 中文, 🎉')
+      </code></div>
+      <div class="tips">
+        <strong>💡 Tip:</strong> UTF-8 is the standard for modern applications. Use it everywhere unless you have a specific reason not to.
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Working with XML & YAML</h3>
+      <div class="code-block"><code>
+# XML FILES
+import xml.etree.ElementTree as ET
+
+# Parse XML
+tree = ET.parse('data.xml')
+root = tree.getroot()
+for child in root:
+    print(child.tag, child.attrib, child.text)
+
+# Create and write XML
+root = ET.Element('root')
+user = ET.SubElement(root, 'user', id='1')
+user.text = 'John'
+tree = ET.ElementTree(root)
+tree.write('output.xml')
+
+# YAML FILES (pip install pyyaml)
+import yaml
+
+# Read YAML
+with open('config.yaml', 'r') as f:
+    config = yaml.safe_load(f)
+    print(config['database']['host'])
+
+# Write YAML
+data = {'database': {'host': 'localhost', 'port': 5432}}
+with open('config.yaml', 'w') as f:
+    yaml.dump(data, f)
+
+# EXCEL FILES (pip install openpyxl)
+import openpyxl
+
+# Read Excel
+wb = openpyxl.load_workbook('data.xlsx')
+ws = wb.active
+for row in ws.iter_rows(values_only=True):
+    print(row)
+
+# Write Excel
+wb = openpyxl.Workbook()
+ws = wb.active
+ws['A1'] = 'Name'
+ws['B1'] = 'Age'
+ws['A2'] = 'John'
+ws['B2'] = 30
+wb.save('output.xlsx')
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Error Handling & Best Practices</h3>
+      <div class="code-block"><code>
+# PROPER ERROR HANDLING
+try:
+    with open('data.txt', 'r') as f:
+        content = f.read()
+except FileNotFoundError:
+    print('File not found - creating it...')
+    Path('data.txt').touch()
+except IOError as e:
+    print(f'Error reading file: {e}')
+except UnicodeDecodeError:
+    print('Encoding error - try different encoding')
+
+# CHECK BEFORE OPERATIONS
+from pathlib import Path
+p = Path('data.txt')
+if p.exists() and p.is_file():
+    content = p.read_text()
+else:
+    print('File does not exist')
+
+# SAFE FILE OPERATIONS WITH BACKUP
+def safe_write(filepath, content):
+    p = Path(filepath)
+    backup = p.with_suffix(p.suffix + '.bak')
+    if p.exists():
+        p.rename(backup)  # Create backup
+    try:
+        p.write_text(content)
+    except Exception as e:
+        if backup.exists():
+            backup.rename(p)  # Restore backup
+        raise e
+
+# TEMPORARY FILES
+import tempfile
+with tempfile.NamedTemporaryFile(mode='w', delete=False) as f:
+    f.write('temporary data')
+    temp_path = f.name
+
+# Use temp_path...
+Path(temp_path).unlink()  # Clean up
+
+# LARGE FILE HANDLING
+# Don't do: content = open('huge_file.txt').read()
+# Do this instead:
+with open('huge_file.txt', 'r') as f:
+    for line in f:
+        process(line.strip())
+      </code></div>
+    </div>
+  </section>
+
+  <!-- LIBRARIES - ENHANCED -->
+  <section id="libraries" class="section">
+    <h2 class="section-title">📚 Essential Python Libraries</h2>
+
+    <div class="subsection">
+      <h3>NumPy - Numerical Computing Foundation</h3>
+      <div class="code-block"><code>
+import numpy as np
+
+# CREATE ARRAYS
+arr = np.array([1, 2, 3, 4, 5])
+matrix = np.array([[1, 2, 3], [4, 5, 6]])
+zeros = np.zeros((3, 3))  # 3x3 matrix of zeros
+ones = np.ones((2, 4))    # 2x4 matrix of ones
+range_arr = np.arange(0, 10, 2)  # [0, 2, 4, 6, 8]
+linspace = np.linspace(0, 1, 5)  # 5 values from 0 to 1
+random_arr = np.random.rand(3, 3)  # Random values 0-1
+
+# ARRAY OPERATIONS
+arr * 2          # Multiply each element
+arr + 10         # Add 10 to each element
+arr[0]           # First element
+arr[1:3]         # Elements 1 and 2
+arr > 3          # Boolean mask
+arr[arr > 3]     # Elements > 3
+
+# STATISTICAL OPERATIONS
+np.mean(arr)     # Average
+np.median(arr)   # Middle value
+np.std(arr)      # Standard deviation
+np.sum(arr)      # Sum all elements
+np.max(arr)      # Maximum value
+np.min(arr)      # Minimum value
+
+# MATRIX OPERATIONS
+a = np.array([[1, 2], [3, 4]])
+b = np.array([[5, 6], [7, 8]])
+np.dot(a, b)     # Matrix multiplication
+a.T              # Transpose
+np.linalg.inv(a) # Inverse
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Pandas - Data Manipulation & Analysis</h3>
+      <div class="code-block"><code>
+import pandas as pd
+
+# CREATE DATAFRAMES
+df = pd.DataFrame({
+    'name': ['John', 'Jane', 'Bob'],
+    'age': [30, 25, 35],
+    'city': ['NYC', 'LA', 'Chicago']
+})
+
+# READ DATA
+df = pd.read_csv('data.csv')
+df = pd.read_excel('data.xlsx')
+df = pd.read_json('data.json')
+
+# INSPECT DATA
+df.head()        # First 5 rows
+df.tail()        # Last 5 rows
+df.shape         # (rows, columns)
+df.columns       # Column names
+df.dtypes        # Data types
+df.describe()    # Statistics
+
+# SELECT DATA
+df['name']       # Single column
+df[['name', 'age']]  # Multiple columns
+df.loc[0]        # First row by label
+df.iloc[0]       # First row by position
+df[df['age'] > 25]  # Filter
+
+# DATA MANIPULATION
+df['age'].mean()                    # Average age
+df.groupby('city')['age'].sum()     # Group by city
+df.sort_values('age')               # Sort
+df['age'].apply(lambda x: x + 1)    # Transform
+df['full_info'] = df['name'] + ', ' + df['age'].astype(str)  # New column
+
+# MISSING DATA
+df.isnull()      # Check for missing
+df.dropna()      # Remove missing rows
+df.fillna(0)     # Fill with value
+
+# WRITE DATA
+df.to_csv('output.csv', index=False)
+df.to_excel('output.xlsx')
+df.to_json('output.json')
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Matplotlib - Static Visualization</h3>
+      <div class="code-block"><code>
+import matplotlib.pyplot as plt
+import numpy as np
+
+# LINE CHART
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+plt.figure(figsize=(10, 6))
+plt.plot(x, y, label='sin(x)', linewidth=2)
+plt.xlabel('X Values')
+plt.ylabel('Y Values')
+plt.title('Line Chart')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# BAR CHART
+categories = ['Python', 'JavaScript', 'Java']
+values = [85, 72, 68]
+plt.bar(categories, values, color=['blue', 'green', 'red'])
+plt.ylabel('Popularity')
+plt.title('Programming Languages')
+plt.show()
+
+# SCATTER PLOT
+x = np.random.rand(50)
+y = np.random.rand(50)
+plt.scatter(x, y, alpha=0.6, s=100, c=x+y, cmap='viridis')
+plt.colorbar(label='Value')
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.show()
+
+# HISTOGRAM
+data = np.random.normal(0, 1, 1000)
+plt.hist(data, bins=30, edgecolor='black')
+plt.xlabel('Value')
+plt.ylabel('Frequency')
+plt.title('Distribution')
+plt.show()
+
+# MULTIPLE SUBPLOTS
+fig, axes = plt.subplots(2, 2, figsize=(10, 8))
+axes[0, 0].plot([1, 2, 3], [1, 4, 9])
+axes[0, 1].bar(['A', 'B'], [1, 2])
+axes[1, 0].scatter([1, 2], [1, 2])
+axes[1, 1].hist([1, 2, 2, 3], bins=3)
+plt.tight_layout()
+plt.show()
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Seaborn - Statistical Visualization</h3>
+      <div class="code-block"><code>
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Set style
+sns.set_style('darkgrid')
+sns.set_palette('husl')
+
+# HEATMAP (for correlation matrices)
+import pandas as pd
+data = pd.DataFrame(np.random.rand(10, 10))
+sns.heatmap(data, cmap='coolwarm', annot=True)
+plt.show()
+
+# SCATTER PLOT with regression
+df = pd.DataFrame({'x': range(100), 'y': np.random.rand(100) * 100})
+sns.regplot(x='x', y='y', data=df)
+plt.show()
+
+# BOX PLOT (distribution comparison)
+df = pd.DataFrame({
+    'category': ['A']*50 + ['B']*50,
+    'value': np.concatenate([np.random.normal(10, 2, 50),
+                             np.random.normal(15, 2, 50)])
+})
+sns.boxplot(x='category', y='value', data=df)
+plt.show()
+
+# VIOLIN PLOT (detailed distribution)
+sns.violinplot(x='category', y='value', data=df)
+plt.show()
+
+# COUNT PLOT (categorical counts)
+df = pd.DataFrame({'color': ['red', 'blue', 'red', 'green', 'blue'] * 10})
+sns.countplot(x='color', data=df)
+plt.show()
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>SciPy - Scientific Computing</h3>
+      <div class="code-block"><code>
+from scipy import stats
+from scipy.integrate import odeint
+from scipy.optimize import minimize
+
+# STATISTICAL TESTS
+group1 = [1, 2, 3, 4, 5]
+group2 = [2, 3, 4, 5, 6]
+
+# T-test (compare means)
+t_stat, p_value = stats.ttest_ind(group1, group2)
+print(f't-statistic: {t_stat}, p-value: {p_value}')
+
+# Chi-square test (categorical)
+chi2, p = stats.chisquare([10, 20, 30])
+
+# Pearson correlation
+corr, p_value = stats.pearsonr(group1, group2)
+
+# PROBABILITY DISTRIBUTIONS
+# Normal distribution
+x = stats.norm.ppf(0.95)  # 95th percentile
+pdf = stats.norm.pdf(0)   # Probability density at 0
+
+# OPTIMIZATION
+def objective(x):
+    return (x - 2) ** 2
+
+result = minimize(objective, x0=0)
+print(f'Minimum at x = {result.x}')
+
+# NUMERICAL INTEGRATION
+from scipy.integrate import quad
+def integrand(x):
+    return x ** 2
+
+area, error = quad(integrand, 0, 1)  # Integrate x^2 from 0 to 1
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Scikit-Learn - Machine Learning</h3>
+      <div class="code-block"><code>
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
+
+# PREPARE DATA
+X = [[1, 2], [3, 4], [5, 6], [7, 8]]
+y = [0, 0, 1, 1]
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# SCALE FEATURES
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# TRAIN MODEL
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# PREDICT
+predictions = model.predict(X_test)
+
+# EVALUATE
+accuracy = accuracy_score(y_test, predictions)
+f1 = f1_score(y_test, predictions)
+conf_matrix = confusion_matrix(y_test, predictions)
+
+print(f'Accuracy: {accuracy}')
+print(f'F1 Score: {f1}')
+print(f'Confusion Matrix:\n{conf_matrix}')
+      </code></div>
+    </div>
+  </section>
+
+  <!-- DATA VISUALIZATION & STATISTICS -->
+  <section id="data" class="section">
+    <h2 class="section-title">📊 Data Visualization & Statistics</h2>
+
+    <div class="subsection">
+      <h3>The Complete Data Analysis Workflow</h3>
+      <div class="flow">
+        <span class="flow-step">1. Load</span>
+        <span class="arrow">→</span>
+        <span class="flow-step">2. Explore</span>
+        <span class="arrow">→</span>
+        <span class="flow-step">3. Clean</span>
+        <span class="arrow">→</span>
+        <span class="flow-step">4. Analyze</span>
+        <span class="arrow">→</span>
+        <span class="flow-step">5. Visualize</span>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Exploratory Data Analysis (EDA)</h3>
+      <div class="code-block"><code>
+import pandas as pd
+import numpy as np
+
+# LOAD DATA
+df = pd.read_csv('data.csv')
+
+# EXPLORE STRUCTURE
+print(f'Shape: {df.shape}')
+print(f'Columns: {df.columns.tolist()}')
+print(f'Data types:\n{df.dtypes}')
+print(f'First rows:\n{df.head()}')
+print(f'Last rows:\n{df.tail()}')
+
+# CHECK FOR MISSING DATA
+print(f'Missing values:\n{df.isnull().sum()}')
+print(f'Missing percentage:\n{(df.isnull().sum() / len(df) * 100).round(2)}')
+
+# BASIC STATISTICS
+print(f'Description:\n{df.describe()}')
+print(f'Mean: {df.mean()}')
+print(f'Median: {df.median()}')
+print(f'Std Dev: {df.std()}')
+print(f'Skewness: {df.skew()}')
+print(f'Kurtosis: {df.kurtosis()}')
+
+# CORRELATION ANALYSIS
+corr_matrix = df.corr()
+print(f'Correlations:\n{corr_matrix}')
+
+# VALUE COUNTS
+print(f'Category distribution:\n{df["category"].value_counts()}')
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Statistical Hypothesis Testing</h3>
+      <div class="code-block"><code>
+from scipy import stats
+import numpy as np
+
+# T-TEST (compare means of 2 groups)
+group1 = [85, 90, 88, 92, 89]
+group2 = [78, 82, 80, 79, 81]
+
+t_statistic, p_value = stats.ttest_ind(group1, group2)
+if p_value < 0.05:
+    print('Means are significantly different')
+else:
+    print('No significant difference')
+
+# ANOVA (compare means of 3+ groups)
+group1 = [85, 90, 88]
+group2 = [78, 82, 80]
+group3 = [92, 95, 91]
+
+f_stat, p_value = stats.f_oneway(group1, group2, group3)
+
+# CHI-SQUARE TEST (categorical)
+observed = [10, 20, 30, 40]
+expected = [25, 25, 25, 25]
+chi2, p_value = stats.chisquare(observed, expected)
+
+# CORRELATION TEST
+x = [1, 2, 3, 4, 5]
+y = [2, 4, 5, 4, 6]
+correlation, p_value = stats.pearsonr(x, y)
+print(f'Correlation: {correlation:.3f}, p-value: {p_value:.3f}')
+
+# NORMAL DISTRIBUTION TEST
+data = np.random.normal(0, 1, 100)
+statistic, p_value = stats.shapiro(data)
+print('Data is normally distributed' if p_value > 0.05 else 'Not normal')
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Advanced Visualization Techniques</h3>
+      <div class="code-block"><code>
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+
+# DISTRIBUTION PLOTS
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+
+# Histogram with KDE
+data = np.random.normal(100, 15, 1000)
+axes[0, 0].hist(data, bins=30, kde=True)
+axes[0, 0].set_title('Histogram with KDE')
+
+# Box plot
+axes[0, 1].boxplot([data])
+axes[0, 1].set_title('Box Plot')
+
+# Violin plot
+axes[1, 0].violinplot([data])
+axes[1, 0].set_title('Violin Plot')
+
+# Q-Q plot (normality check)
+stats.probplot(data, dist='norm', plot=axes[1, 1])
+axes[1, 1].set_title('Q-Q Plot')
+
+plt.tight_layout()
+plt.show()
+
+# RELATIONSHIP PLOTS
+df = pd.DataFrame({
+    'x': np.random.rand(100),
+    'y': np.random.rand(100),
+    'category': np.random.choice(['A', 'B', 'C'], 100)
+})
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+# Scatter with regression
+sns.regplot(x='x', y='y', data=df, ax=axes[0])
+axes[0].set_title('Scatter with Regression')
+
+# Color by category
+sns.scatterplot(x='x', y='y', hue='category', data=df, ax=axes[1])
+axes[1].set_title('Scatter by Category')
+
+plt.tight_layout()
+plt.show()
+      </code></div>
+    </div>
+  </section>
+
+  <!-- MACHINE LEARNING -->
+  <section id="ml" class="section">
+    <h2 class="section-title">🤖 Machine Learning Deep Dive</h2>
+
+    <div class="subsection">
+      <h3>ML Workflow - Step by Step</h3>
+      <div class="flow">
+        <span class="flow-step">Collect Data</span>
+        <span class="arrow">→</span>
+        <span class="flow-step">Clean</span>
+        <span class="arrow">→</span>
+        <span class="flow-step">Features</span>
+        <span class="arrow">→</span>
+        <span class="flow-step">Train</span>
+        <span class="arrow">→</span>
+        <span class="flow-step">Evaluate</span>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Classification Algorithms</h3>
+      <div class="code-block"><code>
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, classification_report
+
+# Sample data
+X = [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10], [11, 12]]
+y = [0, 0, 1, 1, 1, 1]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# RANDOM FOREST (ensemble method)
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf.fit(X_train, y_train)
+rf_pred = rf.predict(X_test)
+print(f'Random Forest Accuracy: {accuracy_score(y_test, rf_pred):.3f}')
+
+# LOGISTIC REGRESSION (linear classifier)
+lr = LogisticRegression()
+lr.fit(X_train, y_train)
+lr_pred = lr.predict(X_test)
+print(f'Logistic Regression Accuracy: {accuracy_score(y_test, lr_pred):.3f}')
+
+# SVM (Support Vector Machine)
+svm = SVC(kernel='rbf')
+svm.fit(X_train, y_train)
+svm_pred = svm.predict(X_test)
+print(f'SVM Accuracy: {accuracy_score(y_test, svm_pred):.3f}')
+
+# DETAILED EVALUATION
+print(f'\nDetailed Report:')
+print(classification_report(y_test, rf_pred))
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Regression Algorithms</h3>
+      <div class="code-block"><code>
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+import numpy as np
+
+# Sample data
+X = np.array([[1], [2], [3], [4], [5]])
+y = np.array([2, 4, 5, 4, 6])
+
+# LINEAR REGRESSION
+lr = LinearRegression()
+lr.fit(X, y)
+y_pred = lr.predict(X)
+mse = mean_squared_error(y, y_pred)
+r2 = r2_score(y, y_pred)
+print(f'Linear Regression - MSE: {mse:.3f}, R²: {r2:.3f}')
+
+# RANDOM FOREST REGRESSION
+rf = RandomForestRegressor(n_estimators=100, random_state=42)
+rf.fit(X, y)
+y_pred = rf.predict(X)
+mse = mean_squared_error(y, y_pred)
+r2 = r2_score(y, y_pred)
+print(f'RF Regression - MSE: {mse:.3f}, R²: {r2:.3f}')
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Clustering (Unsupervised Learning)</h3>
+      <div class="code-block"><code>
+from sklearn.cluster import KMeans, DBSCAN
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+
+# Sample data
+X = np.random.rand(100, 2)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# K-MEANS CLUSTERING
+kmeans = KMeans(n_clusters=3, random_state=42)
+clusters = kmeans.fit_predict(X_scaled)
+
+plt.scatter(X_scaled[:, 0], X_scaled[:, 1], c=clusters, cmap='viridis')
+plt.scatter(kmeans.cluster_centers_[:, 0],
+            kmeans.cluster_centers_[:, 1],
+            c='red', marker='X', s=200)
+plt.title('K-Means Clustering')
+plt.show()
+
+# DBSCAN (density-based)
+dbscan = DBSCAN(eps=0.3, min_samples=5)
+clusters = dbscan.fit_predict(X_scaled)
+plt.scatter(X_scaled[:, 0], X_scaled[:, 1], c=clusters, cmap='viridis')
+plt.title('DBSCAN Clustering')
+plt.show()
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Feature Engineering</h3>
+      <div class="code-block"><code>
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+import pandas as pd
+
+# FEATURE SCALING
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)  # Mean 0, std 1
+
+minmax = MinMaxScaler()
+X_minmax = minmax.fit_transform(X)  # Range [0, 1]
+
+# LABEL ENCODING (for ordinal categories)
+le = LabelEncoder()
+encoded = le.fit_transform(['low', 'medium', 'high', 'low'])
+# Result: [1, 2, 3, 1]
+
+# ONE-HOT ENCODING (for nominal categories)
+df = pd.DataFrame({'color': ['red', 'blue', 'red', 'green']})
+df_encoded = pd.get_dummies(df, columns=['color'])
+# Creates separate columns for each color
+
+# POLYNOMIAL FEATURES (create interactions)
+from sklearn.preprocessing import PolynomialFeatures
+poly = PolynomialFeatures(degree=2)
+X_poly = poly.fit_transform([[1, 2], [3, 4]])
+
+# FEATURE SELECTION
+from sklearn.feature_selection import SelectKBest, f_classif
+selector = SelectKBest(f_classif, k=2)
+X_selected = selector.fit_transform(X, y)
+
+# DIMENSIONALITY REDUCTION
+from sklearn.decomposition import PCA
+pca = PCA(n_components=2)
+X_reduced = pca.fit_transform(X)
+      </code></div>
+    </div>
+  </section>
+
+  <!-- DEEP LEARNING -->
+  <section id="dl" class="section">
+    <h2 class="section-title">🧠 Deep Learning Essentials</h2>
+
+    <div class="subsection">
+      <h3>Neural Networks with Keras</h3>
+      <div class="code-block"><code>
+from tensorflow import keras
+from tensorflow.keras import layers
+import numpy as np
+
+# SIMPLE NEURAL NETWORK
+model = keras.Sequential([
+    layers.Dense(128, activation='relu', input_shape=(784,)),
+    layers.Dropout(0.2),  # Prevent overfitting
+    layers.Dense(64, activation='relu'),
+    layers.Dropout(0.2),
+    layers.Dense(10, activation='softmax')  # Output layer
+])
+
+# COMPILE MODEL
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# TRAIN MODEL
+history = model.fit(
+    X_train, y_train,
+    epochs=10,
+    batch_size=32,
+    validation_split=0.2,
+    verbose=1
+)
+
+# PREDICT
+predictions = model.predict(X_test)
+
+# SAVE MODEL
+model.save('my_model.h5')
+
+# LOAD MODEL
+loaded_model = keras.models.load_model('my_model.h5')
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Convolutional Neural Networks (CNN)</h3>
+      <div class="code-block"><code>
+from tensorflow.keras import layers, models
+
+# CNN FOR IMAGE RECOGNITION
+model = models.Sequential([
+    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+    layers.MaxPooling2D((2, 2)),
+
+    layers.Conv2D(64, (3, 3), activation='relu'),
+    layers.MaxPooling2D((2, 2)),
+
+    layers.Conv2D(64, (3, 3), activation='relu'),
+    layers.Flatten(),
+
+    layers.Dense(64, activation='relu'),
+    layers.Dropout(0.5),
+    layers.Dense(10, activation='softmax')
+])
+
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+# TRAIN ON IMAGE DATA
+model.fit(
+    train_images, train_labels,
+    epochs=10,
+    validation_data=(test_images, test_labels)
+)
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Recurrent Neural Networks (LSTM)</h3>
+      <div class="code-block"><code>
+from tensorflow.keras import layers, models
+
+# LSTM FOR TIME SERIES OR TEXT
+model = models.Sequential([
+    layers.LSTM(128, activation='relu', input_shape=(timesteps, features)),
+    layers.Dropout(0.2),
+    layers.LSTM(64, activation='relu'),
+    layers.Dropout(0.2),
+    layers.Dense(32, activation='relu'),
+    layers.Dense(1)  # Output: single value (regression)
+])
+
+model.compile(optimizer='adam', loss='mse')
+
+# TRAIN
+model.fit(X_train, y_train, epochs=50, batch_size=16)
+
+# PREDICTIONS
+predictions = model.predict(X_test)
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Transformers & Pre-trained Models</h3>
+      <div class="code-block"><code>
+from transformers import AutoTokenizer, AutoModel
+from transformers import pipeline
+
+# USE PRE-TRAINED MODELS (no training needed!)
+
+# TEXT CLASSIFICATION (Sentiment Analysis)
+classifier = pipeline('sentiment-analysis')
+result = classifier('I love Python!')
+# Result: [{'label': 'POSITIVE', 'score': 0.9999}]
+
+# NAMED ENTITY RECOGNITION
+ner = pipeline('ner')
+result = ner('John lives in New York')
+# Identifies: PERSON, LOCATION, etc.
+
+# QUESTION ANSWERING
+qa = pipeline('question-answering')
+result = qa(question='What is Python?',
+            context='Python is a programming language.')
+
+# TEXT GENERATION
+generator = pipeline('text-generation')
+result = generator('Once upon a time', max_length=50)
+
+# TRANSLATION
+translator = pipeline('translation_en_to_fr')
+result = translator('Hello, how are you?')
+
+# CUSTOM MODEL WITH TRANSFORMERS
+model_name = 'bert-base-uncased'
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModel.from_pretrained(model_name)
+
+# Tokenize text
+tokens = tokenizer('Hello world', return_tensors='pt')
+outputs = model(**tokens)
+      </code></div>
+    </div>
+  </section>
+
+  <!-- AI PROJECTS -->
+  <section id="projects" class="section">
+    <h2 class="section-title">✨ Real-World AI Projects</h2>
+
+    <div class="subsection">
+      <h3>Project 1: Image Classification</h3>
+      <div class="code-block"><code>
+# Transfer learning with pre-trained models
+from tensorflow.keras.applications import MobileNetV2
+from tensorflow.keras import layers, models
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
+import numpy as np
+
+# LOAD PRE-TRAINED MODEL
+base_model = MobileNetV2(input_shape=(224, 224, 3),
+                         include_top=False,
+                         weights='imagenet')
+base_model.trainable = False  # Freeze pre-trained weights
+
+# CREATE NEW MODEL
+model = models.Sequential([
+    base_model,
+    layers.GlobalAveragePooling2D(),
+    layers.Dense(256, activation='relu'),
+    layers.Dropout(0.5),
+    layers.Dense(10, activation='softmax')  # 10 classes
+])
+
+model.compile(optimizer='adam', loss='categorical_crossentropy')
+
+# PREDICT ON IMAGES
+def predict_image(image_path):
+    img = load_img(image_path, target_size=(224, 224))
+    x = img_to_array(img) / 255.0
+    x = np.expand_dims(x, axis=0)
+    prediction = model.predict(x)
+    return prediction
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Project 2: Sentiment Analysis</h3>
+      <div class="code-block"><code>
+from transformers import pipeline
+import pandas as pd
+
+# SIMPLE SENTIMENT ANALYSIS (No training needed!)
+sentiment = pipeline('sentiment-analysis')
+
+# Test on various texts
+texts = [
+    'I absolutely love this product!',
+    'This is terrible and useless',
+    'It is okay, nothing special'
+]
+
+results = []
+for text in texts:
+    result = sentiment(text)
+    results.append({
+        'text': text,
+        'sentiment': result[0]['label'],
+        'score': result[0]['score']
+    })
+
+df = pd.DataFrame(results)
+print(df)
+
+# BATCH PROCESSING
+sentences = ['I love Python!', 'Python is hard', 'Great tutorial!']
+predictions = sentiment(sentences)
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Project 3: Text Generation & Chatbot</h3>
+      <div class="code-block"><code>
+from transformers import pipeline
+import re
+
+# TEXT GENERATION
+generator = pipeline('text-generation', model='gpt2')
+
+prompt = 'Python is a powerful'
+result = generator(prompt, max_length=100, num_return_sequences=1)
+print(result[0]['generated_text'])
+
+# SIMPLE CHATBOT
+qa_pipeline = pipeline('question-answering')
+
+context = '''
+Python is a high-level programming language known for its simplicity
+and readability. It's widely used in data science, web development,
+artificial intelligence, and automation.
+'''
+
+questions = [
+    'What is Python?',
+    'Where is Python used?',
+    'Why is Python popular?'
+]
+
+for question in questions:
+    answer = qa_pipeline(question=question, context=context)
+    print(f'Q: {question}')
+    print(f'A: {answer["answer"]}')
+    print()
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Project 4: Object Detection</h3>
+      <div class="code-block"><code>
+from transformers import pipeline
+from PIL import Image, ImageDraw
+import requests
+
+# OBJECT DETECTION
+detector = pipeline('object-detection')
+
+# FROM URL
+url = 'https://example.com/image.jpg'
+image = Image.open(requests.get(url, stream=True).raw)
+results = detector(image)
+
+# DRAW BOXES
+draw = ImageDraw.Draw(image)
+for obj in results:
+    box = obj['box']
+    label = f"{obj['label']}: {obj['score']:.2f}"
+
+    coords = [box['xmin'], box['ymin'], box['xmax'], box['ymax']]
+    draw.rectangle(coords, outline='red', width=2)
+    draw.text((box['xmin'], box['ymin']), label, fill='red')
+
+image.save('detected.jpg')
+
+# FROM FILE
+image = Image.open('photo.jpg')
+results = detector(image)
+for obj in results:
+    print(f"{obj['label']}: {obj['score']:.2f}")
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Project 5: Recommendation Engine</h3>
+      <div class="code-block"><code>
+from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
+import numpy as np
+
+# USER-ITEM MATRIX (ratings)
+ratings = pd.DataFrame({
+    'User1': [5, 4, 0, 3, 0],
+    'User2': [4, 0, 3, 4, 5],
+    'User3': [3, 5, 4, 0, 4],
+    'User4': [0, 4, 5, 5, 3],
+    'User5': [4, 3, 0, 4, 5]
+}, index=['Movie1', 'Movie2', 'Movie3', 'Movie4', 'Movie5'])
+
+# FILL MISSING RATINGS
+ratings_filled = ratings.fillna(ratings.mean())
+
+# CALCULATE SIMILARITY
+user_similarity = cosine_similarity(ratings_filled.T)
+user_sim_df = pd.DataFrame(user_similarity,
+                           index=ratings.columns,
+                           columns=ratings.columns)
+
+# RECOMMEND FOR USER1
+user = 'User1'
+similar_users = user_sim_df[user].sort_values(ascending=False)[1:].index
+recommendations = ratings.loc[ratings[user] == 0].index
+
+scores = []
+for movie in recommendations:
+    score = 0
+    for similar_user in similar_users:
+        if ratings.loc[movie, similar_user] > 0:
+            score += ratings.loc[movie, similar_user]
+    scores.append(score)
+
+top_recommendations = pd.Series(scores, index=recommendations).sort_values(ascending=False)
+print(f'Top recommendations for {user}:')
+print(top_recommendations.head())
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Project Deployment with FastAPI</h3>
+      <div class="code-block"><code>
+# app.py - Create a REST API
+from fastapi import FastAPI
+from transformers import pipeline
+import uvicorn
+
+app = FastAPI()
+
+# Load model once
+sentiment = pipeline('sentiment-analysis')
+
+@app.get('/')
+def read_root():
+    return {'message': 'Welcome to Sentiment API'}
+
+@app.post('/predict/')
+def predict_sentiment(text: str):
+    result = sentiment(text)
+    return {
+        'text': text,
+        'sentiment': result[0]['label'],
+        'score': result[0]['score']
+    }
+
+@app.post('/batch-predict/')
+def batch_predict(texts: list):
+    results = []
+    for text in texts:
+        pred = sentiment(text)
+        results.append({
+            'text': text,
+            'sentiment': pred[0]['label'],
+            'score': pred[0]['score']
+        })
+    return results
+
+# RUN: uvicorn app:app --reload
+# API at: http://localhost:8000
+# Docs at: http://localhost:8000/docs
+      </code></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Deployment with Docker</h3>
+      <div class="code-block"><code>
+# Dockerfile
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# requirements.txt
+fastapi==0.104.0
+uvicorn==0.24.0
+transformers==4.34.0
+torch==2.0.0
+pillow==10.0.0
+
+# BUILD: docker build -t ml-api .
+# RUN: docker run -p 8000:8000 ml-api
+      </code></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>💡 <strong>Learning Path:</strong> Start with File Handling → NumPy/Pandas → Visualization → Statistics → ML Basics → Deep Learning → Real Projects</p>
+    <p>🚀 <strong>Pro Tips:</strong> Practice with real datasets • Read documentation • Join communities • Build projects • Share your work</p>
+    <p>Created for comprehensive Python learning • Python 3.10+</p>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+
+      e.target.classList.add('active');
+      const sectionId = e.target.dataset.section;
+      document.getElementById(sectionId).classList.add('active');
+      window.scrollTo(0, 0);
+    });
+  });
+</script>

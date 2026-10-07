@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Handling - Reading & Writing Files</title>
+    <style>
+        @media print { html { display: none !important; } body { display: none !important; } }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header { text-align: center; color: white; margin-bottom: 30px; }
+        header h1 { font-size: 2.5em; }
+        .section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .section h2 { color: #f5576c; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #f5576c; }
+        .section h3 { color: #333; margin-top: 25px; margin-bottom: 15px; }
+        .concept-box { background: #fff0f3; border-left: 4px solid #f5576c; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; overflow-x: auto; margin: 15px 0; font-family: 'Courier New', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; border-left: 4px solid #f5576c; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .keyword { color: #569cd6; font-weight: bold; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; font-style: italic; }
+        .interactive-section { background: #fff0f3; border: 2px solid #f5576c; border-radius: 10px; padding: 20px; margin: 20px 0; }
+        textarea { width: 100%; min-height: 150px; padding: 15px; border: 2px solid #f5576c; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.95em; margin-bottom: 10px; }
+        button { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: bold; transition: all 0.3s ease; margin-right: 10px; }
+        button:hover { transform: scale(1.05); }
+        .output-box { background: #1e1e1e; color: #4ec9b0; padding: 15px; border-radius: 8px; margin-top: 15px; font-family: 'Courier New', monospace; min-height: 50px; max-height: 300px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        table th { background: #f5576c; color: white; padding: 12px; text-align: left; }
+        table td { border-bottom: 1px solid #ddd; padding: 10px 12px; }
+        .breadcrumb { color: rgba(255,255,255,0.8); text-align: center; margin-bottom: 20px; }
+        .breadcrumb a { color: white; text-decoration: none; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 40px; }
+        .nav-buttons a { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; }
+        .progression-level { background: #f0f4ff; border: 2px solid #667eea; border-radius: 8px; padding: 15px; margin: 15px 0; }
+        .progression-level.beginner { border-color: #28a745; background: #d4edda; }
+        .progression-level.intermediate { border-color: #ffc107; background: #fff3cd; }
+        .progression-level.advanced { border-color: #dc3545; background: #f8d7da; }
+        .level-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; margin-right: 10px; }
+        .level-badge.beginner { background: #28a745; color: white; }
+        .level-badge.intermediate { background: #ffc107; color: black; }
+        .level-badge.advanced { background: #dc3545; color: white; }
+        .file-flow { background: #f8f9ff; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .flow-step { display: flex; align-items: center; margin: 10px 0; }
+        .flow-step-num { background: #f5576c; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px; flex-shrink: 0; }
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .comparison-table td { padding: 12px; border: 1px solid #ddd; }
+        .comparison-table .method { background: #f5f5f5; font-weight: bold; }
+        .success-badge { background: #d4edda; border: 1px solid #28a745; color: #155724; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .warning-badge { background: #fff3cd; border: 1px solid #ffc107; color: #856404; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .error-badge { background: #f8d7da; border: 1px solid #dc3545; color: #721c24; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .feature-card { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 10px; margin: 10px 0; }
+        .note { background: #e7f3ff; border-left: 4px solid #2196F3; padding: 15px; margin: 15px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb"><a href="../index.html">← Back to Learning Path</a></div>
+
+        <header>
+            <h1>📄 File Handling</h1>
+            <p>Master Reading, Writing, and Managing Files</p>
+        </header>
+
+        <!-- INTRODUCTION -->
+        <div class="section">
+            <h2>🎯 What is File Handling?</h2>
+
+            <p>File handling is one of the most important skills in programming. It allows you to <strong>permanently store data</strong> on your computer that persists even after your program stops running.</p>
+
+            <div class="concept-box">
+                <strong>Why Files Matter:</strong><br>
+                ✓ Save user data between program runs<br>
+                ✓ Store configuration settings<br>
+                ✓ Manage large datasets<br>
+                ✓ Share data with other programs<br>
+                ✓ Create logs and reports<br>
+            </div>
+
+            <h3>Real-World Examples</h3>
+            <div class="feature-card">
+                <strong>📱 Mobile Apps:</strong> Store user preferences and app data<br><br>
+                <strong>🎮 Games:</strong> Save game progress and high scores<br><br>
+                <strong>📊 Data Science:</strong> Read CSV files with thousands of records<br><br>
+                <strong>🌐 Web Apps:</strong> Store user accounts, posts, messages<br>
+            </div>
+        </div>
+
+        <!-- SECTION 1: FILE BASICS -->
+        <div class="section">
+            <h2>📚 File Basics</h2>
+
+            <div class="progression-level beginner">
+                <span class="level-badge beginner">BEGINNER</span>
+                <strong>Understanding Files</strong>
+            </div>
+
+            <p>A file is simply a collection of data stored on your hard drive. Every file has:</p>
+
+            <table class="comparison-table">
+                <tr>
+                    <td class="method"><strong>📝 Filename</strong></td>
+                    <td>The name of the file (e.g., "notes.txt")</td>
+                </tr>
+                <tr>
+                    <td class="method"><strong>📂 Path</strong></td>
+                    <td>Location on disk (e.g., "D:/documents/notes.txt")</td>
+                </tr>
+                <tr>
+                    <td class="method"><strong>📋 Extension</strong></td>
+                    <td>Type indicator (e.g., .txt, .json, .csv)</td>
+                </tr>
+                <tr>
+                    <td class="method"><strong>💾 Content</strong></td>
+                    <td>The actual data stored in the file</td>
+                </tr>
+            </table>
+
+            <h3>File vs Memory</h3>
+            <div class="file-flow">
+                <div class="flow-step">
+                    <div class="flow-step-num">1</div>
+                    <div><strong>Variables in Memory (RAM)</strong> - Lost when program closes</div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-step-num">2</div>
+                    <div><strong>Files on Disk (Storage)</strong> - Persist forever</div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-step-num">3</div>
+                    <div><strong>Your Program</strong> - Reads/writes files as needed</div>
+                </div>
+            </div>
+
+            <div class="code-block">
+<span class="comment"># Without files - data is lost!</span><br>
+<span class="keyword">name</span> = <span class="string">"Alice"</span><br>
+score = <span class="number">95</span><br>
+<span class="keyword">print</span>(<span class="string">f"Hello {name}, your score: {score}"</span>)<br>
+<span class="comment"># Program ends → data GONE!</span><br>
+<br>
+<span class="comment"># With files - data is saved!</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'score.txt'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;file.write(<span class="string">f"Name: {name}\nScore: {score}"</span>)<br>
+<span class="comment"># Program ends → data SAVED!</span>
+            </div>
+        </div>
+
+        <!-- SECTION 2: FILE MODES -->
+        <div class="section">
+            <h2>🔑 File Modes Explained</h2>
+
+            <div class="progression-level beginner">
+                <span class="level-badge beginner">BEGINNER</span>
+                <strong>The 4 Essential Modes</strong>
+            </div>
+
+            <p>When you open a file, you must tell Python <strong>what you want to do</strong> with it. These are the main modes:</p>
+
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Mode</th>
+                        <th>Name</th>
+                        <th>What It Does</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>'r'</strong></td>
+                        <td>Read</td>
+                        <td>Open existing file to read. File must exist!</td>
+                        <td>open('data.txt', 'r')</td>
+                    </tr>
+                    <tr>
+                        <td><strong>'w'</strong></td>
+                        <td>Write</td>
+                        <td>Create new file or overwrite existing. ⚠️ Deletes old content!</td>
+                        <td>open('data.txt', 'w')</td>
+                    </tr>
+                    <tr>
+                        <td><strong>'a'</strong></td>
+                        <td>Append</td>
+                        <td>Add content to end of file. Keeps existing data.</td>
+                        <td>open('data.txt', 'a')</td>
+                    </tr>
+                    <tr>
+                        <td><strong>'x'</strong></td>
+                        <td>Create</td>
+                        <td>Create new file only. Fails if file exists.</td>
+                        <td>open('data.txt', 'x')</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-badge">
+                ⚠️ <strong>Important:</strong> Mode 'w' overwrites files! Always be careful not to lose data.
+            </div>
+
+            <h3>Visual Comparison</h3>
+            <div class="concept-box">
+                <strong>Read Mode ('r'):</strong><br>
+                File: [Hello World]<br>
+                Action: Look inside without changing<br>
+                Result: File stays [Hello World]<br><br>
+
+                <strong>Write Mode ('w'):</strong><br>
+                File: [Hello World]<br>
+                Action: Replace everything<br>
+                Result: File becomes [New Content]<br><br>
+
+                <strong>Append Mode ('a'):</strong><br>
+                File: [Hello World]<br>
+                Action: Add to the end<br>
+                Result: File becomes [Hello World] + [New]
+            </div>
+        </div>
+
+        <!-- SECTION 3: READING FILES -->
+        <div class="section">
+            <h2>📖 Reading Files - Three Ways</h2>
+
+            <div class="progression-level beginner">
+                <span class="level-badge beginner">BEGINNER</span>
+                <strong>Method 1: read() - Read Everything</strong>
+            </div>
+
+            <p>Get the entire file contents as a single string:</p>
+
+            <div class="code-block">
+<span class="comment"># Read entire file at once</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'story.txt'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;all_content = file.read()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(all_content)<br>
+<br>
+<span class="comment"># Good for: Small files you want all at once</span>
+            </div>
+
+            <div class="success-badge">
+                ✅ <strong>Best for:</strong> Reading entire small files (scripts, configs)<br>
+                ❌ <strong>Bad for:</strong> Huge files (will use lots of memory)
+            </div>
+
+            <div class="progression-level intermediate">
+                <span class="level-badge intermediate">INTERMEDIATE</span>
+                <strong>Method 2: readlines() - Get List of Lines</strong>
+            </div>
+
+            <p>Read file as a list where each element is one line:</p>
+
+            <div class="code-block">
+<span class="comment"># Read file as list of lines</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'students.txt'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;lines = file.readlines()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(lines[<span class="number">0</span>])  <span class="comment"># First line</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(lines[<span class="number">2</span>])  <span class="comment"># Third line</span><br>
+<br>
+<span class="comment"># Each line includes the \n character!</span>
+            </div>
+
+            <div class="success-badge">
+                ✅ <strong>Best for:</strong> Accessing specific lines, files with structure<br>
+                ❌ <strong>Note:</strong> Each line keeps the \n newline character
+            </div>
+
+            <div class="progression-level advanced">
+                <span class="level-badge advanced">ADVANCED</span>
+                <strong>Method 3: Loop Through Lines (Most Efficient)</strong>
+            </div>
+
+            <p>Read line-by-line in a loop - best for large files:</p>
+
+            <div class="code-block">
+<span class="comment"># Loop through file line by line (BEST WAY!)</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'huge_file.txt'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> line <span class="keyword">in</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(line.strip())  <span class="comment"># strip() removes \n</span><br>
+<br>
+<span class="comment"># Process line by line - memory efficient!</span>
+            </div>
+
+            <div class="success-badge">
+                ✅ <strong>Best for:</strong> Large files, processing data line by line<br>
+                ✅ <strong>Memory efficient:</strong> Doesn't load entire file at once
+            </div>
+
+            <div class="interactive-section">
+                <h4>⚡ Try All Three Reading Methods</h4>
+                <textarea id="code1"># Simulate file with sample content
+class FileSimulator:
+    def __init__(self, filename, content):
+        self.filename = filename
+        self.content = content
+        self.lines = content.split('\n')
+
+    def read_all(self):
+        return self.content
+
+    def readlines(self):
+        return self.lines
+
+    def loop_lines(self):
+        return self.lines
+
+# Create sample file
+file = FileSimulator("data.txt", "Line 1\nLine 2\nLine 3\nLine 4")
+
+print("=== METHOD 1: read() - Get Everything ===")
+print(file.read_all())
+print()
+
+print("=== METHOD 2: readlines() - Get List ===")
+for i, line in enumerate(file.readlines()):
+    print(f"Line {i}: {line}")
+print()
+
+print("=== METHOD 3: Loop - Process One by One ===")
+for line in file.loop_lines():
+    print(f"Processing: {line}")</textarea>
+                <button type="button" onclick="runCode('code1', 'output1', event); return false;" onmousedown="event.preventDefault(); return false;">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code1', '# Simulate file with sample content\nclass FileSimulator:\n    def __init__(self, filename, content):\n        self.filename = filename\n        self.content = content\n        self.lines = content.split(\'\n\')\n    \n    def read_all(self):\n        return self.content\n    \n    def readlines(self):\n        return self.lines\n    \n    def loop_lines(self):\n        return self.lines\n\n# Create sample file\nfile = FileSimulator("data.txt", "Line 1\nLine 2\nLine 3\nLine 4")\n\nprint("=== METHOD 1: read() - Get Everything ===")\nprint(file.read_all())\nprint()\n\nprint("=== METHOD 2: readlines() - Get List ===")\nfor i, line in enumerate(file.readlines()):\n    print(f"Line {i}: {line}")\nprint()\n\nprint("=== METHOD 3: Loop - Process One by One ===")\nfor line in file.loop_lines():\n    print(f"Processing: {line}")'); return false;">↻ Reset</button>
+                <div id="output1" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: WRITING FILES -->
+        <div class="section">
+            <h2>✍️ Writing & Appending Files</h2>
+
+            <div class="progression-level beginner">
+                <span class="level-badge beginner">BEGINNER</span>
+                <strong>Writing (Creating Files)</strong>
+            </div>
+
+            <p>Create a new file or overwrite existing content:</p>
+
+            <div class="code-block">
+<span class="comment"># Write to file - creates new or overwrites</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'output.txt'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;file.write(<span class="string">"First line\n"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;file.write(<span class="string">"Second line\n"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;file.write(<span class="string">"Third line"</span>)<br>
+            </div>
+
+            <div class="warning-badge">
+                ⚠️ <strong>Caution:</strong> 'w' mode overwrites everything! The old content is gone.
+            </div>
+
+            <div class="progression-level beginner">
+                <span class="level-badge beginner">BEGINNER</span>
+                <strong>Appending (Adding to Files)</strong>
+            </div>
+
+            <p>Add content to the END of a file without losing existing data:</p>
+
+            <div class="code-block">
+<span class="comment"># Append to file - keeps existing content</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'log.txt'</span>, <span class="string">'a'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;file.write(<span class="string">"\nNew log entry"</span>)<br>
+<br>
+<span class="comment"># If file doesn't exist, it creates it</span><br>
+<span class="comment"># If file exists, it adds to the end</span>
+            </div>
+
+            <div class="success-badge">
+                ✅ <strong>Safe choice:</strong> Use 'a' when you want to keep existing data
+            </div>
+
+            <div class="interactive-section">
+                <h4>⚡ Try Writing and Appending</h4>
+                <textarea id="code2"># Simulate file operations
+class FileSimulator:
+    def __init__(self):
+        self.files = {}
+
+    def write(self, filename, content):
+        """Overwrite file"""
+        self.files[filename] = content
+        print(f"✓ File '{filename}' created/overwritten")
+
+    def append(self, filename, content):
+        """Add to end of file"""
+        if filename in self.files:
+            self.files[filename] += content
+        else:
+            self.files[filename] = content
+        print(f"✓ Content appended to '{filename}'")
+
+    def read(self, filename):
+        """Read file"""
+        if filename in self.files:
+            return self.files[filename]
+        return f"❌ File '{filename}' not found"
+
+    def show(self):
+        """Show all files"""
+        for name, content in self.files.items():
+            print(f"\n📄 {name}:")
+            print(content)
+
+# Example
+fs = FileSimulator()
+
+# Write initial content
+fs.write("diary.txt", "Day 1: Great start!\n")
+
+# Append more
+fs.append("diary.txt", "Day 2: Learned Python!\n")
+fs.append("diary.txt", "Day 3: Building projects!\n")
+
+# Show result
+fs.show()</textarea>
+                <button type="button" onclick="runCode('code2', 'output2', event); return false;" onmousedown="event.preventDefault(); return false;">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code2', '# Simulate file operations\nclass FileSimulator:\n    def __init__(self):\n        self.files = {}\n    \n    def write(self, filename, content):\n        """Overwrite file"""\n        self.files[filename] = content\n        print(f"✓ File \'{filename}\' created/overwritten")\n    \n    def append(self, filename, content):\n        """Add to end of file"""\n        if filename in self.files:\n            self.files[filename] += content\n        else:\n            self.files[filename] = content\n        print(f"✓ Content appended to \'{filename}\'")\n    \n    def read(self, filename):\n        """Read file"""\n        if filename in self.files:\n            return self.files[filename]\n        return f"❌ File \'{filename}\' not found"\n    \n    def show(self):\n        """Show all files"""\n        for name, content in self.files.items():\n            print(f"\n📄 {name}:")\n            print(content)\n\n# Example\nfs = FileSimulator()\n\n# Write initial content\nfs.write("diary.txt", "Day 1: Great start!\n")\n\n# Append more\nfs.append("diary.txt", "Day 2: Learned Python!\n")\nfs.append("diary.txt", "Day 3: Building projects!\n")\n\n# Show result\nfs.show()'); return false;">↻ Reset</button>
+                <div id="output2" class="output-box"></div>
+            </div>
+        </div>
+
+            <h3>Opening Files</h3>
+            <p>Use the <code>open()</code> function with different modes:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mode</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>'r'</td>
+                        <td>Read (default)</td>
+                        <td>open('file.txt', 'r')</td>
+                    </tr>
+                    <tr>
+                        <td>'w'</td>
+                        <td>Write (creates/overwrites)</td>
+                        <td>open('file.txt', 'w')</td>
+                    </tr>
+                    <tr>
+                        <td>'a'</td>
+                        <td>Append (add to end)</td>
+                        <td>open('file.txt', 'a')</td>
+                    </tr>
+                    <tr>
+                        <td>'x'</td>
+                        <td>Create (fails if exists)</td>
+                        <td>open('file.txt', 'x')</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Reading Files</h3>
+            <div class="code-block">
+<span class="comment"># Read entire file</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'data.txt'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;content = file.read()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(content)<br>
+<br>
+<span class="comment"># Read line by line</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'data.txt'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> line <span class="keyword">in</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(line.strip())
+            </div>
+
+            <h3>Writing Files</h3>
+            <div class="code-block">
+<span class="comment"># Write to file</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'output.txt'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;file.write(<span class="string">"Hello, World!\n"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;file.write(<span class="string">"This is a test."</span>)<br>
+<br>
+<span class="comment"># Append to file</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'output.txt'</span>, <span class="string">'a'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;file.write(<span class="string">"\nAdded new line!"</span>)
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try File Operations</h4>
+                <textarea id="code1"># Simulate file operations
+class FileSimulator:
+    def __init__(self):
+        self.files = {}
+
+    def write(self, filename, content):
+        self.files[filename] = content
+        return f"File '{filename}' created"
+
+    def read(self, filename):
+        if filename in self.files:
+            return self.files[filename]
+        return f"File '{filename}' not found"
+
+    def append(self, filename, content):
+        if filename in self.files:
+            self.files[filename] += content
+            return f"Content appended to '{filename}'"
+        return f"File '{filename}' not found"
+
+fs = FileSimulator()
+print(fs.write("notes.txt", "Hello, World!"))
+print(fs.read("notes.txt"))
+print(fs.append("notes.txt", "\nAdded more text"))
+print(fs.read("notes.txt"))</textarea>
+                <button type="button" onclick="runCode('code1', 'output1', event); return false;" onmousedown="event.preventDefault(); return false;">▶ Run Code</button>
+                <div id="output1" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: THE 'WITH' STATEMENT -->
+        <div class="section">
+            <h2>🔒 The 'with' Statement (Always Use This!)</h2>
+
+            <div class="progression-level beginner">
+                <span class="level-badge beginner">BEGINNER</span>
+                <strong>Closing Files Automatically</strong>
+            </div>
+
+            <p>When you open a file, Python keeps it open until you close it. The <code>with</code> statement closes files <strong>automatically</strong>:</p>
+
+            <div class="code-block">
+<span class="comment"># ❌ OLD WAY - Manual closing (risky!)</span><br>
+file = <span class="keyword">open</span>(<span class="string">'data.txt'</span>, <span class="string">'r'</span>)<br>
+content = file.read()<br>
+file.close()  <span class="comment"># Easy to forget!</span><br>
+<br>
+<span class="comment"># ✅ BETTER WAY - Auto closing (safe!)</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'data.txt'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;content = file.read()<br>
+<span class="comment"># File automatically closes here!</span>
+            </div>
+
+            <div class="success-badge">
+                ✅ <strong>Always use 'with'!</strong> It's safer and cleaner.
+            </div>
+
+            <h3>Why This Matters</h3>
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li>✓ Prevents file corruption if program crashes</li>
+                <li>✓ Prevents other programs from accessing incomplete files</li>
+                <li>✓ Frees up memory automatically</li>
+                <li>✓ Cleaner, more readable code</li>
+            </ul>
+        </div>
+
+        <!-- SECTION 6: WORKING WITH JSON -->
+        <div class="section">
+            <h2>🔄 Working with JSON (Data Format)</h2>
+
+            <div class="progression-level intermediate">
+                <span class="level-badge intermediate">INTERMEDIATE</span>
+                <strong>JSON: The Universal Data Format</strong>
+            </div>
+
+            <p>JSON (JavaScript Object Notation) is the <strong>most popular data format</strong> for storing and exchanging data. It looks like Python dictionaries and lists!</p>
+
+            <div class="feature-card">
+                <strong>Why JSON?</strong><br>
+                ✓ Used by all modern websites (Twitter, Facebook, etc)<br>
+                ✓ Easy to read and write<br>
+                ✓ Works with every programming language<br>
+                ✓ Perfect for APIs and web services
+            </div>
+
+            <h3>JSON vs Python Objects</h3>
+            <div class="concept-box">
+                <strong>Python Dictionary:</strong><br>
+                {<span class="string">"name"</span>: <span class="string">"Alice"</span>, <span class="string">"age"</span>: 30}<br><br>
+
+                <strong>JSON (text):</strong><br>
+                {<span class="string">"name"</span>: <span class="string">"Alice"</span>, <span class="string">"age"</span>: 30}<br><br>
+
+                <strong>Looks the same!</strong> JSON is just text that looks like Python.
+            </div>
+
+            <div class="progression-level intermediate">
+                <span class="level-badge intermediate">INTERMEDIATE</span>
+                <strong>Writing JSON Files</strong>
+            </div>
+
+            <div class="code-block">
+<span class="keyword">import</span> json<br>
+<br>
+<span class="comment"># Create a Python dictionary</span><br>
+person = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"name"</span>: <span class="string">"Alice"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"age"</span>: <span class="number">30</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"city"</span>: <span class="string">"New York"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"hobbies"</span>: [<span class="string">"reading"</span>, <span class="string">"coding"</span>]<br>
+}<br>
+<br>
+<span class="comment"># Save to JSON file</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'person.json'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;json.dump(person, file, indent=<span class="number">2</span>)<br>
+<span class="comment"># indent=2 makes it readable!</span>
+            </div>
+
+            <div class="progression-level intermediate">
+                <span class="level-badge intermediate">INTERMEDIATE</span>
+                <strong>Reading JSON Files</strong>
+            </div>
+
+            <div class="code-block">
+<span class="keyword">import</span> json<br>
+<br>
+<span class="comment"># Read JSON file back to Python</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'person.json'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data = json.load(file)<br>
+<br>
+<span class="comment"># Now it's a normal Python dictionary!</span><br>
+<span class="keyword">print</span>(data[<span class="string">'name'</span>])       <span class="comment"># Alice</span><br>
+<span class="keyword">print</span>(data[<span class="string">'age'</span>])        <span class="comment"># 30</span><br>
+<span class="keyword">print</span>(data[<span class="string">'hobbies'</span>])  <span class="comment"># ['reading', 'coding']</span>
+            </div>
+
+            <div class="interactive-section">
+                <h4>⚡ Try JSON Operations</h4>
+                <textarea id="code3">import json
+
+# Create complex data structure
+student = {
+    "name": "Bob",
+    "age": 20,
+    "grades": [90, 85, 88, 92],
+    "active": True,
+    "courses": ["Python", "JavaScript", "SQL"]
+}
+
+# Convert to JSON string
+print("=== Converting to JSON ===")
+json_string = json.dumps(student, indent=2)
+print(json_string)
+
+# Convert back from JSON
+print("\n=== Converting back from JSON ===")
+parsed = json.loads(json_string)
+print(f"Name: {parsed['name']}")
+print(f"Grades: {parsed['grades']}")
+print(f"Average: {sum(parsed['grades']) / len(parsed['grades']):.1f}")
+print(f"Courses: {', '.join(parsed['courses'])}")</textarea>
+                <button type="button" onclick="runCode('code3', 'output3', event); return false;" onmousedown="event.preventDefault(); return false;">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code3', 'import json\n\n# Create complex data structure\nstudent = {\n    "name": "Bob",\n    "age": 20,\n    "grades": [90, 85, 88, 92],\n    "active": True,\n    "courses": ["Python", "JavaScript", "SQL"]\n}\n\n# Convert to JSON string\nprint("=== Converting to JSON ===")\njson_string = json.dumps(student, indent=2)\nprint(json_string)\n\n# Convert back from JSON\nprint("\n=== Converting back from JSON ===")\nparsed = json.loads(json_string)\nprint(f"Name: {parsed[\'name\']}")\nprint(f"Grades: {parsed[\'grades\']}")\nprint(f"Average: {sum(parsed[\'grades\']) / len(parsed[\'grades\']):.1f}")\nprint(f"Courses: {\'', \''.join(parsed[\'courses\'])}"); return false;">↻ Reset</button>
+                <div id="output3" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 7: ERROR HANDLING -->
+        <div class="section">
+            <h2>⚠️ Error Handling (Handle Problems Gracefully)</h2>
+
+            <div class="progression-level advanced">
+                <span class="level-badge advanced">ADVANCED</span>
+                <strong>Common File Errors</strong>
+            </div>
+
+            <p>Files can fail for many reasons. Good programmers <strong>handle errors gracefully</strong>:</p>
+
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Error</th>
+                        <th>Cause</th>
+                        <th>Solution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>FileNotFoundError</strong></td>
+                        <td>File doesn't exist</td>
+                        <td>Check if file exists first, use 'a' mode instead</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PermissionError</strong></td>
+                        <td>No access rights</td>
+                        <td>Check file permissions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>json.JSONDecodeError</strong></td>
+                        <td>Invalid JSON format</td>
+                        <td>Validate JSON before reading</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IOError</strong></td>
+                        <td>Disk full or hardware issue</td>
+                        <td>Check disk space</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Try-Except Pattern (Best Practice)</h3>
+            <div class="code-block">
+<span class="keyword">try</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'data.txt'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content = file.read()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="string">f"Read {len(content)} characters"</span>)<br>
+<br>
+<span class="keyword">except</span> FileNotFoundError:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="string">"❌ File not found! Creating new file..."</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'data.txt'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> file:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file.write(<span class="string">"New file content"</span>)<br>
+<br>
+<span class="keyword">except</span> PermissionError:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="string">"❌ No permission to access file!"</span>)
+            </div>
+
+            <div class="interactive-section">
+                <h4>⚡ Try Error Handling</h4>
+                <textarea id="code4"># Simulate file operations with error handling
+class FileSimulator:
+    def __init__(self):
+        self.files = {}
+
+    def read_safe(self, filename):
+        try:
+            if filename not in self.files:
+                raise FileNotFoundError(f"File '{filename}' not found!")
+            return self.files[filename]
+        except FileNotFoundError as e:
+            return f"❌ ERROR: {e}"
+
+    def write_safe(self, filename, content):
+        try:
+            if not filename:
+                raise ValueError("Filename cannot be empty!")
+            self.files[filename] = content
+            return f"✓ File '{filename}' saved successfully"
+        except ValueError as e:
+            return f"❌ ERROR: {e}"
+
+fs = FileSimulator()
+
+# Try to read non-existent file
+print(fs.read_safe("missing.txt"))
+
+# Write a file
+print(fs.write_safe("data.txt", "Hello World"))
+
+# Read it
+print(fs.read_safe("data.txt"))
+
+# Try invalid write
+print(fs.write_safe("", "content"))</textarea>
+                <button type="button" onclick="runCode('code4', 'output4', event); return false;" onmousedown="event.preventDefault(); return false;">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code4', '# Simulate file operations with error handling\nclass FileSimulator:\n    def __init__(self):\n        self.files = {}\n    \n    def read_safe(self, filename):\n        try:\n            if filename not in self.files:\n                raise FileNotFoundError(f"File \'{filename}\' not found!")\n            return self.files[filename]\n        except FileNotFoundError as e:\n            return f"❌ ERROR: {e}"\n    \n    def write_safe(self, filename, content):\n        try:\n            if not filename:\n                raise ValueError("Filename cannot be empty!")\n            self.files[filename] = content\n            return f"✓ File \'{filename}\' saved successfully"\n        except ValueError as e:\n            return f"❌ ERROR: {e}"\n\nfs = FileSimulator()\n\n# Try to read non-existent file\nprint(fs.read_safe("missing.txt"))\n\n# Write a file\nprint(fs.write_safe("data.txt", "Hello World"))\n\n# Read it\nprint(fs.read_safe("data.txt"))\n\n# Try invalid write\nprint(fs.write_safe("", "content"))'); return false;">↻ Reset</button>
+                <div id="output4" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 8: REAL-WORLD PATTERNS -->
+        <div class="section">
+            <h2>🌟 Real-World Patterns</h2>
+
+            <div class="progression-level advanced">
+                <span class="level-badge advanced">ADVANCED</span>
+                <strong>Pattern 1: Read and Process</strong>
+            </div>
+
+            <p>Read a file line-by-line, process each line, and save results:</p>
+
+            <div class="code-block">
+<span class="comment"># Pattern: Read, Process, Write</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'input.txt'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> infile:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'output.txt'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> outfile:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> line <span class="keyword">in</span> infile:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processed = line.strip().upper()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outfile.write(processed + <span class="string">'\n'</span>)
+            </div>
+
+            <div class="progression-level advanced">
+                <span class="level-badge advanced">ADVANCED</span>
+                <strong>Pattern 2: Configuration Files</strong>
+            </div>
+
+            <div class="code-block">
+<span class="keyword">import</span> json<br>
+<br>
+<span class="comment"># Save settings</span><br>
+config = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"username"</span>: <span class="string">"alice"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"theme"</span>: <span class="string">"dark"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"language"</span>: <span class="string">"en"</span><br>
+}<br>
+<br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'config.json'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;json.dump(config, f)<br>
+<br>
+<span class="comment"># Load settings later</span><br>
+<span class="keyword">with</span> <span class="keyword">open</span>(<span class="string">'config.json'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> f:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;config = json.load(f)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(f<span class="string">"Welcome {config['username']}"</span>)
+            </div>
+        </div>
+
+        <!-- SECTION 9: CHALLENGE PROJECT -->
+        <div class="section">
+            <h2>🎯 Challenge Project</h2>
+
+            <div class="progression-level advanced">
+                <span class="level-badge advanced">ADVANCED</span>
+                <strong>Build: Personal Note-Taking App</strong>
+            </div>
+
+            <p>Create a simple app that:</p>
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li>✅ Saves notes to a JSON file</li>
+                <li>✅ Loads notes when program starts</li>
+                <li>✅ Shows saved notes to user</li>
+                <li>✅ Handles errors gracefully</li>
+            </ul>
+
+            <div class="code-block">
+<span class="keyword">import</span> json<br>
+<br>
+<span class="keyword">class</span> NoteApp:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> __init__(self):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.filename = <span class="string">'notes.json'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.notes = self.load_notes()<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> load_notes(self):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">try</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">with</span> <span class="keyword">open</span>(self.filename, <span class="string">'r'</span>) <span class="keyword">as</span> f:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> json.load(f)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">except</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> []<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> add_note(self, title, text):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.notes.append({<span class="string">"title"</span>: title, <span class="string">"text"</span>: text})<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.save_notes()<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> save_notes(self):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">with</span> <span class="keyword">open</span>(self.filename, <span class="string">'w'</span>) <span class="keyword">as</span> f:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;json.dump(self.notes, f, indent=<span class="number">2</span>)
+            </div>
+
+            <div class="interactive-section">
+                <h4>⚡ Try the Note App</h4>
+                <textarea id="code5">import json
+
+class NoteApp:
+    def __init__(self):
+        self.notes = []
+
+    def add_note(self, title, text):
+        self.notes.append({"title": title, "text": text})
+        print(f"✓ Note '{title}' saved!")
+
+    def show_all(self):
+        if not self.notes:
+            print("No notes yet!")
+            return
+        print("\n📝 Your Notes:")
+        for i, note in enumerate(self.notes, 1):
+            print(f"{i}. {note['title']}")
+            print(f"   {note['text']}\n")
+
+    def export(self):
+        return json.dumps(self.notes, indent=2)
+
+# Use the app
+app = NoteApp()
+app.add_note("Python", "Learning file handling today!")
+app.add_note("Reminder", "Remember to practice coding daily")
+app.add_note("Ideas", "Build a web scraper with Python")
+
+app.show_all()
+
+print("=== JSON Export ===")
+print(app.export())</textarea>
+                <button type="button" onclick="runCode('code5', 'output5', event); return false;" onmousedown="event.preventDefault(); return false;">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code5', 'import json\n\nclass NoteApp:\n    def __init__(self):\n        self.notes = []\n    \n    def add_note(self, title, text):\n        self.notes.append({"title": title, "text": text})\n        print(f"✓ Note \'{title}\' saved!")\n    \n    def show_all(self):\n        if not self.notes:\n            print("No notes yet!")\n            return\n        print("\n📝 Your Notes:")\n        for i, note in enumerate(self.notes, 1):\n            print(f"{i}. {note[\'title\']}")\n            print(f"   {note[\'text\']}\n")\n    \n    def export(self):\n        return json.dumps(self.notes, indent=2)\n\n# Use the app\napp = NoteApp()\napp.add_note("Python", "Learning file handling today!")\napp.add_note("Reminder", "Remember to practice coding daily")\napp.add_note("Ideas", "Build a web scraper with Python")\n\napp.show_all()\n\nprint("=== JSON Export ===")\nprint(app.export())'); return false;">↻ Reset</button>
+                <div id="output5" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- KEY TAKEAWAYS -->
+        <div class="section">
+            <h2>✨ Key Takeaways & Summary</h2>
+
+            <h3>📋 Checklist: What You Learned</h3>
+            <div class="concept-box">
+                <strong>✅ File Basics:</strong><br>
+                • Files persist data between program runs<br>
+                • Every file has a name, path, and type<br><br>
+
+                <strong>✅ File Modes:</strong><br>
+                • 'r' = Read existing files<br>
+                • 'w' = Write/overwrite files<br>
+                • 'a' = Append to files<br>
+                • 'x' = Create new files<br><br>
+
+                <strong>✅ Reading Files (3 Ways):</strong><br>
+                • read() = Get everything as one string<br>
+                • readlines() = Get list of lines<br>
+                • Loop = Process line-by-line (best for large files)<br><br>
+
+                <strong>✅ Writing Files:</strong><br>
+                • write() mode overwrites everything<br>
+                • append() mode adds to the end<br><br>
+
+                <strong>✅ Best Practices:</strong><br>
+                • Always use 'with' statement<br>
+                • Handle errors with try-except<br>
+                • Use JSON for complex data<br>
+                • indent=2 for readable JSON<br>
+            </div>
+
+            <h3>🔑 The Golden Rules</h3>
+            <div class="success-badge">
+                <strong>1. Always use 'with':</strong> Automatically closes files safely<br><br>
+                <strong>2. Choose right mode:</strong> 'r' read, 'w' write, 'a' append<br><br>
+                <strong>3. Handle errors:</strong> Use try-except for file operations<br><br>
+                <strong>4. Use JSON:</strong> For storing complex data structures<br><br>
+                <strong>5. Be careful with 'w':</strong> It overwrites existing files!
+            </div>
+
+            <h3>📚 What's Next?</h3>
+            <p>Now that you can work with files, you're ready to:</p>
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li>📊 <strong>Libraries:</strong> Use powerful pre-built modules</li>
+                <li>📈 <strong>Data Visualization:</strong> Create charts from file data</li>
+                <li>🤖 <strong>Machine Learning:</strong> Train models on file datasets</li>
+                <li>🌐 <strong>Web Scraping:</strong> Download and save web data</li>
+            </ul>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="../05_OOP/index.html">← Previous: OOP</a>
+            <a href="../07_Libraries/index.html">Next: Libraries →</a>
+        </div>
+    </div>
+
+    <script>
+        function runCode(textareaId, outputId, event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+            }
+
+            const code = document.getElementById(textareaId).value;
+            const outputBox = document.getElementById(outputId);
+            outputBox.innerHTML = '';
+
+            try {
+                let output = '';
+                const originalLog = console.log;
+                console.log = function(...args) {
+                    output += args.join(' ') + '\n';
+                };
+
+                eval(code);
+
+                console.log = originalLog;
+                outputBox.innerHTML = output || '✓ Code executed!';
+            } catch (error) {
+                outputBox.innerHTML = `<span style="color: #ff6b6b;">❌ Error: ${error.message}</span>`;
+            }
+            return false;
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        }, true);
+
+        window.print = function() { return false; };
+    </script>
+</body>
+</html>

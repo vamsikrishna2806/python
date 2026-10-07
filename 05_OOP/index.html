@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object-Oriented Programming - Classes & Objects</title>
+    <style>
+        @media print {
+            html { display: none !important; }
+            body { display: none !important; }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header { text-align: center; color: white; margin-bottom: 30px; }
+        header h1 { font-size: 2.5em; }
+        .breadcrumb { color: rgba(255,255,255,0.8); text-align: center; margin-bottom: 20px; }
+        .breadcrumb a { color: white; text-decoration: none; }
+        .section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .section h2 { color: #667eea; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #667eea; font-size: 1.8em; }
+        .section h3 { color: #333; margin-top: 25px; margin-bottom: 15px; font-size: 1.3em; }
+        .concept-box { background: #f0f4ff; border-left: 4px solid #667eea; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; overflow-x: auto; margin: 15px 0; font-family: 'Courier New', 'Consolas', monospace; font-size: 0.95em; line-height: 1.6; border-left: 4px solid #667eea; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .keyword { color: #569cd6; font-weight: bold; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; font-style: italic; }
+        .interactive-section { background: #f0f4ff; border: 2px solid #667eea; border-radius: 10px; padding: 20px; margin: 20px 0; }
+        textarea { width: 100%; min-height: 150px; padding: 15px; border: 2px solid #667eea; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.95em; margin-bottom: 10px; }
+        button { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: bold; transition: all 0.3s ease; margin-right: 10px; }
+        button:hover { transform: scale(1.05); }
+        .output-box { background: #1e1e1e; color: #4ec9b0; padding: 15px; border-radius: 8px; margin-top: 15px; font-family: 'Courier New', monospace; min-height: 50px; max-height: 300px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        table th { background: #667eea; color: white; padding: 12px; text-align: left; }
+        table td { border-bottom: 1px solid #ddd; padding: 10px 12px; }
+        table tr:hover { background: #f5f5f5; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 40px; }
+        .nav-buttons a { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb"><a href="../index.html">← Back to Learning Path</a></div>
+
+        <header>
+            <h1>🏗️ Object-Oriented Programming</h1>
+            <p>Classes, Objects & Inheritance</p>
+        </header>
+
+        <div class="section">
+            <h2>What is OOP?</h2>
+
+            <p>Object-Oriented Programming (OOP) is a way to structure your code using <strong>objects and classes</strong>. Think of it as creating blueprints (classes) and then building things (objects) from those blueprints.</p>
+
+            <div class="concept-box">
+                <strong>Core Concepts:</strong><br>
+                ✓ <strong>Classes:</strong> Blueprints for creating objects<br>
+                ✓ <strong>Objects:</strong> Instances created from classes<br>
+                ✓ <strong>Attributes:</strong> Properties/data that objects have<br>
+                ✓ <strong>Methods:</strong> Functions that objects can perform<br>
+                ✓ <strong>Inheritance:</strong> Classes can extend other classes<br>
+            </div>
+
+            <h3>Class Definition</h3>
+            <p>A class is a blueprint. Here's how to create one:</p>
+
+            <div class="code-block">
+<span class="keyword">class</span> <span class="string">Dog</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Constructor - runs when object is created</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="string">__init__</span>(<span class="keyword">self</span>, name, age):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">self</span>.name = name<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">self</span>.age = age<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Method - function inside class</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="string">bark</span>(<span class="keyword">self</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">f"{self.name} says Woof!"</span><br>
+<br>
+<span class="comment"># Create objects from class</span><br>
+dog1 = <span class="string">Dog</span>(<span class="string">"Buddy"</span>, <span class="number">3</span>)<br>
+dog2 = <span class="string">Dog</span>(<span class="string">"Max"</span>, <span class="number">5</span>)<br>
+<br>
+<span class="keyword">print</span>(dog1.bark())  <span class="comment"># Output: Buddy says Woof!</span>
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Creating a Class</h4>
+                <textarea id="code1">class Student:
+    def __init__(self, name, grade):
+        self.name = name
+        self.grade = grade
+
+    def study(self, hours):
+        return f"{self.name} studied for {hours} hours"
+
+    def get_info(self):
+        return f"{self.name} is in grade {self.grade}"
+
+# Create objects
+student1 = Student("Alice", "10th")
+student2 = Student("Bob", "9th")
+
+print(student1.get_info())
+print(student1.study(2))
+print(student2.get_info())</textarea>
+                <button type="button" onclick="runCode('code1', 'output1', event); return false;" onmousedown="event.preventDefault(); return false;">▶ Run Code</button>
+                <div id="output1" class="output-box"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Inheritance</h2>
+
+            <p>Inheritance lets one class extend another class. A <strong>child class</strong> inherits all properties and methods from a <strong>parent class</strong>.</p>
+
+            <h3>Example: Animal Classes</h3>
+            <div class="code-block">
+<span class="keyword">class</span> <span class="string">Animal</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="string">__init__</span>(<span class="keyword">self</span>, name):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">self</span>.name = name<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="string">speak</span>(<span class="keyword">self</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"Some sound"</span><br>
+<br>
+<span class="comment"># Dog inherits from Animal</span><br>
+<span class="keyword">class</span> <span class="string">Dog</span>(<span class="string">Animal</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="string">speak</span>(<span class="keyword">self</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">f"{self.name} says Woof!"</span><br>
+<br>
+<span class="keyword">class</span> <span class="string">Cat</span>(<span class="string">Animal</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="string">speak</span>(<span class="keyword">self</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">f"{self.name} says Meow!"</span><br>
+<br>
+dog = <span class="string">Dog</span>(<span class="string">"Buddy"</span>)<br>
+cat = <span class="string">Cat</span>(<span class="string">"Whiskers"</span>)<br>
+<br>
+<span class="keyword">print</span>(dog.speak())<br>
+<span class="keyword">print</span>(cat.speak())
+            </div>
+
+            <div class="interactive-section">
+                <h4>Try Inheritance</h4>
+                <textarea id="code2">class Vehicle:
+    def __init__(self, brand):
+        self.brand = brand
+
+    def start(self):
+        return f"{self.brand} vehicle started"
+
+class Car(Vehicle):
+    def start(self):
+        return f"{self.brand} car's engine started"
+
+class Bike(Vehicle):
+    def start(self):
+        return f"{self.brand} bike's engine started"
+
+car = Car("Toyota")
+bike = Bike("Honda")
+
+print(car.start())
+print(bike.start())</textarea>
+                <button type="button" onclick="runCode('code2', 'output2', event); return false;" onmousedown="event.preventDefault(); return false;">▶ Run Code</button>
+                <div id="output2" class="output-box"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Key OOP Concepts</h2>
+
+            <h3>1. Encapsulation</h3>
+            <p>Hide internal details and only show what's needed:</p>
+            <div class="code-block">
+<span class="keyword">class</span> <span class="string">BankAccount</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="string">__init__</span>(<span class="keyword">self</span>, balance):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">self</span>.__balance = balance  <span class="comment"># Private (hidden)</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="string">deposit</span>(<span class="keyword">self</span>, amount):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">self</span>.__balance += amount<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="string">get_balance</span>(<span class="keyword">self</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="keyword">self</span>.__balance
+            </div>
+
+            <h3>2. Polymorphism</h3>
+            <p>Same method name, different behavior in different classes:</p>
+            <div class="code-block">
+<span class="comment"># Different shapes have different area calculations</span><br>
+<span class="keyword">class</span> <span class="string">Circle</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="string">area</span>(<span class="keyword">self</span>, radius):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="number">3.14</span> * radius * radius<br>
+<br>
+<span class="keyword">class</span> <span class="string">Rectangle</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="string">area</span>(<span class="keyword">self</span>, length, width):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> length * width
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Key Takeaways</h2>
+
+            <div class="concept-box">
+                <strong>1. Classes:</strong> Blueprints for creating objects<br><br>
+                <strong>2. Objects:</strong> Instances of a class<br><br>
+                <strong>3. Attributes:</strong> Data stored in objects<br><br>
+                <strong>4. Methods:</strong> Functions inside classes<br><br>
+                <strong>5. Inheritance:</strong> Classes extending other classes<br><br>
+                <strong>6. Polymorphism:</strong> Same method, different behavior
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="../04_Functions/index.html">← Previous: Functions</a>
+            <a href="../06_File_Handling/index.html">Next: File Handling →</a>
+        </div>
+    </div>
+
+    <script>
+        function runCode(textareaId, outputId, event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+            }
+
+            const code = document.getElementById(textareaId).value;
+            const outputBox = document.getElementById(outputId);
+            outputBox.innerHTML = '';
+
+            try {
+                let output = '';
+                const originalLog = console.log;
+                console.log = function(...args) {
+                    output += args.join(' ') + '\n';
+                };
+
+                const originalPrint = window.print;
+                window.print = function() { console.log("[Print output]"); };
+
+                eval(code);
+
+                console.log = originalLog;
+                window.print = originalPrint;
+
+                outputBox.innerHTML = output || '✓ Code executed successfully!';
+            } catch (error) {
+                outputBox.innerHTML = `<span style="color: #ff6b6b;">❌ Error: ${error.message}</span>`;
+            }
+            return false;
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                return false;
+            }
+        }, true);
+
+        window.print = function() {
+            console.log("Print blocked");
+            return false;
+        };
+    </script>
+</body>
+</html>

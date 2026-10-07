@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libraries - NumPy & Pandas</title>
+    <style>
+        @media print { html, body { display: none !important; } }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI'; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header { text-align: center; color: white; margin-bottom: 30px; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .section h2 { color: #667eea; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #667eea; }
+        .section h3 { color: #333; margin-top: 25px; margin-bottom: 15px; }
+        .concept-box { background: #f0f4ff; border-left: 4px solid #667eea; padding: 15px; margin: 15px 0; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; margin: 15px 0; font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6; border-left: 4px solid #667eea; overflow-x: auto; }
+        .keyword { color: #569cd6; font-weight: bold; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; font-style: italic; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        table th { background: #667eea; color: white; padding: 12px; text-align: left; }
+        table td { border-bottom: 1px solid #ddd; padding: 10px 12px; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 40px; }
+        .nav-buttons a { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; }
+        .breadcrumb { color: rgba(255,255,255,0.8); text-align: center; margin-bottom: 20px; }
+        .breadcrumb a { color: white; text-decoration: none; }
+        .progression-level { background: #f0f4ff; border: 2px solid #667eea; border-radius: 8px; padding: 15px; margin: 15px 0; }
+        .progression-level.beginner { border-color: #28a745; background: #d4edda; }
+        .progression-level.intermediate { border-color: #ffc107; background: #fff3cd; }
+        .progression-level.advanced { border-color: #dc3545; background: #f8d7da; }
+        .level-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; margin-right: 10px; }
+        .level-badge.beginner { background: #28a745; color: white; }
+        .level-badge.intermediate { background: #ffc107; color: black; }
+        .level-badge.advanced { background: #dc3545; color: white; }
+        .library-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; margin: 15px 0; }
+        .use-cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 15px 0; }
+        .use-case { background: #f0f4ff; padding: 15px; border-radius: 10px; border-left: 4px solid #667eea; }
+        .interactive-section { background: #f0f4ff; border: 2px solid #667eea; border-radius: 10px; padding: 20px; margin: 20px 0; }
+        textarea { width: 100%; min-height: 150px; padding: 15px; border: 2px solid #667eea; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.95em; margin-bottom: 10px; }
+        button { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: bold; transition: all 0.3s ease; margin-right: 10px; }
+        button:hover { transform: scale(1.05); }
+        .output-box { background: #1e1e1e; color: #4ec9b0; padding: 15px; border-radius: 8px; margin-top: 15px; font-family: 'Courier New', monospace; min-height: 50px; max-height: 300px; overflow-y: auto; }
+        .success-badge { background: #d4edda; border: 1px solid #28a745; color: #155724; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .note { background: #e7f3ff; border-left: 4px solid #2196F3; padding: 15px; margin: 15px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb"><a href="../index.html">← Back to Learning Path</a></div>
+        <header>
+            <h1>📚 Python Libraries</h1>
+            <p>Superpower Your Code with Pre-Built Tools</p>
+        </header>
+
+        <!-- INTRODUCTION -->
+        <div class="section">
+            <h2>🎯 Why Libraries Matter</h2>
+
+            <p>A library (or module) is pre-written code that solves common problems. Instead of coding everything from scratch, you <strong>reuse battle-tested code</strong> written by experts.</p>
+
+            <div class="concept-box">
+                <strong>Analogy:</strong> Building a house from scratch means making bricks, lumber, nails, etc. Using libraries means buying pre-made materials and focusing on construction!
+            </div>
+
+            <h3>Real-World Impact</h3>
+            <div class="use-cases">
+                <div class="use-case">
+                    <strong>🔢 NumPy</strong><br>
+                    Fast math on huge datasets
+                </div>
+                <div class="use-case">
+                    <strong>📊 Pandas</strong><br>
+                    Analyze data like Excel
+                </div>
+                <div class="use-case">
+                    <strong>📈 Matplotlib</strong><br>
+                    Create beautiful charts
+                </div>
+                <div class="use-case">
+                    <strong>🤖 Scikit-learn</strong><br>
+                    Machine learning made easy
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 1: IMPORTING -->
+        <div class="section">
+            <h2>📦 Installing & Importing Libraries</h2>
+
+            <div class="progression-level beginner">
+                <span class="level-badge beginner">BEGINNER</span>
+                <strong>Installation</strong>
+            </div>
+
+            <p>Before using a library, you must install it with <code>pip</code> (Python's package manager):</p>
+
+            <div class="code-block">
+<span class="comment"># In your terminal/command prompt:</span><br>
+pip install numpy<br>
+pip install pandas<br>
+pip install matplotlib<br>
+            </div>
+
+            <div class="note">
+                ℹ️ <strong>Tip:</strong> You only need to install once. After that, it's on your computer forever!
+            </div>
+
+            <div class="progression-level beginner">
+                <span class="level-badge beginner">BEGINNER</span>
+                <strong>Three Ways to Import</strong>
+            </div>
+
+            <div class="code-block">
+<span class="comment"># Way 1: Import entire library</span><br>
+<span class="keyword">import</span> numpy<br>
+arr = numpy.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])<br>
+<br>
+<span class="comment"># Way 2: Import with alias (preferred!)</span><br>
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np<br>
+arr = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])  <span class="comment"># Shorter!</span><br>
+<br>
+<span class="comment"># Way 3: Import specific functions</span><br>
+<span class="keyword">from</span> numpy <span class="keyword">import</span> array<br>
+arr = array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])
+            </div>
+
+            <div class="success-badge">
+                ✅ <strong>Best Practice:</strong> Use Way 2 (with aliases) - it's the standard in the Python community!
+            </div>
+        </div>
+
+        <!-- SECTION 2: NUMPY BASICS -->
+        <div class="section">
+            <h2>🔢 NumPy: Fast Mathematical Arrays</h2>
+
+            <div class="progression-level beginner">
+                <span class="level-badge beginner">BEGINNER</span>
+                <strong>What is NumPy?</strong>
+            </div>
+
+            <p>NumPy gives Python super-powers for math! It makes arrays (lists of numbers) that are:</p>
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li>✅ <strong>100x faster</strong> than Python lists</li>
+                <li>✅ <strong>Use less memory</strong></li>
+                <li>✅ <strong>Easy math</strong> operations</li>
+                <li>✅ <strong>Professional grade</strong> numerical computing</li>
+            </ul>
+
+            <div class="progression-level beginner">
+                <span class="level-badge beginner">BEGINNER</span>
+                <strong>Creating NumPy Arrays</strong>
+            </div>
+
+            <div class="code-block">
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np<br>
+<br>
+<span class="comment"># From a Python list</span><br>
+arr1 = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])<br>
+<br>
+<span class="comment"># Create arrays of zeros or ones</span><br>
+zeros = np.zeros(<span class="number">5</span>)        <span class="comment"># [0, 0, 0, 0, 0]</span><br>
+ones = np.ones(<span class="number">3</span>)          <span class="comment"># [1, 1, 1]</span><br>
+<br>
+<span class="comment"># Create range of numbers</span><br>
+range_arr = np.arange(<span class="number">0</span>, <span class="number">10</span>, <span class="number">2</span>)  <span class="comment"># [0, 2, 4, 6, 8]</span><br>
+<br>
+<span class="comment"># Create evenly spaced numbers</span><br>
+linspace = np.linspace(<span class="number">0</span>, <span class="number">100</span>, <span class="number">5</span>) <span class="comment"># [0, 25, 50, 75, 100]</span>
+            </div>
+
+            <div class="progression-level intermediate">
+                <span class="level-badge intermediate">INTERMEDIATE</span>
+                <strong>Array Operations</strong>
+            </div>
+
+            <p>NumPy makes math on entire arrays simple:</p>
+
+            <div class="code-block">
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np<br>
+<br>
+arr = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])<br>
+<br>
+<span class="comment"># Math on entire array at once!</span><br>
+doubled = arr * <span class="number">2</span>         <span class="comment"># [2, 4, 6, 8, 10]</span><br>
+squared = arr ** <span class="number">2</span>        <span class="comment"># [1, 4, 9, 16, 25]</span><br>
+<br>
+<span class="comment"># Statistical functions</span><br>
+total = arr.sum()         <span class="comment"># 15</span><br>
+average = arr.mean()      <span class="comment"># 3.0</span><br>
+max_val = arr.max()       <span class="comment"># 5</span><br>
+std_dev = arr.std()       <span class="comment"># Standard deviation</span>
+            </div>
+
+            <div class="interactive-section">
+                <h4>⚡ Try NumPy Operations</h4>
+                <textarea id="code1">import numpy as np
+
+# Create arrays
+numbers = np.array([10, 20, 30, 40, 50])
+print("Original array:", numbers)
+
+# Mathematical operations
+print("\nMath Operations:")
+print("Doubled:", numbers * 2)
+print("Squared:", numbers ** 2)
+print("Divided by 5:", numbers / 5)
+
+# Statistical operations
+print("\nStatistics:")
+print("Sum:", numbers.sum())
+print("Average:", numbers.mean())
+print("Min:", numbers.min())
+print("Max:", numbers.max())
+print("Standard Deviation:", numbers.std())
+
+# Create special arrays
+print("\nSpecial Arrays:")
+zeros = np.zeros(5)
+ones = np.ones(3)
+range_arr = np.arange(0, 10, 2)
+print("Zeros:", zeros)
+print("Ones:", ones)
+print("Range:", range_arr)</textarea>
+                <button type="button" onclick="runCode('code1', 'output1', event); return false;">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code1', 'import numpy as np\n\n# Create arrays\nnumbers = np.array([10, 20, 30, 40, 50])\nprint("Original array:", numbers)\n\n# Mathematical operations\nprint("\nMath Operations:")\nprint("Doubled:", numbers * 2)\nprint("Squared:", numbers ** 2)\nprint("Divided by 5:", numbers / 5)\n\n# Statistical operations\nprint("\nStatistics:")\nprint("Sum:", numbers.sum())\nprint("Average:", numbers.mean())\nprint("Min:", numbers.min())\nprint("Max:", numbers.max())\nprint("Standard Deviation:", numbers.std())\n\n# Create special arrays\nprint("\nSpecial Arrays:")\nzeros = np.zeros(5)\nones = np.ones(3)\nrange_arr = np.arange(0, 10, 2)\nprint("Zeros:", zeros)\nprint("Ones:", ones)\nprint("Range:", range_arr)'); return false;">↻ Reset</button>
+                <div id="output1" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: PANDAS -->
+        <div class="section">
+            <h2>📊 Pandas: Excel-Like Data Analysis</h2>
+
+            <div class="progression-level intermediate">
+                <span class="level-badge intermediate">INTERMEDIATE</span>
+                <strong>What is Pandas?</strong>
+            </div>
+
+            <p>Pandas gives you <strong>DataFrames</strong—tables of data like Excel spreadsheets, but with incredible power for analysis!</p>
+
+            <div class="library-card">
+                <strong>Think of it as:</strong> Excel + Python superpowers
+            </div>
+
+            <h3>Creating DataFrames</h3>
+
+            <div class="code-block">
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd<br>
+<br>
+<span class="comment"># Create from dictionary</span><br>
+data = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'Name'</span>: [<span class="string">'Alice'</span>, <span class="string">'Bob'</span>, <span class="string">'Charlie'</span>],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'Age'</span>: [<span class="number">25</span>, <span class="number">30</span>, <span class="number">35</span>],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'Score'</span>: [<span class="number">90</span>, <span class="number">85</span>, <span class="number">95</span>]<br>
+}<br>
+<br>
+df = pd.DataFrame(data)<br>
+<span class="keyword">print</span>(df)
+            </div>
+
+            <div class="progression-level intermediate">
+                <span class="level-badge intermediate">INTERMEDIATE</span>
+                <strong>DataFrame Operations</strong>
+            </div>
+
+            <div class="code-block">
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd<br>
+<br>
+<span class="comment"># Access columns</span><br>
+names = df[<span class="string">'Name'</span>]      <span class="comment"># Get Name column</span><br>
+<br>
+<span class="comment"># Get rows</span><br>
+first_row = df.iloc[<span class="number">0</span>]    <span class="comment"># First row</span><br>
+<br>
+<span class="comment"># Filtering</span><br>
+adults = df[df[<span class="string">'Age'</span>] > <span class="number">25</span>]  <span class="comment"># Age > 25</span><br>
+<br>
+<span class="comment"># Sorting</span><br>
+sorted_df = df.sort_values(<span class="string">'Score'</span>)  <span class="comment"># Sort by score</span><br>
+<br>
+<span class="comment"># Statistics</span><br>
+avg_age = df[<span class="string">'Age'</span>].mean()   <span class="comment"># Average age</span><br>
+stats = df.describe()          <span class="comment"># All statistics</span>
+            </div>
+
+            <div class="interactive-section">
+                <h4>⚡ Try Pandas DataFrames</h4>
+                <textarea id="code2">import pandas as pd
+
+# Create a DataFrame
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie', 'David'],
+    'Age': [25, 30, 35, 28],
+    'Salary': [50000, 60000, 75000, 55000],
+    'Department': ['HR', 'IT', 'Sales', 'IT']
+}
+
+df = pd.DataFrame(data)
+
+print("=== Full DataFrame ===")
+print(df)
+
+print("\n=== Access Columns ===")
+print("Names:", list(df['Name']))
+print("Ages:", list(df['Age']))
+
+print("\n=== Filtering ===")
+over_30 = df[df['Age'] > 30]
+print("People over 30:")
+print(over_30)
+
+print("\n=== Statistics ===")
+print("Average Age:", df['Age'].mean())
+print("Average Salary:", df['Salary'].mean())
+print("Max Salary:", df['Salary'].max())
+
+print("\n=== Sorting ===")
+sorted_df = df.sort_values('Salary', ascending=False)
+print("Sorted by Salary (highest first):")
+print(sorted_df[['Name', 'Salary']])</textarea>
+                <button type="button" onclick="runCode('code2', 'output2', event); return false;">▶ Run Code</button>
+                <button type="button" onclick="resetCode('code2', 'import pandas as pd\n\n# Create a DataFrame\ndata = {\n    \'Name\': [\'Alice\', \'Bob\', \'Charlie\', \'David\'],\n    \'Age\': [25, 30, 35, 28],\n    \'Salary\': [50000, 60000, 75000, 55000],\n    \'Department\': [\'HR\', \'IT\', \'Sales\', \'IT\']\n}\n\ndf = pd.DataFrame(data)\n\nprint("=== Full DataFrame ===")\nprint(df)\n\nprint("\n=== Access Columns ===")\nprint("Names:", list(df[\'Name\']))\nprint("Ages:", list(df[\'Age\']))\n\nprint("\n=== Filtering ===")\nover_30 = df[df[\'Age\'] > 30]\nprint("People over 30:")\nprint(over_30)\n\nprint("\n=== Statistics ===")\nprint("Average Age:", df[\'Age\'].mean())\nprint("Average Salary:", df[\'Salary\'].mean())\nprint("Max Salary:", df[\'Salary\'].max())\n\nprint("\n=== Sorting ===")\nsorted_df = df.sort_values(\'Salary\', ascending=False)\nprint("Sorted by Salary (highest first):")\nprint(sorted_df[[\'Name\', \'Salary\']])'); return false;">↻ Reset</button>
+                <div id="output2" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: OTHER IMPORTANT LIBRARIES -->
+        <div class="section">
+            <h2>🌟 Other Essential Libraries</h2>
+
+            <h3>📈 Matplotlib - Create Beautiful Charts</h3>
+            <div class="code-block">
+<span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt<br>
+<br>
+x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]<br>
+y = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>]<br>
+<br>
+plt.plot(x, y)<br>
+plt.title(<span class="string">'Square Numbers'</span>)<br>
+plt.xlabel(<span class="string">'Numbers'</span>)<br>
+plt.ylabel(<span class="string">'Squares'</span>)<br>
+plt.show()
+            </div>
+
+            <h3>🤖 Scikit-learn - Machine Learning</h3>
+            <div class="code-block">
+<span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris<br>
+<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split<br>
+<span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier<br>
+<br>
+<span class="comment"># Load data, split, train, predict - that's it!</span>
+            </div>
+
+            <h3>🌐 Requests - Download Web Data</h3>
+            <div class="code-block">
+<span class="keyword">import</span> requests<br>
+<br>
+response = requests.get(<span class="string">'https://api.example.com/data'</span>)<br>
+data = response.json()  <span class="comment"># Convert to Python dict</span><br>
+<span class="keyword">print</span>(data)
+            </div>
+
+            <h3>⏱️ Datetime - Work with Dates/Times</h3>
+            <div class="code-block">
+<span class="keyword">from</span> datetime <span class="keyword">import</span> datetime, timedelta<br>
+<br>
+today = datetime.now()         <span class="comment"># Current date/time</span><br>
+tomorrow = today + timedelta(days=<span class="number">1</span>)  <span class="comment"># Tomorrow</span><br>
+<span class="keyword">print</span>(today.strftime(<span class="string">'%Y-%m-%d'</span>))  <span class="comment"># Format as text</span>
+            </div>
+        </div>
+
+        <!-- KEY TAKEAWAYS -->
+        <div class="section">
+            <h2>✨ Key Takeaways</h2>
+
+            <div class="concept-box">
+                <strong>✅ What You Learned:</strong><br>
+                • Libraries contain pre-written code<br>
+                • Use `pip install` to add libraries<br>
+                • Use `import ... as ...` to use them<br>
+                • NumPy = Fast math on arrays<br>
+                • Pandas = Analyze data like Excel<br>
+                • Matplotlib = Create charts<br>
+                • Scikit-learn = Machine learning<br>
+                • Requests = Download web data<br><br>
+
+                <strong>🎯 Golden Rule:</strong><br>
+                <strong>"Why code from scratch when brilliant people already solved it?"</strong><br>
+                Always look for a library before writing complex code!
+            </div>
+
+            <h3>📚 What's Next?</h3>
+            <p>Now that you know how to use powerful libraries, let's visualize data:</p>
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li>📊 <strong>Data Visualization:</strong> Create stunning charts and graphs</li>
+                <li>📈 <strong>Statistics:</strong> Analyze data patterns and trends</li>
+                <li>🤖 <strong>Machine Learning:</strong> Train AI models</li>
+            </ul>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="../06_File_Handling/index.html">← Previous: File Handling</a>
+            <a href="../08_Data_Visualization/index.html">Next: Data Visualization →</a>
+        </div>
+    </div>
+
+    <script>
+        function runCode(textareaId, outputId, event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+            }
+
+            const code = document.getElementById(textareaId).value;
+            const outputBox = document.getElementById(outputId);
+            outputBox.innerHTML = '';
+
+            try {
+                let output = '';
+                const customLog = function(...args) {
+                    output += args.join(' ') + '\n';
+                };
+
+                const originalLog = console.log;
+                console.log = customLog;
+
+                eval(code);
+
+                console.log = originalLog;
+                outputBox.innerHTML = output || '✓ Code executed successfully!';
+            } catch (error) {
+                outputBox.innerHTML = `<span style="color: #ff6b6b;">❌ Error: ${error.message}</span>`;
+            }
+            return false;
+        }
+
+        function resetCode(textareaId, defaultCode, event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+            }
+            document.getElementById(textareaId).value = defaultCode;
+            const outputId = textareaId.replace('code', 'output');
+            document.getElementById(outputId).innerHTML = '';
+            return false;
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        }, true);
+
+        window.print = function() { return false; };
+    </script>
+</body>
+</html>
