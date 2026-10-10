@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Guide - VS Code, Python & Jupyter</title>
+    <style>
+        @media print { html, body { display: none !important; } }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .breadcrumb { color: rgba(255,255,255,0.85); text-align: center; margin-bottom: 20px; }
+        .breadcrumb a { color: white; text-decoration: none; }
+        header { text-align: center; color: white; margin-bottom: 30px; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .section h2 { color: #667eea; margin-bottom: 20px; border-bottom: 3px solid #667eea; padding-bottom: 10px; }
+        .section h3 { color: #333; margin: 20px 0 10px; font-size: 1.15em; }
+        .step { display: flex; gap: 16px; align-items: flex-start; margin: 18px 0; }
+        .step-num { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; width: 42px; height: 42px; min-width: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1em; }
+        .step-body { flex: 1; line-height: 1.6; }
+        .step-body p + p { margin-top: 6px; }
+        .tip { background: #e7f3ff; border-left: 4px solid #2196F3; padding: 14px; margin: 15px 0; border-radius: 5px; }
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 14px; margin: 15px 0; border-radius: 5px; }
+        .warning { background: #fff3cd; border-left: 4px solid #ffc107; padding: 14px; margin: 15px 0; border-radius: 5px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px; margin: 12px 0; font-family: 'Courier New', Consolas, monospace; font-size: 0.95em; overflow-x: auto; border-left: 4px solid #667eea; }
+        .code-block .comment { color: #6a9955; font-style: italic; }
+        .kbd { display: inline-block; background: #f1f1f1; border: 1px solid #bbb; border-bottom-width: 3px; border-radius: 4px; padding: 1px 7px; font-family: Consolas, monospace; font-size: 0.9em; }
+        .figure { margin: 20px 0; text-align: center; }
+        .figure figcaption { color: #666; font-size: 0.9em; margin-top: 8px; }
+        .figure svg { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; color: white; margin-right: 8px; }
+        .b-blue { background: #0078d4; }
+        .b-green { background: #28a745; }
+        .b-purple { background: #764ba2; }
+        .ext-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; margin: 15px 0; }
+        .ext-card { border: 2px solid #667eea; border-radius: 10px; padding: 18px; }
+        .ext-card h3 { margin-top: 0; color: #667eea; }
+        .checklist li { list-style: none; padding: 6px 0; }
+        .checklist li::before { content: "✅ "; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; }
+        .nav-buttons a { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 26px; border-radius: 8px; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="breadcrumb"><a href="index.html">← Back to Python Basics</a></div>
+
+    <header>
+        <h1>🛠️ Setup Guide</h1>
+        <p>Install VS Code, Python, and the Jupyter extension — step by step</p>
+    </header>
+
+    <!-- OVERVIEW -->
+    <div class="section">
+        <h2>🎯 What You Will Install</h2>
+        <div class="ext-grid">
+            <div class="ext-card">
+                <h3>1. VS Code</h3>
+                <p>A free code editor from Microsoft. This is where you write Python.</p>
+            </div>
+            <div class="ext-card">
+                <h3>2. Python</h3>
+                <p>The language itself. VS Code runs your code using it.</p>
+            </div>
+            <div class="ext-card">
+                <h3>3. Extensions</h3>
+                <p><strong>Python</strong> (run &amp; debug) and <strong>Jupyter</strong> (notebooks with <code>.ipynb</code> files).</p>
+            </div>
+        </div>
+        <div class="tip">
+            ⏱️ Total time: about 15–20 minutes. You only do this once.
+        </div>
+    </div>
+
+    <!-- STEP 1: INSTALL PYTHON -->
+    <div class="section">
+        <h2>1️⃣ Install Python</h2>
+        <p>Install Python first, so VS Code can find it.</p>
+
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+                <p>Open <strong>python.org/downloads</strong> and click <strong>Download Python 3.x</strong> (any recent 3.10+ version).</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+                <p>Run the installer. <strong>Very important:</strong> tick <strong>"Add python.exe to PATH"</strong> at the bottom of the first screen.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+                <p>Click <strong>Install Now</strong>, then <strong>Close</strong> when finished.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+                <p>Check it worked. Open Command Prompt (press <span class="kbd">Win</span> + <span class="kbd">R</span>, type <code>cmd</code>) and run:</p>
+                <div class="code-block">python --version</div>
+                <p>You should see something like <code>Python 3.12.x</code>.</p>
+            </div>
+        </div>
+
+        <div class="warning">
+            ⚠️ If you see "python is not recognized", reinstall Python and make sure <strong>Add to PATH</strong> is ticked.
+        </div>
+    </div>
+
+    <!-- STEP 2: INSTALL VS CODE -->
+    <div class="section">
+        <h2>2️⃣ Install VS Code</h2>
+
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+                <p>Open <strong>code.visualstudio.com</strong> and click <strong>Download for Windows</strong>.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+                <p>Run <code>VSCodeUserSetup-x64.exe</code>. Accept the licence and click <strong>Next</strong>.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+                <p>On the <em>Select Additional Tasks</em> screen, tick these boxes:</p>
+                <ul style="margin: 8px 0 0 22px; line-height: 1.9;">
+                    <li><strong>Add "Open with Code"</strong> to the right-click menu</li>
+                    <li><strong>Add to PATH</strong></li>
+                    <li><strong>Register Code as an editor for supported file types</strong></li>
+                </ul>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+                <p>Click <strong>Install</strong>, wait, then <strong>Finish</strong>. VS Code opens automatically.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- VS CODE TOUR (ILLUSTRATION) -->
+    <div class="section">
+        <h2>🖥️ Know Your VS Code Screen</h2>
+        <p>This is what VS Code looks like. The labels show the parts you will use most.</p>
+
+        <figure class="figure">
+            <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of VS Code window layout">
+                <!-- window -->
+                <rect x="0" y="0" width="900" height="520" rx="12" fill="#1e1e1e"/>
+                <!-- title bar -->
+                <rect x="0" y="0" width="900" height="34" rx="12" fill="#323233"/>
+                <rect x="0" y="20" width="900" height="14" fill="#323233"/>
+                <circle cx="18" cy="17" r="6" fill="#ff5f56"/>
+                <circle cx="38" cy="17" r="6" fill="#ffbd2e"/>
+                <circle cx="58" cy="17" r="6" fill="#27c93f"/>
+                <text x="450" y="22" fill="#ccc" font-size="13" text-anchor="middle" font-family="Segoe UI, Arial">hello.py - Python Basics - Visual Studio Code</text>
+                <!-- activity bar -->
+                <rect x="0" y="34" width="56" height="456" fill="#333333"/>
+                <g fill="none" stroke="#858585" stroke-width="2">
+                    <rect x="16" y="50" width="24" height="24" rx="3"/>
+                    <path d="M16 110 h24 M16 122 h24 M16 134 h24" />
+                    <circle cx="28" cy="196" r="10"/>
+                    <path d="M16 236 l12 -10 l12 10 l-12 10 z"/>
+                </g>
+                <!-- Explorer / Extensions highlight -->
+                <rect x="0" y="176" width="3" height="40" fill="#0078d4"/>
+                <rect x="6" y="236" width="44" height="0" fill="none"/>
+                <rect x="6" y="280" width="44" height="40" rx="4" fill="#0078d4" opacity="0.25"/>
+                <g fill="none" stroke="#fff" stroke-width="2">
+                    <rect x="16" y="290" width="7" height="7"/><rect x="27" y="290" width="7" height="7"/>
+                    <rect x="16" y="301" width="7" height="7"/><rect x="27" y="301" width="7" height="7"/>
+                </g>
+                <!-- sidebar -->
+                <rect x="56" y="34" width="200" height="456" fill="#252526"/>
+                <text x="70" y="62" fill="#bbb" font-size="12" font-family="Segoe UI, Arial">EXPLORER</text>
+                <text x="70" y="88" fill="#ddd" font-size="13" font-family="Segoe UI, Arial">▾ PYTHON BASICS</text>
+                <text x="84" y="110" fill="#9cdcfe" font-size="13" font-family="Consolas, monospace">📄 hello.py</text>
+                <text x="84" y="132" fill="#ccc" font-size="13" font-family="Consolas, monospace">📓 practice.ipynb</text>
+                <text x="84" y="154" fill="#ccc" font-size="13" font-family="Consolas, monospace">📄 variables.py</text>
+                <!-- editor tabs -->
+                <rect x="256" y="34" width="644" height="34" fill="#2d2d2d"/>
+                <rect x="256" y="34" width="150" height="34" fill="#1e1e1e"/>
+                <text x="272" y="56" fill="#fff" font-size="13" font-family="Segoe UI, Arial">🐍 hello.py</text>
+                <text x="420" y="56" fill="#888" font-size="13" font-family="Segoe UI, Arial">📓 practice.ipynb</text>
+                <!-- code -->
+                <g font-family="Consolas, monospace" font-size="15">
+                    <text x="280" y="100" fill="#6a9955">1  # My first Python program</text>
+                    <text x="280" y="126" fill="#d4d4d4">2  <tspan fill="#569cd6">name</tspan> = <tspan fill="#ce9178">"Alice"</tspan></text>
+                    <text x="280" y="152" fill="#d4d4d4">3  <tspan fill="#dcdcaa">print</tspan>(<tspan fill="#ce9178">f"Hello, {name}!"</tspan>)</text>
+                </g>
+                <!-- run button annotation -->
+                <rect x="800" y="40" width="90" height="26" rx="4" fill="#0e639c"/>
+                <text x="845" y="58" fill="#fff" font-size="13" text-anchor="middle" font-family="Segoe UI, Arial">▶ Run</text>
+                <!-- terminal -->
+                <rect x="256" y="360" width="644" height="130" fill="#1e1e1e"/>
+                <rect x="256" y="360" width="644" height="26" fill="#2d2d2d"/>
+                <text x="272" y="378" fill="#ccc" font-size="12" font-family="Segoe UI, Arial">TERMINAL</text>
+                <g font-family="Consolas, monospace" font-size="14">
+                    <text x="272" y="410" fill="#4ec9b0">PS D:\python\01_Python_Basics&gt;</text>
+                    <text x="272" y="432" fill="#d4d4d4">Hello, Alice!</text>
+                    <text x="272" y="454" fill="#4ec9b0">PS D:\python\01_Python_Basics&gt; <tspan fill="#d4d4d4">_</tspan></text>
+                </g>
+                <!-- status bar -->
+                <rect x="0" y="490" width="900" height="30" fill="#007acc"/>
+                <text x="14" y="510" fill="#fff" font-size="12" font-family="Segoe UI, Arial">⎇ main   |   Python 3.12.x   |   Ln 3, Col 1   |   UTF-8</text>
+                <!-- labels -->
+                <g font-family="Segoe UI, Arial" font-size="14" font-weight="bold">
+                    <rect x="62" y="446" width="0" height="0"/>
+                    <rect x="700" y="72" width="180" height="26" rx="13" fill="#ffc107"/>
+                    <text x="790" y="90" fill="#222" text-anchor="middle">Run button</text>
+                    <rect x="6" y="250" width="0" height="0"/>
+                    <rect x="90" y="262" width="0" height="0"/>
+                    <rect x="60" y="310" width="0" height="0"/>
+                    <rect x="296" y="326" width="200" height="26" rx="13" fill="#ffc107"/>
+                    <text x="396" y="344" fill="#222" text-anchor="middle">Code editor</text>
+                </g>
+            </svg>
+            <figcaption>
+                Illustration of the VS Code layout. <strong>Activity bar</strong> (left) switches panels,
+                <strong>Explorer</strong> shows your files, the <strong>editor</strong> holds your code,
+                and the <strong>terminal</strong> shows output.
+            </figcaption>
+        </figure>
+
+        <div class="tip">
+            📸 <strong>Want a real screenshot?</strong> Take one of your own VS Code window (<span class="kbd">Win</span> + <span class="kbd">Shift</span> + <span class="kbd">S</span>), save it as
+            <code>vscode-screenshot.png</code> in this folder, and replace the SVG above with
+            <code>&lt;img src="vscode-screenshot.png" alt="VS Code" style="width:100%;border-radius:10px"&gt;</code>.
+        </div>
+    </div>
+
+    <!-- STEP 3: PYTHON EXTENSION -->
+    <div class="section">
+        <h2>3️⃣ Install the Python Extension</h2>
+        <p>This adds Python support: syntax colours, running files, debugging, and IntelliSense.</p>
+
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+                <p>In VS Code, press <span class="kbd">Ctrl</span> + <span class="kbd">Shift</span> + <span class="kbd">X</span> to open the <strong>Extensions</strong> panel (the squares icon on the left).</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+                <p>Type <strong>Python</strong> in the search box. Pick the one published by <strong>Microsoft</strong>.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+                <p>Click the blue <strong>Install</strong> button.</p>
+            </div>
+        </div>
+
+        <div class="success">
+            ✅ <strong>Test it:</strong> Create a new file <code>hello.py</code>, type <code>print("Hello, World!")</code>, then press <strong>▶ Run</strong> (top right) or <span class="kbd">F5</span>.
+            You should see <code>Hello, World!</code> in the terminal.
+        </div>
+
+        <div class="warning">
+            ⚠️ If VS Code asks <em>"Select a Python interpreter"</em>, click it and choose the Python you installed (e.g. <code>Python 3.12.x</code>).
+            Press <span class="kbd">Ctrl</span> + <span class="kbd">Shift</span> + <span class="kbd">P</span> → type <em>Python: Select Interpreter</em> to change it later.
+        </div>
+    </div>
+
+    <!-- STEP 4: JUPYTER EXTENSION -->
+    <div class="section">
+        <h2>4️⃣ Install the Jupyter Extension</h2>
+        <p>Jupyter lets you write code in <strong>cells</strong> and see results right below them. Great for learning and data work.</p>
+
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+                <p>Open the Extensions panel again (<span class="kbd">Ctrl</span> + <span class="kbd">Shift</span> + <span class="kbd">X</span>).</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+                <p>Search <strong>Jupyter</strong> and install the one published by <strong>Microsoft</strong> (it installs related packages automatically).</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+                <p>Install the Jupyter package for Python. Open a terminal in VS Code (<span class="kbd">Ctrl</span> + <span class="kbd">`</span>) and run:</p>
+                <div class="code-block">pip install ipykernel jupyter</div>
+            </div>
+        </div>
+
+        <h3>Create and run your first notebook</h3>
+        <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+                <p>Press <span class="kbd">Ctrl</span> + <span class="kbd">Shift</span> + <span class="kbd">P</span> → type <em>Create: New Jupyter Notebook</em>. Save it as <code>practice.ipynb</code>.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-body">
+                <p>Type this in the first cell:</p>
+                <div class="code-block"><span class="comment"># My first notebook cell</span>
+name = "Alice"
+print(f"Hello, {name}!")</div>
+                <p>Click the <strong>▶</strong> button on the left of the cell, or press <span class="kbd">Shift</span> + <span class="kbd">Enter</span>.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">6</div>
+            <div class="step-body">
+                <p>If asked to <em>Select Kernel</em>, choose <strong>Python Environments</strong> and then your Python version.</p>
+            </div>
+        </div>
+
+        <div class="success">
+            ✅ You should see <code>Hello, Alice!</code> printed under the cell.
+        </div>
+
+        <div class="tip">
+            💡 <strong>Shortcuts inside notebooks:</strong><br>
+            <span class="kbd">Shift</span> + <span class="kbd">Enter</span> — run cell and move to next<br>
+            <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> — run cell and stay<br>
+            <span class="kbd">B</span> — new cell below (in command mode, press <span class="kbd">Esc</span> first)
+        </div>
+    </div>
+
+    <!-- CHECKLIST -->
+    <div class="section">
+        <h2>✨ Final Checklist</h2>
+        <ul class="checklist">
+            <li>Python installed and <code>python --version</code> works</li>
+            <li>VS Code installed and opens</li>
+            <li>Python extension installed (Microsoft)</li>
+            <li>Jupyter extension installed (Microsoft)</li>
+            <li><code>hello.py</code> runs and prints a message</li>
+            <li><code>practice.ipynb</code> runs a cell and prints a message</li>
+        </ul>
+        <div class="success" style="margin-top: 15px;">
+            🎉 Your setup is complete. Head back to <strong>Python Basics</strong> and start coding!
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <a href="index.html">← Back to Python Basics</a>
+        <a href="../02_Control_Flow/index.html">Next: Control Flow →</a>
+    </div>
+</div>
+<script>
+    window.print = function() { return false; };
+</script>
+</body>
+</html>
